@@ -6,9 +6,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="http://localhost/phishingBE/campaing.php">Campaings</a>
+        <a class="nav-link" aria-current="page" href="http://localhost/phishingBE/campaing.php">Campaings</a>
         <a class="nav-link" href="http://localhost/phishingBE/users_groups.php">Users & Groups</a>
-        <a class="nav-link" href="http://localhost/phishingBE/#.php">Email template</a>
+        <a class="nav-link" href="http://localhost/phishingBE/email_templates.php">Email template</a>
       </div>
     </div>
   </div>

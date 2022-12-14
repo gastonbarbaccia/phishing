@@ -58,9 +58,10 @@ require_once 'dbconexion.php';
                   "<td>".$row["name"]."</td>".
                   "<td>".$row["description"]."</td>".
                   "<td>".$active. "</td>".
-                  "<td>". "<a href='edit_campaign.php?id=$id'>Edit </a>" . ' '. 
-                  "<a href='delete_campaign.php?id=$id'>Delete</a>".
-                "</td>".
+                  "<td>". 
+                          "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'>Edit </a> " . ' '. 
+                          "<a href='delete_campaign.php?id=$id'>Delete</a>".
+                  "</td>".
                 "<td>"."<a href='campaing_details.php?id=$id'style='color:red'><strong>Launch Campaing!</strong></a></td>"
                  . "</tr>";
         } ?>

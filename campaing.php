@@ -105,30 +105,30 @@ $data = $smt->fetchAll();
         <br>
         <div>
             <div style="padding-left:3%">
-                <h3>STMP Settings</h3>
+                <h3>SMTP Settings</h3>
             </div>
             <hr>
             <div style="padding-left:3%">
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">SMPT Server</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Server</label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control" id="smtp_server" name="server">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">SMPT Username</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Username</label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control" id="smtp_username" name="username">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">SMPT Password</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Password</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="smtp_password" name="passw">
+                        <input type="password" class="form-control" id="smtp_password" name="passw">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">SMPT Port</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Port</label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control" id="smtp_port" name="port">
                     </div>

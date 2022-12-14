@@ -6,11 +6,11 @@ require_once 'dbconexion.php' ;
     $description = $_POST['description0'];
     $editorContent = $_POST['content0'];
 
-    print_r($_POST);
+    //print_r($_POST);
     
     $consulta = "SELECT MAX(id) FROM phishing.campaign";
     $con = $conexion->query($consulta)->fetchColumn();
-    print_r($con);//muestra el id de campaigm
+    //print_r($con);//muestra el id de campaigm
     // Check whether the editor content is empty
     if(!empty($editorContent)){
         // Insert editor content in the database
@@ -19,4 +19,5 @@ require_once 'dbconexion.php' ;
         $conexion->prepare($sql)->execute([$name, $description, $editorContent]);
     }
 
+    header('Location: email_templates.php');
 ?>

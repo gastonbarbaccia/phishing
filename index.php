@@ -1,3 +1,7 @@
+<?php
+require_once 'dbconexion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +14,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
 
 </head>
 
@@ -39,18 +42,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th>1</th>
-          <td>5/12/2022 15:56</td>
-          <td><a href="campaing_details.php">Cencosud Phishing Test</a></td>
-          <td>Prueba de phishing</td>
-          <td>Yes</td>
-          <td>
-            <a href="#">Edit</a>
-            <a href="#">Delete</a>
-          </td>
-          <td><a href="campaing_details.php" style="color:red"><strong>Launch Campaing!</strong></a></td>
-        </tr>
+      <?php
+      $stmt = $conexion->query('select * from phishing.campaign');
+      while($row = $stmt->fetch()) 
+        {
+          if($row["is_active"] == null){
+            $active = 'no';
+          }
+          else
+            $active = 'yes';
+            $id = $row['id'];
+             echo "<tr>".
+                  "<td>".$row["id"]."</td>".
+                  "<td>".$row["date_created"]."</td>".
+                  "<td>".$row["name"]."</td>".
+                  "<td>".$row["description"]."</td>".
+                  "<td>".$active. "</td>".
+                  "<td>". "<a href='edit_campaign.php?id=$id'>Edit </a>" . ' '. 
+                  "<a href='delete_campaign.php?id=$id'>Delete</a>".
+                "</td>".
+                "<td>"."<a href='campaing_details.php?id=$id'style='color:red'><strong>Launch Campaing!</strong></a></td>"
+                 . "</tr>";
+        } ?>
       </tbody>
     </table>
   </div>
@@ -69,6 +82,7 @@
       $('#datatable').DataTable();
     });
   </script>
+
 </body>
 
 </html>

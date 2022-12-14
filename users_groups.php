@@ -1,3 +1,7 @@
+<?php
+require_once 'dbconexion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +31,7 @@
 
     ?>
 
-    <form action="users_groups.php" method="POST">
+    <form action="recibe_user_groups.php" method="POST">
         <br>
         <div>
             <div style="padding-left:3%">
@@ -38,20 +42,20 @@
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="name">
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="description">
+                        <input type="text" class="form-control" id="description" name="description">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Targets</label>
                     <div class="col-sm-5">
-                        <textarea type="text" class="form-control" id="target" placeholder="example@hotmail.com, example2@hotmail.com ..."></textarea>
+                        <textarea type="text" class="form-control" id="target" name="targets" placeholder="example@hotmail.com, example2@hotmail.com ..."></textarea>
                     </div>
                 </div>
             </div>
@@ -66,7 +70,6 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Created date</th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
                     <th scope="col">Targets</th>
@@ -74,17 +77,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>5/12/2022 15:56</td>
-                    <td>Cencosud Phishing Test</td>
-                    <td>Prueba de phishing</td>
-                    <td><a href="users_groups_targets.php">View</a></td>
-                    <td>
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
-                    </td>
-                </tr>
+            <?php
+                $stmt = $conexion->query('select * from phishing.mygroup');
+                while($row = $stmt->fetch()){
+                      $id = $row['id'];
+                       echo "<tr>".
+                            "<td>".$row["id"]."</td>".
+                            "<td>".$row["name"]."</td>".
+                            "<td>".$row["description"]."</td>".
+                            '<td>'. "<a href='users_groups_targets.php?id=$id'>View</a></td>".
+                            "<td>" . "<a href='#'>Edit </a>" . "  ".
+                            '<a href="#"> Delete</a>' . '</td>' .
+                            "</tr>";
+                  } ?>                              
             </tbody>
         </table>
     </div>

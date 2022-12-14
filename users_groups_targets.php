@@ -1,3 +1,7 @@
+<?php
+require_once 'dbconexion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,30 +44,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>gastonbarbaccia@hotmail.com</td>
-                    <td>
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <td>gastonbarbaccia@hotmail.com</td>
-                    <td>
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <td>gastonbarbaccia@hotmail.com</td>
-                    <td>
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
-                    </td>
-                </tr>
+            <?php
+                $id = $_GET['id'];//id del grupo                    
+                $stmt = $conexion->prepare('select id,email_address from phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id=?');
+                $stmt->execute([$id]);
+                while($row = $stmt->fetch()){
+                       echo "<tr>".
+                            "<td>".$row["id"]."</td>".
+                            "<td>".$row["email_address"]."</td>".
+                            "<td>" . "<a href='#'>Edit </a>" . "  ".
+                            '<a href="#"> Delete</a>' . '</td>' .
+                            "</tr>";
+                  } ?>
             </tbody>
         </table>
     </div>

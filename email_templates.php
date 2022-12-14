@@ -1,3 +1,6 @@
+<?php
+require_once 'dbconexion.php' ;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,10 +28,9 @@
     <?php
 
     include 'layouts/nav.php';
-
     ?>
 
-    <form action="#.php" method="POST">
+    <form action="recibe_email_template.php" method="POST">
         <br>
         <div>
             <div style="padding-left:3%">
@@ -39,21 +41,21 @@
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="name">
+                        <input type="text" class="form-control" id="name" name="name0">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="description">
+                        <input type="text" class="form-control" id="description" name="description0">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Message</label>
                     <div class="col-sm-5">
-                        <textarea type="text" class="form-control" id="email_template" name="email_template" style="height:200px"></textarea>
+                        <textarea type="text" class="form-control" id="email_template" name="content0" style="height:200px"></textarea>
                     </div>
                 </div>
             </div>
@@ -61,7 +63,7 @@
 
         <div style="padding-left:3%;margin-bottom:5%">
             <a href="index.php" class="btn btn-primary">Cancel</a>
-            <a href="#.php" class="btn btn-primary" style="width:5%">Save</a>
+            <button class="btn btn-primary" style="width:5%">Save</button>
         </div>
     </form>
 
@@ -71,7 +73,6 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Created date</th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
                     <th scope="col">Message</th>
@@ -79,17 +80,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>5/12/2022 15:56</td>
-                    <td>Hotmail</td>
-                    <td>Email template de hotmail</td>
-                    <td><a href="#.php">View</a></td>
-                    <td>
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
-                    </td>
-                </tr>
+            <?php                  
+            $stmt = $conexion->prepare('select id,name, description from phishing.email_template');
+            $stmt->execute();
+            while($row = $stmt->fetch()){
+                   echo "<tr>".
+                        "<td>".$row["id"]."</td>".
+                        "<td>".$row["name"]."</td>".
+                        "<td>".$row["description"]."</td>".
+                        '<td>'. "<a href='email_template_details.php'>View</a></td>".
+                        "<td>" . "<a href='#'>Edit </a>" . "  ".
+                        '<a href="#"> Delete</a>' . '</td>' .
+                        "</tr>";
+              } ?>
             </tbody>
         </table>
     </div>
@@ -121,6 +124,7 @@
             $('#datatable').DataTable();
         });
     </script>
+     
 </body>
 
 </html>

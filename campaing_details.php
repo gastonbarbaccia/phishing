@@ -1,3 +1,47 @@
+<?php
+require_once 'dbconexion.php';
+
+$id = $_GET['id'];
+$cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
+$con1 = $conexion->prepare($cons1);
+$con1->execute([$id]);
+$group_id = $con1->fetchColumn();
+
+$cons22 = "SELECT creado FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY date_time DESC LIMIT 1";
+$con22 = $conexion->prepare($cons22);
+$con22->execute([$id]);
+$creado = $con22->fetchColumn();
+
+$cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
+$con21 = $conexion->prepare($cons21);
+$con21->execute([$id]);
+$attack_id = $con21->fetchColumn();
+
+if($creado == null){
+$creado = 1;
+$sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,creado) VALUES (?,?,?)";
+$conexion->prepare($sql1)->execute([$group_id, $id,$creado]);
+
+$attack_id = $conexion->lastInsertId();
+
+$sql3 = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$con2 = $conexion->prepare($sql3);
+$con2->execute([$group_id]);
+$user_id = $con2->fetchAll();
+
+foreach($user_id as $uid){
+$sql2 = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
+$conexion->prepare($sql2)->execute([$attack_id, $uid[0]]);
+}
+}
+
+
+$click_counts = 0;
+$pass_counts = 0;
+$clickno_counts = 0;
+$passno_counts = 0; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,56 +57,9 @@
 
 
 </head>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load("current", {
-        packages: ["corechart"]
-    });
-    google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Task', 'Phishing'],
-            ['', 0],
-            ['', 0],
-            ['Link clicked', 10],
-            ['Link not opened', 7]
-        ]);
 
-        var options = {
-            title: 'Phishing Status - Links opened',
-            is3D: true,
-        };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d_1'));
-        chart.draw(data, options);
-    }
-</script>
-
-<script type="text/javascript">
-    google.charts.load("current", {
-        packages: ["corechart"]
-    });
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Task', 'Phishing'],
-            ['', 0],
-            ['Password exposed', 2],
-            ['', 0],
-            ['Password not exposed', 7]
-        ]);
-
-        var options = {
-            title: 'Password Exposed',
-            is3D: true,
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d_2'));
-        chart.draw(data, options);
-    }
-</script>
 
 <body>
 
@@ -74,7 +71,16 @@
 
     <br>
     <div style="padding-left:1%;padding-bottom:1%">
-        <h3 style="color:blue">Cencosud Phishing Campang</h3>
+        <label for="campaign"> Campaña: </label>
+        <h3 style="color:blue" id="campaign"><?php 
+                $id = $_GET['id'];
+                $cons = "SELECT name FROM phishing.campaign where id = ? ";
+                $con = $conexion->prepare($cons);
+                $con->execute([$id]);
+                $consult = $con->fetchColumn();
+                echo $consult;
+                ?></h3>
+
     </div>
     <table>
         <tbody>
@@ -92,12 +98,12 @@
         <tbody>
             <tr>
                 <td>
-                    <div style="padding-left:3%"><strong>Password Exposed:</strong> <input value="2" style="color:red;border: 0"></div>
-                    <div style="padding-left:3%"><strong>Password not exposed: </strong><input value="7" style="color:green;border: 0"></div>
+                    <div style="padding-left:3%"><strong>Password Exposed:</strong> <input  id="passcount" style="color:red;border: 0"></div>
+                    <div style="padding-left:3%"><strong>Password not exposed: </strong><input  id="passnocount" style="color:green;border: 0"></div>
                 </td>
                 <td>
-                    <div style="padding-left:3%"><strong>Link clicked: </strong><input value="10" style="color:orange;border: 0"></div>
-                    <div style="padding-left:3%"><strong>Link not clicked:</strong> <input value="7" style="color:green;border: 0"></div>
+                    <div style="padding-left:3%"><strong>Link clicked: </strong><input  id="clickcount" style="color:orange;border: 0"></div>
+                    <div style="padding-left:3%"><strong>Link not clicked:</strong> <input  id="clicknocount" style="color:green;border: 0"></div>
                 </td>
             </tr>
         </tbody>
@@ -105,44 +111,79 @@
 
 
     <hr>
-
+    <div style="padding-left:1%">
+        <h3 style="color:blue"><?php 
+                $cons = "SELECT mygroup.name FROM phishing.mygroup JOIN phishing.campaign ON mygroup.id = campaign.group_id WHERE campaign.id=? ";
+                $con = $conexion->prepare($cons);
+                $con->execute([$id]);
+                $consult = $con->fetchColumn();
+                echo $consult; ?></h3>
+        <h4 id="template"><label for="template"> Email template: </label>
+        <?php 
+                $cons00 = "SELECT email_template.name FROM phishing.email_template join phishing.campaign on email_template.id = campaign.email_template_id where campaign.id = ? ";
+                $con00 = $conexion->prepare($cons00);
+                $con00->execute([$id]);
+                $consult00 = $con00->fetchColumn();
+                echo $consult00;
+                ?></h4>                
+        <h4>
+        <?php
+                $id = $_GET['id'];
+                $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_id = campaign.id WHERE campaign.id=? ORDER BY date_time DESC LIMIT 1";
+                $con1 = $conexion->prepare($cons1);
+                $con1->execute([$id]);
+                $consult1 = $con1->fetchColumn();
+                echo $consult1; ?></h4>
+        </h4>
+    </div>
     <div style="margin: 3%">
         <table class="table table-hover" id="datatable">
             <thead>
                 <tr>
                     <th scope="col">Victim UID</th>
-                    <th scope="col">Datetime</th>
                     <th scope="col">Email Address</th>
                     <th scope="col">Email sent?</th>
                     <th scope="col">Link clicked?</th>
                     <th scope="col">Password seen?</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th><a href="campaing_password_details.php">NS12PQ3</a></th>
-                    <td>5/12/2022 17:07</td>
-                    <td>gastonbarbaccia@hotmail.com</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th><a href="campaing_password_details.php">MS2BPQ3</a></th>
-                    <td>5/12/2022 17:07</td>
-                    <td>gastonbarbaccia@hotmail.com</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th><a href="campaing_password_details.php">OU2BPQ3</a></th>
-                    <td>5/12/2022 12:07</td>
-                    <td>gastonbarbaccia@hotmail.com</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
+            <tbody>             
+            <?php                  
+            $stmt = $conexion->prepare('select user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+            $stmt->execute([$attack_id]);
+            $roww = $stmt->fetchAll();
+                       
+                foreach($roww as $row){
+                if($row["email_sent"] == null){
+                    $sent = 'no';
+                  }
+                  else{
+                    $sent = 'yes';
+                  }
+                    if($row["link_clicked"] == null){
+                        $click = 'no';
+                        $clickno_counts++;
+                      }
+                      else{
+                        $click = 'yes';
+                        $click_counts++;
+                      }
+                        if($row["password_seen"] == null){
+                            $pass = 'no';
+                            $passno_counts++;
+                          }
+                          else{
+                            $pass = 'yes';
+                            $pass_counts++;
+                          }
+                   echo "<tr>".
+                        "<td>".$row["uid"]."</td>".
+                        "<td>".$row["email_address"]."</td>".
+                        "<td>".$sent."</td>".
+                        "<td>".$click."</td>".
+                        "<td>".$pass."</td>".
+                        "</tr>";
+              }?>
             </tbody>
         </table>
     </div>
@@ -175,6 +216,62 @@
             $('#datatable').DataTable();
         });
     </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    google.charts.load("current", {
+        packages: ["corechart"]
+    });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Phishing'],
+            ['', 0],
+            ['Password exposed', <?php echo $pass_counts; ?>],
+            ['', 0],
+            ['Password not exposed', <?php echo $passno_counts; ?>]
+        ]);
+
+        var options = {
+            title: 'Password Exposed',
+            is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d_2'));
+        chart.draw(data, options);
+        document.getElementById('passcount').value = <?php echo $pass_counts?>;
+        document.getElementById('passnocount').value = <?php echo $passno_counts?>;
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", {
+        packages: ["corechart"]
+    });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Phishing'],
+            ['', 0],
+            ['', 0],
+            ['Link clicked', <?php echo $click_counts; ?>],
+            ['Link not opened', <?php echo $clickno_counts; ?>]
+        ]);
+
+        var options = {
+            title: 'Phishing Status - Links opened',
+            is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d_1'));
+        chart.draw(data, options);
+        document.getElementById('clickcount').value = <?php echo $click_counts?>;
+        document.getElementById('clicknocount').value = <?php echo $clickno_counts?>;        
+    }
+</script>
 </body>
 
 </html>

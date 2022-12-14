@@ -6,7 +6,8 @@ require_once 'dbconexion.php' ;
     $description = $_POST['description0'];
     $editorContent = $_POST['content0'];
 
-   
+    print_r($_POST);
+    
     $consulta = "SELECT MAX(id) FROM phishing.campaign";
     $con = $conexion->query($consulta)->fetchColumn();
     print_r($con);//muestra el id de campaigm

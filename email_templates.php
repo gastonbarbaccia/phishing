@@ -85,8 +85,6 @@ require_once 'dbconexion.php' ;
             $stmt = $conexion->prepare('select id,name, description,email_deleted from phishing.email_template  where deleted = "no"');
             $stmt->execute();
             while($row = $stmt->fetch()){
-                $id = $row['id'];
-
                     $id = $row['id'];
 
                     if($row["email_deleted"] != 'yes'){

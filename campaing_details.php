@@ -96,19 +96,21 @@ $consult1 = $con1->fetchColumn();
 
     <br>
 
+
     <div style="padding-left:1%;padding-bottom:1%">
-        <div class="mb-3 row" style="float:left;">
-            <label for="staticEmail" class="col-sm-5 col-form-label" style="color:red"><b>Launched attack : </b></label>
-            <div class="col-sm-7">
-                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
-            </div>
-        </div>
-        <div class="mb-3 row" >
+        <div class="mb-3 row">
             <label for="staticEmail" class="col-sm-1 col-form-label"><b>Campaña: </b></label>
             <div class="col-sm-5">
                 <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
             </div>
         </div>
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-1 col-form-label" style="color:red"><b>Launched: </b></label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
+            </div>
+        </div>
+
     </div>
     <table>
         <tbody>

@@ -112,6 +112,7 @@ $consult1 = $con1->fetchColumn();
         </div>
 
     </div>
+    
     <table>
         <tbody>
             <tr>

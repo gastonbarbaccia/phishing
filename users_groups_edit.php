@@ -1,5 +1,10 @@
 <?php
 require_once 'dbconexion.php';
+
+$id=$_GET['id'];
+$stmt = $conexion->query("select * from phishing.mygroup where id ='$id'");
+$row = $stmt->fetch();
+
 ?>
 
 <!DOCTYPE html>
@@ -31,78 +36,43 @@ require_once 'dbconexion.php';
 
     ?>
 
-    <form action="recibe_user_groups.php" method="POST">
+    <form action="users_group_update.php" method="POST">
         <br>
         <div>
             <div style="padding-left:3%">
-                <h3>Add user & groups</h3>
+                <h3>User & groups - Edit</h3>
             </div>
             <hr>
+            <input type="text"  id="id" name="id" value="<?php echo $row['id'];?>" readonly hidden>
             <div style="padding-left:3%">
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['name'];?>">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="description" name="description">
+                        <input type="text" class="form-control" id="description" name="description" value="<?php echo $row['description'];?>">
                     </div>
                 </div>
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Targets</label>
-                    <div class="col-sm-5">
-                        <textarea type="text" class="form-control" id="target" name="targets" placeholder="example@hotmail.com, example2@hotmail.com ..."></textarea>
-                    </div>
-                </div>
+               
             </div>
         </div>
         <div style="padding-left:3%;margin-bottom:5%">
-            <button class="btn btn-primary">Add User & Group</button>
+            <a href="users_groups.php" class="btn btn-primary" style="width:10%;">Cancel</a>
+            <button class="btn btn-primary" style="width:10%;">Save</button>
         </div>
     </form>
-
-    <div style="margin: 3%">
-        <table class="table table-hover" id="datatable">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Targets</th>
-                    <th scope="col">Options</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-                $stmt = $conexion->query('select * from phishing.mygroup');
-                while($row = $stmt->fetch()){
-                      $id = $row['id'];
-
-                    if($row['group_deleted'] != 'yes'){                      
-                       echo "<tr>".
-                            "<td>".$row["id"]."</td>".
-                            "<td>".$row["name"]."</td>".
-                            "<td>".$row["description"]."</td>".
-                            '<td>'. "<a href='users_groups_targets.php?id=$id'>View</a></td>".
-                            "<td>" . "<a href='users_groups_edit.php?id=$id' style='padding-right:3%'>Edit </a>" . "  ".
-                            '<a href="users_groups_delete.php?id='.$id.'"> Delete</a>' . '</td>' .
-                            "</tr>";
-                   } 
-                  
-                }?>                              
-            </tbody>
-        </table>
-    </div>
 
     <style>
         footer {
 
             position: absolute;
             width: 100%;
+            bottom: 0;
 
         }
     </style>

@@ -1,6 +1,13 @@
 <?php
 require_once 'dbconexion.php' ;
+$id = $_GET['id'];
 
+$smt = $conexion->prepare("SELECT * FROM phishing.email_template where id = ?");
+$smt->execute([$id]);
+$row = $smt->fetch();
+    $name = $row['name'];
+    $description =$row['description'];
+    $content = $row['content'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,8 +37,8 @@ require_once 'dbconexion.php' ;
 
     include 'layouts/nav.php';
     ?>
-
-    <form action="recibe_email_template.php" method="POST">
+    
+    <form action="recibe_edit_template.php" method="POST">
         <br>
         <div>
             <div style="padding-left:3%">
@@ -42,21 +49,21 @@ require_once 'dbconexion.php' ;
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="name" name="name0">
+                        <input type="text" class="form-control" id="name" name="name0" value="<?php echo $name;?>">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="description" name="description0">
+                        <input type="text" class="form-control" id="description" name="description0" value="<?php echo $description;?>">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Message</label>
                     <div class="col-sm-5">
-                        <textarea type="text" class="form-control" id="email_template" name="content0" style="height:200px"></textarea>
+                        <textarea type="text" class="form-control" id="email_template" name="content0" style="height:200px" ><?php echo $content;?></textarea>
                     </div>
                 </div>
             </div>
@@ -66,39 +73,8 @@ require_once 'dbconexion.php' ;
             <a href="index.php" class="btn btn-primary">Cancel</a>
             <button class="btn btn-primary" style="width:5%">Save</button>
         </div>
+        <input type="text" name="ide" value="<?php echo $id ?>" readonly hidden>
     </form>
-
-
-    <div style="margin: 3%">
-        <table class="table table-hover" id="datatable">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Options</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php                  
-            $stmt = $conexion->prepare('select id,name, description from phishing.email_template  where deleted = "no"');
-            $stmt->execute();
-            while($row = $stmt->fetch()){
-                $id = $row['id'];
-                   echo "<tr>".
-                        "<td>".$row["id"]."</td>".
-                        "<td>".$row["name"]."</td>".
-                        "<td>".$row["description"]."</td>".
-                        '<td>'. "<a href='email_template_details.php?id=$id'>View</a></td>".
-                        "<td>" . "<a href='edit_template.php?id=$id'>Edit </a>" . "  ".
-                        "<a href='delete_template.php?id=$id'> Delete</a>" . '</td>' .
-                        "</tr>";
-              } ?>
-            </tbody>
-        </table>
-    </div>
-
     <style>
         footer {
 

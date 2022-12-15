@@ -44,25 +44,30 @@ require_once 'dbconexion.php';
       <tbody>
       <?php
       $stmt = $conexion->query('select * from phishing.campaign');
-      while($row = $stmt->fetch()) 
-        {
+      while($row = $stmt->fetch()) {
           if($row["is_active"] == null){
             $active = 'no';
+            $color_active = 'grey';
+            $status = 'black';
           }
-          else
+          else{
             $active = 'yes';
+            $color_active = 'red';
+            $status = 'green';
+          }
+
             $id = $row['id'];
              echo "<tr>".
                   "<td>".$row["id"]."</td>".
                   "<td>".$row["date_created"]."</td>".
                   "<td>".$row["name"]."</td>".
                   "<td>".$row["description"]."</td>".
-                  "<td>".$active. "</td>".
+                  "<td style='color:$status'><b>".$active. "</b></td>".
                   "<td>". 
                           "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'>Edit </a> " . ' '. 
                           "<a href='delete_campaign.php?id=$id'>Delete</a>".
                   "</td>".
-                "<td>"."<a href='campaing_details.php?id=$id'style='color:red'><strong>Launch Campaing!</strong></a></td>"
+                "<td>"."<a href='campaing_details.php?id=$id'style='color:$color_active'><strong>Launch Campaing!</strong></a></td>"
                  . "</tr>";
         } ?>
       </tbody>

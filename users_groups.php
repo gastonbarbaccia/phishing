@@ -86,7 +86,7 @@ require_once 'dbconexion.php';
                             "<td>".$row["name"]."</td>".
                             "<td>".$row["description"]."</td>".
                             '<td>'. "<a href='users_groups_targets.php?id=$id'>View</a></td>".
-                            "<td>" . "<a href='#'>Edit </a>" . "  ".
+                            "<td>" . "<a href='#' style='padding-right:3%'>Edit </a>" . "  ".
                             '<a href="#"> Delete</a>' . '</td>' .
                             "</tr>";
                   } ?>                              

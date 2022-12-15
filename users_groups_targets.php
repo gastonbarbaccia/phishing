@@ -1,5 +1,7 @@
 <?php
 require_once 'dbconexion.php';
+$id = $_GET['id'];//id del grupo                    
+
 ?>
 
 <!DOCTYPE html>
@@ -45,15 +47,15 @@ require_once 'dbconexion.php';
             </thead>
             <tbody>
             <?php
-                $id = $_GET['id'];//id del grupo                    
                 $stmt = $conexion->prepare('select id,email_address from phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id=?');
                 $stmt->execute([$id]);
                 while($row = $stmt->fetch()){
+                    $usid = $row["id"];
                        echo "<tr>".
                             "<td>".$row["id"]."</td>".
                             "<td>".$row["email_address"]."</td>".
-                            "<td>" . "<a href='#'>Edit </a>" . "  ".
-                            '<a href="#"> Delete</a>' . '</td>' .
+                            "<td>" . "<a href='edit_user.php?id=$usid&id_group=$id' style='padding-right:3%'>Edit </a>" . 
+                            "<a href='delete_user_group.php?id=$usid&id_group=$id'> Delete</a>' . '</td>" .
                             "</tr>";
                   } ?>
             </tbody>

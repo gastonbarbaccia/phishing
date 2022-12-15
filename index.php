@@ -45,6 +45,7 @@ require_once 'dbconexion.php';
       <?php
       $stmt = $conexion->query('select * from phishing.campaign');
       while($row = $stmt->fetch()) {
+        if($row["deleted"] != 'yes'){
           if($row["is_active"] == null){
             $active = 'no';
             $color_active = 'grey';
@@ -69,6 +70,7 @@ require_once 'dbconexion.php';
                   "</td>".
                 "<td>"."<a href='campaing_details.php?id=$id'style='color:$color_active'><strong>Launch Campaing!</strong></a></td>"
                  . "</tr>";
+                }
         } ?>
       </tbody>
     </table>

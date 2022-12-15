@@ -10,6 +10,7 @@
         <a class="nav-link" href="http://localhost/phishingBE/campaing.php">Campaings</a>
         <a class="nav-link" href="http://localhost/phishingBE/users_groups.php">Users & Groups</a>
         <a class="nav-link" href="http://localhost/phishingBE/email_templates.php">Email template</a>
+        <a class="nav-link" href="http://localhost/phishingBE/phishing_url_templates.php">Phishing URL</a>
       </div>
     </div>
   </div>

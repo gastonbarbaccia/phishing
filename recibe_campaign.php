@@ -3,7 +3,14 @@ require_once 'dbconexion.php' ;
 
 $name = $_POST['campaign_name'];
 $description = $_POST['campaign_description'];
-$is_active = $_POST['is_active'];
+//$is_active = $_POST['is_active'];
+
+if(!empty( $_POST['is_active'])){
+    $is_active = $is_active;
+}else{
+    $is_active = '';
+}
+
 $group = $_POST['group'];
 $template = $_POST['template'];
 $server = $_POST['server'];
@@ -33,6 +40,7 @@ $camp_id = $conexion->lastInsertId();
 
 $sql2 = "INSERT INTO phishing.email_settings (smtp_server, smtp_username, smtp_password, smtp_port, subject, email_from, display, phishing_url, campaign_id) VALUES (?,?,?,?,?,?,?,?,?)";
 $conexion->prepare($sql2)->execute([ $server, $username, $passw, $port, $subject, $from, $display, $phishingURL, intval($camp_id)]);
+
 header('Location:index.php');
 
 ?>

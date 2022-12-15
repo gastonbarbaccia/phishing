@@ -1,5 +1,5 @@
 <?php
-require_once 'dbconexion.php' ;
+require_once 'dbconexion.php';
 
 $smt = $conexion->prepare("SELECT name FROM phishing.mygroup");
 $smt->execute();
@@ -65,10 +65,10 @@ $data = $smt->fetchAll();
                     <label for="staticEmail" class="col-sm-2 col-form-label">Target</label>
                     <div class="col-sm-5">
                         <select name="group" type="text" class="form-control" id="openssl_verify_mode">
-                        <?php foreach ($data as $row): ?>
-                            <option><?=$row["name"]?></option>
-                        <?php endforeach ?>
-                    </select>
+                            <?php foreach ($data as $row) : ?>
+                                <option><?= $row["name"] ?></option>
+                            <?php endforeach ?>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -86,13 +86,13 @@ $data = $smt->fetchAll();
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Template Email</label>
                     <div class="col-sm-5">
-                        <select name="template" type="text" class="form-control" id="template">
-                            <?php 
+                        <select name="template" type="text" class="form-control" id="template" >
+                            <?php
                             $smt1 = $conexion->prepare("SELECT name FROM phishing.email_template");
                             $smt1->execute();
                             $data1 = $smt1->fetchAll();
-                            foreach ($data1 as $row): ?>
-                                <option><?=$row["name"]?></option>
+                            foreach ($data1 as $row) : ?>
+                                <option><?= $row["name"] ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -172,7 +172,15 @@ $data = $smt->fetchAll();
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Phishing URL</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="phishing_URL" name="phishing_URL">
+                        <select type="text" class="form-control" id="phishing_URL" name="phishing_URL">
+                            <?php
+                            $smtp2 = $conexion->prepare("SELECT url FROM phishing.phishing_url");
+                            $smtp2->execute();
+                            $data2 = $smtp2->fetchAll();
+                            foreach ($data2 as $row) : ?>
+                                <option value="<?= $row["url"] ?>"><?= $row["url"] ?></option>
+                            <?php endforeach ?>
+                        </select>
                     </div>
                 </div>
             </div>

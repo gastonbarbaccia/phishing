@@ -81,17 +81,24 @@ require_once 'dbconexion.php' ;
             </thead>
             <tbody>
             <?php                  
-            $stmt = $conexion->prepare('select id,name, description from phishing.email_template');
+            $stmt = $conexion->prepare('select id,name, description,email_deleted from phishing.email_template');
             $stmt->execute();
             while($row = $stmt->fetch()){
-                   echo "<tr>".
+
+                    $id = $row['id'];
+
+                    if($row["email_deleted"] != 'yes'){
+
+                    echo "<tr>".
                         "<td>".$row["id"]."</td>".
                         "<td>".$row["name"]."</td>".
                         "<td>".$row["description"]."</td>".
-                        '<td>'. "<a href='email_template_details.php'>View</a></td>".
-                        "<td>" . "<a href='#'>Edit </a>" . "  ".
-                        '<a href="#"> Delete</a>' . '</td>' .
+                        '<td>'. "<a href='email_template_details.php?id=$id'>View</a></td>".
+                        "<td>" . "<a href='email_template_edit.php?id=$id' style='padding-right:3%'>Edit </a>" . "  ".
+                        '<a href="delete_email_template.php?id='.$id.'"> Delete</a>' . '</td>' .
                         "</tr>";
+
+                    } 
               } ?>
             </tbody>
         </table>

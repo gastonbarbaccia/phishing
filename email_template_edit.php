@@ -1,11 +1,11 @@
 <?php
-require_once 'dbconexion.php';
+require_once 'dbconexion.php' ;
 
 $id = $_GET['id'];
-$stmt = $conexion->prepare("select * from phishing.email_template where id='$id'");
+
+$stmt = $conexion->prepare("select id,name, description,content from phishing.email_template where id = '$id'");
 $stmt->execute();
 $row = $stmt->fetch();
-
 
 ?>
 <!DOCTYPE html>
@@ -37,18 +37,33 @@ $row = $stmt->fetch();
     include 'layouts/nav.php';
     ?>
 
-    <form action="recibe_email_template.php" method="POST">
+    <form action="email_template_update.php" method="POST">
         <br>
         <div>
             <div style="padding-left:3%">
-                <h3>Email templates - <?php echo $row[1];?> </h3>
+                <h3>Email templates - Edit</h3>
             </div>
             <hr>
+            <input type="text" value="<?php echo $row['id'];?>" id="id" name="id" hidden readonly>
             <div style="padding-left:3%">
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="name" name="name0" value="<?php echo $row['name'];?>">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="description" name="description0" value="<?php echo $row['description'];?>">
+                    </div>
+                </div>
+
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Message</label>
                     <div class="col-sm-5">
-                        <textarea type="text" class="form-control" id="email_template" name="content0" style="height:200px;width:180%" readonly disabled><?php echo $row[3];?></textarea>
+                        <textarea type="text" class="form-control" id="email_template" name="content0" style="height:200px;width:180%"><?php echo $row['content'];?></textarea>
                     </div>
                 </div>
             </div>
@@ -56,16 +71,15 @@ $row = $stmt->fetch();
 
         <div style="padding-left:3%;margin-bottom:5%">
             <a href="email_templates.php" class="btn btn-primary">Cancel</a>
+            <button class="btn btn-primary" style="width:5%">Save</button>
         </div>
     </form>
-
 
     <style>
         footer {
 
             position: absolute;
             width: 100%;
-            bottom: 0;
 
         }
     </style>
@@ -88,7 +102,7 @@ $row = $stmt->fetch();
             $('#datatable').DataTable();
         });
     </script>
-
+     
 </body>
 
 </html>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-12-2022 a las 18:24:12
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 7.4.33
+-- Tiempo de generación: 15-12-2022 a las 18:30:29
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,11 +40,9 @@ CREATE TABLE `attack` (
 --
 
 INSERT INTO `attack` (`id`, `date_time`, `mygroup_id`, `campa_id`, `creado`) VALUES
-(201, '2022-12-13 22:19:27', 11, 29, 1),
-(202, '2022-12-14 00:11:29', 1, 31, 1),
-(203, '2022-12-14 00:11:56', 14, 30, 1),
-(204, '2022-12-14 00:14:36', 13, 32, 1),
-(205, '2022-12-14 00:22:38', 20, 33, 1);
+(1, '2022-12-14 18:54:08', 1, 1, 1),
+(2, '2022-12-15 15:50:50', 1, 2, 1),
+(3, '2022-12-15 17:05:44', 1, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -58,7 +56,7 @@ CREATE TABLE `attack_user` (
   `link_clicked` tinyint(1) DEFAULT NULL,
   `password_seen` tinyint(1) DEFAULT NULL,
   `attack_id` int(11) NOT NULL,
-  `user_uid` varchar(11) NOT NULL
+  `user_uid` varchar(11) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -66,9 +64,12 @@ CREATE TABLE `attack_user` (
 --
 
 INSERT INTO `attack_user` (`id`, `email_sent`, `link_clicked`, `password_seen`, `attack_id`, `user_uid`) VALUES
-(437, 0, 1, 1, 201, '639660bef14'),
-(438, NULL, NULL, NULL, 205, '63991719297'),
-(439, NULL, 0, 0, 205, '639917194f8');
+(1, NULL, NULL, NULL, 1, '639a1ac1892'),
+(2, NULL, NULL, NULL, 1, '639a1ac18a4'),
+(3, NULL, NULL, NULL, 2, '639a1ac1892'),
+(4, NULL, NULL, NULL, 2, '639a1ac18a4'),
+(5, NULL, NULL, NULL, 3, '639a1ac1892'),
+(6, NULL, NULL, NULL, 3, '639a1ac18a4');
 
 -- --------------------------------------------------------
 
@@ -78,11 +79,11 @@ INSERT INTO `attack_user` (`id`, `email_sent`, `link_clicked`, `password_seen`, 
 
 CREATE TABLE `campaign` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(200) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_active` tinyint(1) DEFAULT NULL,
-  `deleted` varchar(3) NOT NULL DEFAULT 'no',
+  `deleted` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `group_id` int(11) NOT NULL,
   `email_template_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -92,10 +93,14 @@ CREATE TABLE `campaign` (
 --
 
 INSERT INTO `campaign` (`id`, `name`, `description`, `date_created`, `is_active`, `deleted`, `group_id`, `email_template_id`) VALUES
-(30, 'Gaston', 'gaston', '2022-12-12 21:00:08', 0, 'no', 1, 34),
-(32, 'Segunda', 'Segunda campaña', '2022-12-14 00:14:31', NULL, 'yes', 10, 34),
-(33, 'Empresa', 'para la empresa', '2022-12-14 00:22:35', 0, 'yes', 1, 66),
-(34, 'Nueva', 'nueva campaña', '2022-12-14 11:44:59', 0, 'yes', 21, 66);
+(1, 'test', 'Cencommerce', '2022-12-14 18:52:17', 0, 'yes', 1, 1),
+(2, 'Cencosud ', 'Cencommerce', '2022-12-15 04:12:35', 0, 'no', 1, 1),
+(3, '', '', '2022-12-15 16:50:18', NULL, 'no', 1, 0),
+(4, 'Cencosud ', 'Cencommerce', '2022-12-15 16:51:34', NULL, 'no', 1, 0),
+(5, 'Cencosud ', 'Cencommerce', '2022-12-15 16:51:57', 0, 'no', 1, 0),
+(6, 'Cencosud ', 'Cencommerce', '2022-12-15 16:54:30', NULL, 'no', 1, 0),
+(7, 'Cencosud ', 'Cencommerce', '2022-12-15 16:56:36', NULL, 'no', 1, 0),
+(8, '', '', '2022-12-15 17:05:25', 0, 'no', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -105,14 +110,14 @@ INSERT INTO `campaign` (`id`, `name`, `description`, `date_created`, `is_active`
 
 CREATE TABLE `email_settings` (
   `id` int(11) NOT NULL,
-  `smtp_server` varchar(20) NOT NULL,
-  `smtp_username` varchar(15) NOT NULL,
-  `smtp_password` varchar(10) NOT NULL,
+  `smtp_server` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `smtp_username` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `smtp_password` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `smtp_port` int(4) NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  `email_from` varchar(30) NOT NULL,
-  `display` varchar(40) NOT NULL,
-  `phishing_url` varchar(100) NOT NULL,
+  `subject` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `email_from` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `phishing_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `campaign_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -121,12 +126,9 @@ CREATE TABLE `email_settings` (
 --
 
 INSERT INTO `email_settings` (`id`, `smtp_server`, `smtp_username`, `smtp_password`, `smtp_port`, `subject`, `email_from`, `display`, `phishing_url`, `campaign_id`) VALUES
-(30, 'lskdj', 'lkjsgf ', 'ljskg', 1234, 'sdgsd', 'ga', 'rgsfda', 'fdhbukahdg', 30),
-(31, 'dgf', 'fbd', 'fhd', 33, 'fgxb', 'fdx', 'fdx', 'fd', 31),
-(32, 'sdgwea', 'www', 'rgerahe', 44, 'ewag', 'arege', 'rear', 'rgeht', 32),
-(33, 'sdgear', 'argae', 'aera', 23, 'sdfg', 'errrrrr', 'er', 'erer', 33),
-(34, 'sdgars', 'fdgadrf', 'fdgare', 23, 'sagr', 'arga', 'rga', 'reha', 34),
-(35, 'sdgear', 'argae', 'aera', 23, 'sdfg', 'errrrrr', 'er', 'erer', 35);
+(1, 'o365.smtp.com', 'gastonbarbaccia', 'ns2b7bfqbf', 587, 'Reestablecimiento de clave', 'Gaston Barbaccia<gaston.barbac', 'Seguridad Informatica', 'https://seguridad-cencosud-cl.ml', 1),
+(2, '', '', '', 0, '', '', '', '', 2),
+(3, '', '', '', 0, '', '', '', 'https://www', 8);
 
 -- --------------------------------------------------------
 
@@ -136,19 +138,21 @@ INSERT INTO `email_settings` (`id`, `smtp_server`, `smtp_username`, `smtp_passwo
 
 CREATE TABLE `email_template` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `content` text NOT NULL
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `email_deleted` varchar(5) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `email_template`
 --
 
-INSERT INTO `email_template` (`id`, `name`, `description`, `content`) VALUES
-(34, 'ghsths', 'aerhwte', '<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Dashboard</title>'),
-(64, 'dsfhst', 'shse', '<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Dashboard</title>\n  <!-- CSS only -->\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65\" crossorigin=\"anonymous\">\n  <link href=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css\" rel=\"stylesheet\">\n  <link href=\"https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css\" rel=\"stylesheet\">\n\n\n</head>\n\n<body>\n\n  <?php\n\n  include \'layouts/nav.php\';\n\n  ?>\n\n  <div style=\"padding-top:2%;padding-left:1%;\">\n    <h3>Cencosud Phishing Campaing</h3>\n  </div>\n  <div style=\"margin: 3%\">\n    <table class=\"table table-hover\" id=\"datatable\">\n      <thead>\n        <tr>\n          <th scope=\"col\">ID</th>\n          <th scope=\"col\">Created date</th>\n          <th scope=\"col\">Name</th>\n          <th scope=\"col\">Description</th>\n          <th scope=\"col\">Active</th>\n          <th scope=\"col\">Options</th>\n          <th scope=\"col\">Attack</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <th>1</th>\n          <td>5/12/2022 15:56</td>\n          <td><a href=\"campaing_details.php\">Cencosud Phishing Test</a></td>\n          <td>Prueba de phishing</td>\n          <td>Yes</td>\n          <td>\n            <a href=\"#\">Edit</a>\n            <a href=\"#\">Delete</a>\n          </td>\n          <td><a href=\"campaing_details.php\" style=\"color:red\"><strong>Launch Campaing!</strong></a></td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n  <?php\n\n  include \'layouts/footer.php\';\n\n  ?>\n  <!-- JavaScript Bundle with Popper -->\n  <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4\" crossorigin=\"anonymous\"></script>\n  <script src=\"https://code.jquery.com/jquery-3.5.1.js\"></script>\n  <script src=\"https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js\"></script>\n  <script src=\"https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js\"></script>\n  <script>\n    $(document).ready(function() {\n      $(\'#datatable\').DataTable();\n    });\n  </script>\n</body>\n\n</html>'),
-(66, 'digiemon email', 'de Gaston inc.', '<html>\r\n  <head>\r\n    <title>Href Attribute Example</title>\r\n  </head>\r\n  <body>\r\n    <h1>Href Attribute Example</h1>\r\n    <p>\r\n      <a href=\"https://www.freecodecamp.org/contribute/\">The freeCodeCamp Contribution Page</a> shows you how and where you can contribute to freeCodeCamp\'s community and growth.\r\n    </p>\r\n  </body>\r\n</html>');
+INSERT INTO `email_template` (`id`, `name`, `description`, `content`, `email_deleted`) VALUES
+(1, 'Teresita phishing', 'Sos grosa!!', '<html>\r\n<h1>Grosa!</h1>\r\n</html>', ''),
+(2, 'Teresita phishing', 'Sos grosa!!', 'sdf\r\nasdfasdf\r\nasdfasdf', ''),
+(3, 'Teresita phishing', 'Sos grosa!!', '123', ''),
+(4, 'Teresita phishing', 'Sos grosa!!', 'asdf', 'yes');
 
 -- --------------------------------------------------------
 
@@ -166,30 +170,10 @@ CREATE TABLE `group_user` (
 --
 
 INSERT INTO `group_user` (`group_id`, `user_id`) VALUES
-(9, 12),
-(10, 13),
-(10, 14),
-(10, 15),
-(11, 16),
-(11, 17),
-(11, 18),
-(12, 19),
-(12, 20),
-(12, 21),
-(13, 22),
-(13, 23),
-(14, 24),
-(14, 25),
-(14, 26),
-(15, 27),
-(16, 28),
-(17, 29),
-(18, 30),
-(19, 31),
-(20, 32),
-(20, 33),
-(21, 34),
-(21, 35);
+(1, 1),
+(1, 2),
+(2, 3),
+(2, 4);
 
 -- --------------------------------------------------------
 
@@ -199,31 +183,40 @@ INSERT INTO `group_user` (`group_id`, `user_id`) VALUES
 
 CREATE TABLE `mygroup` (
   `id` int(11) NOT NULL,
-  `name` varchar(60) NOT NULL,
-  `description` varchar(150) NOT NULL
+  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `group_deleted` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `mygroup`
 --
 
-INSERT INTO `mygroup` (`id`, `name`, `description`) VALUES
-(1, 'grupo 1', 'primer grupo'),
-(2, 'grupo 2', '2do grupo'),
-(3, 'grupo 3', '3er grupo'),
-(4, 'grupo 4', '4to grupo'),
-(5, 'grupo 5', '5to grupo'),
-(6, 'grupo 6', '6to grupo'),
-(7, 'grupo 7', '7mo grupo'),
-(8, 'grupo 8', '8vo grupo'),
-(9, 'grupo 9', '9no grupo'),
-(10, 'grupo 10', '10mo grupo'),
-(11, 'gaston', 'que grande'),
-(12, 'gaston2', 'que grande2'),
-(13, 'one', 'grupo 1'),
-(14, 'pokemon', 'digiemon'),
-(20, 'ceos', 'grupo de ceos'),
-(21, 'dos', 'grupo dos');
+INSERT INTO `mygroup` (`id`, `name`, `description`, `group_deleted`) VALUES
+(1, 'main123', 'prueba123', ''),
+(2, 'main', 'prueba', 'yes');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `phishing_url`
+--
+
+CREATE TABLE `phishing_url` (
+  `id` int(200) NOT NULL,
+  `name` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `url` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `phishing_deleted` varchar(5) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `phishing_url`
+--
+
+INSERT INTO `phishing_url` (`id`, `name`, `description`, `url`, `phishing_deleted`) VALUES
+(3, 'main123', 'prueba123', 'https://www.', ''),
+(4, 'asdf', 'asdf', 'asdf', '');
 
 -- --------------------------------------------------------
 
@@ -233,8 +226,8 @@ INSERT INTO `mygroup` (`id`, `name`, `description`) VALUES
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `uid` varchar(11) NOT NULL,
-  `email_address` text NOT NULL,
+  `uid` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `email_address` text COLLATE utf8_unicode_ci NOT NULL,
   `password` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -243,10 +236,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `uid`, `email_address`, `password`) VALUES
-(32, '63991719297', 'ceo1@arnet.com', NULL),
-(33, '639917194f8', ' ceo2@telecom.com', NULL),
-(34, '6399b702ea5', 'jose@hotmail.com', NULL),
-(35, '6399b7030be', 'arroba@hotmail.com', NULL);
+(1, '639a1ac1892', 'gastonbarbaccia@hotmail.com', NULL),
+(2, '639a1ac18a4', 'tere@hotmail.com', NULL),
+(3, '639a3f5e81d', 'gastonbarbaccia@hotmail.com', NULL),
+(4, '639a3f5e82f', ' santencalada@hotmail.com', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -291,6 +284,12 @@ ALTER TABLE `mygroup`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `phishing_url`
+--
+ALTER TABLE `phishing_url`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `user`
 --
 ALTER TABLE `user`
@@ -304,43 +303,49 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `attack`
 --
 ALTER TABLE `attack`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `attack_user`
 --
 ALTER TABLE `attack_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=440;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `campaign`
 --
 ALTER TABLE `campaign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `email_settings`
 --
 ALTER TABLE `email_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `email_template`
 --
 ALTER TABLE `email_template`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `mygroup`
 --
 ALTER TABLE `mygroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `phishing_url`
+--
+ALTER TABLE `phishing_url`
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

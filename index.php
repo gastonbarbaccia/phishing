@@ -43,30 +43,39 @@ require_once 'dbconexion.php';
       </thead>
       <tbody>
       <?php
-      $stmt = $conexion->query('select * from phishing.campaign where deleted = "no"');
-      while($row = $stmt->fetch() ) 
-        {
-          $id = $row['id'];
+      $stmt = $conexion->query('select * from phishing.campaign');
+      while($row = $stmt->fetch()) {
+
+        $id = $row['id'];
+
+        if($row["deleted"] != 'yes'){
           if($row["is_active"] == null){
             $active = 'no';
-            $enable = "<h6 style='color:grey'><strong>Launch Campaing!</strong></h6></td>";
+            $color_active = 'grey';
+            $status = 'black';
+            $href='#';
           }
-          else
-            {$active = 'yes';
-            $enable = "<a href='campaing_details.php?id=$id'style='color:red'><strong>Launch Campaing!</strong></a></td>";
-            }
+          else{
+            $active = 'yes';
+            $color_active = 'red';
+            $status = 'green';
+            $href="campaing_details.php?id=$id";
+          }
+
+        
              echo "<tr>".
                   "<td>".$row["id"]."</td>".
                   "<td>".$row["date_created"]."</td>".
                   "<td>".$row["name"]."</td>".
                   "<td>".$row["description"]."</td>".
-                  "<td>".$active. "</td>".
+                  "<td style='color:$status'><b>".$active. "</b></td>".
                   "<td>". 
                           "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'>Edit </a> " . ' '. 
                           "<a href='delete_campaign.php?id=$id'>Delete</a>".
                   "</td>".
-                "<td>".$enable 
+                "<td>"."<a href='$href'style='color:$color_active'><strong>Launch Campaing!</strong></a></td>"
                  . "</tr>";
+                }
         } ?>
       </tbody>
     </table>

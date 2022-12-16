@@ -55,7 +55,7 @@ $id = $_GET['id'];//id del grupo
                             "<td>".$row["id"]."</td>".
                             "<td>".$row["email_address"]."</td>".
                             "<td>" . "<a href='edit_user.php?id=$usid&id_group=$id' style='padding-right:3%'>Edit </a>" . 
-                            "<a href='delete_user_group.php?id=$usid&id_group=$id'> Delete</a>' . '</td>" .
+                            "<a href='delete_user_group.php?id=$usid&id_group=$id'> Delete</a></td>" .
                             "</tr>";
                   } ?>
             </tbody>

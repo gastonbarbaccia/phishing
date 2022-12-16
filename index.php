@@ -36,9 +36,9 @@ require_once 'dbconexion.php';
           <th scope="col">Created date</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
-          <th scope="col">Active</th>
+          <th scope="col">Phishing URL</th>
           <th scope="col">Options</th>
-          <th scope="col">Attack</th>
+          <th scope="col">Preview</th>
         </tr>
       </thead>
       <tbody>
@@ -52,6 +52,11 @@ require_once 'dbconexion.php';
           $cons_status = $conexion->prepare($cons_status);
           $cons_status->execute([$id]);
           $creado = $cons_status->fetchColumn();
+
+          $cons_ = "SELECT phishing_url FROM phishing.email_settings  WHERE email_settings.campaign_id= '$id' ";
+          $cons_ = $conexion->prepare($cons_);
+          $cons_->execute([$id]);
+          $_resultado = $cons_->fetchColumn();   
        
         
           if ($row["deleted"] != 'yes') {
@@ -67,7 +72,7 @@ require_once 'dbconexion.php';
               $active = 'yes';
               $status = 'green';
               $href = "campaing_details.php?id=$id";
-
+/*
               if($creado == 0){
 
                 $status_attack = 'Launch Campaing!';
@@ -82,7 +87,7 @@ require_once 'dbconexion.php';
                 $status_attack = 'Attack completed';
                 $color_active = 'black';
               }
-
+*/
             }
 
             echo "<tr>" .
@@ -90,12 +95,12 @@ require_once 'dbconexion.php';
               "<td>" . $row["date_created"] . "</td>" .
               "<td>" . $row["name"] . "</td>" .
               "<td>" . $row["description"] . "</td>" .
-              "<td style='color:$status'><b>" . $active . "</b></td>" .
+              "<td><a href='$_resultado' target='blank'>" . $_resultado  . "</a></td>" .
               "<td>" .
               "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'>Edit </a> " . ' ' .
               "<a href='delete_campaign.php?id=$id'>Delete</a>" .
               "</td>" .
-              "<td>" . "<a href='$href'style='color:$color_active'><strong>$status_attack</strong></a></td>"
+              "<td>" . "<a href='$href'style='color:black'>View</a></td>"
               . "</tr>";
           }
         } ?>

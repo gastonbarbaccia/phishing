@@ -140,21 +140,39 @@ $consult1 = $con1->fetchColumn();
         }
     </style>
 
-    <div style="padding-left:1%;padding-bottom:1%">
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-1 col-form-label"><b>Campaña: </b></label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-1 col-form-label" style="color:red"><b>Launched: </b></label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
-            </div>
-        </div>
-
-    </div>
+    <table style="width:100%">
+        <tbody>
+            <tr>
+                <td >
+                    <div style="padding-left:3%;padding-bottom:1%;">
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign: </b></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label" style="color:red"><b>Launched: </b></label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left:10%;padding-bottom:1%;">
+                        <div class="mb-3 row" style="padding-left:30%;">
+                            <button class="btn btn-danger" style="width: 50%;">Launch Attack!</button>
+                        </div>
+                    </div>
+                    <div style="padding-left:1%;padding-bottom:1%;">
+                        <br>
+                        <br>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <table>
         <tbody>
@@ -231,20 +249,20 @@ $consult1 = $con1->fetchColumn();
 
                     $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
                                     <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>";
-                   
+
                     $mail->Body = $mailContent;
 
                     $user_uid = $row["uid"];
-
+                    /*
                     if (!$mail->send()) {
                         $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 0 WHERE user_uid = ?');
                         $stmt->execute([$user_uid]);
-                        echo "<script>alert('No se envio')</script>";
+                        
                     } else {
                         $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 1 WHERE user_uid = ?');
                         $stmt->execute([$user_uid]);
                     }
-
+*/
                     if ($row["email_sent"] == 0) {
                         $sent = 'no';
                     } else {

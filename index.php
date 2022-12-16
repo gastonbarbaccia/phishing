@@ -68,17 +68,17 @@ require_once 'dbconexion.php';
               $status = 'green';
               $href = "campaing_details.php?id=$id";
 
-              if($creado == null){
+              if($creado == 0){
 
                 $status_attack = 'Launch Campaing!';
                 $color_active = 'red';
   
-              }else if($creado == 0){
+              }else if($creado == 1){
   
                 $status_attack = 'In progress...';
                 $color_active = 'blue';
   
-              }else if($creado == 1){
+              }else if($creado == 2){
                 $status_attack = 'Attack completed';
                 $color_active = 'black';
               }

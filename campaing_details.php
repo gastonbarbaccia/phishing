@@ -17,8 +17,8 @@ $con21 = $conexion->prepare($cons21);
 $con21->execute([$id]);
 $attack_id = $con21->fetchColumn();
 
-if ($creado == null) {
-    $creado = null;
+if ($creado == 0) {
+    $creado = 1;
     $sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,creado) VALUES (?,?,?)";
     $conexion->prepare($sql1)->execute([$group_id, $id, $creado]);
 

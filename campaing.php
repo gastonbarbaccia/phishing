@@ -86,7 +86,7 @@ $data = $smt->fetchAll();
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Template Email</label>
                     <div class="col-sm-5">
-                        <select name="template" type="text" class="form-control" id="template" >
+                        <select name="template" type="text" class="form-control" id="template">
                             <?php
                             $smt1 = $conexion->prepare("SELECT name FROM phishing.email_template");
                             $smt1->execute();
@@ -186,7 +186,7 @@ $data = $smt->fetchAll();
             </div>
         </div>
         <div style="padding-left:3%;margin-bottom:5%">
-            <button class="btn btn-primary">Create campaign</button>
+            <button class="btn btn-primary" style="width:15%;">Create campaign</button>
         </div>
     </form>
 

@@ -1,7 +1,7 @@
 <?php
 require_once 'dbconexion.php';
 
-$smt = $conexion->prepare("SELECT name FROM phishing.mygroup");
+$smt = $conexion->prepare("SELECT name,group_deleted FROM phishing.mygroup");
 $smt->execute();
 $data = $smt->fetchAll();
 
@@ -65,9 +65,15 @@ $data = $smt->fetchAll();
                     <label for="staticEmail" class="col-sm-2 col-form-label">Target</label>
                     <div class="col-sm-5">
                         <select name="group" type="text" class="form-control" id="openssl_verify_mode">
-                            <?php foreach ($data as $row) : ?>
+                            <?php foreach ($data as $row) : 
+                             if($row['group_deleted'] == ''){
+                                ?>
                                 <option><?= $row["name"] ?></option>
-                            <?php endforeach ?>
+                            <?php 
+                            
+                             }
+                             endforeach 
+                             ?>
                         </select>
                     </div>
                 </div>
@@ -88,12 +94,17 @@ $data = $smt->fetchAll();
                     <div class="col-sm-5">
                         <select name="template" type="text" class="form-control" id="template">
                             <?php
-                            $smt1 = $conexion->prepare("SELECT name FROM phishing.email_template");
+                            $smt1 = $conexion->prepare("SELECT name, email_deleted FROM phishing.email_template");
                             $smt1->execute();
                             $data1 = $smt1->fetchAll();
-                            foreach ($data1 as $row) : ?>
+                            foreach ($data1 as $row) : 
+                            if($row['email_deleted'] == ''){
+                            ?>
                                 <option><?= $row["name"] ?></option>
-                            <?php endforeach ?>
+                            <?php
+                            }
+                            endforeach 
+                            ?>
                         </select>
                     </div>
                 </div>

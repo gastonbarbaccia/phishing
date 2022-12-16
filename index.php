@@ -52,7 +52,7 @@ require_once 'dbconexion.php';
           $cons_status = $conexion->prepare($cons_status);
           $cons_status->execute([$id]);
           $creado = $cons_status->fetchColumn();
-          print_r($creado);
+       
         
           if ($row["deleted"] != 'yes') {
             if ($row["is_active"] == 0) {

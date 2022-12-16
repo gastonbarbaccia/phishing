@@ -235,7 +235,7 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
-                $stmt = $conexion->prepare('select user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+                $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
                 $stmt->execute([$attack_id]);
                 $roww = $stmt->fetchAll();
 
@@ -282,8 +282,11 @@ $consult1 = $con1->fetchColumn();
                         $pass = 'yes';
                         $pass_counts++;
                     }
+
+                    $id = $row["id"];
+
                     echo "<tr>" .
-                        "<td>" . $row["uid"] . "</td>" .
+                        "<td><a href='campaing_password_details.php?user_id=$id'>" . $row["uid"] . "</a></td>" .
                         "<td>" . $row["email_address"] . "</td>" .
                         "<td>" . $sent . "</td>" .
                         "<td>" . $click . "</td>" .

@@ -52,7 +52,7 @@ require_once 'dbconexion.php';
           $cons_status = $conexion->prepare($cons_status);
           $cons_status->execute([$id]);
           $creado = $cons_status->fetchColumn();
-
+          print_r($creado);
         
           if ($row["deleted"] != 'yes') {
             if ($row["is_active"] == 0) {
@@ -62,23 +62,23 @@ require_once 'dbconexion.php';
               $href = '#';
               $status_attack = 'Inactive';
 
-            } else {
+            } else if($row["is_active"] == 1){
 
               $active = 'yes';
               $status = 'green';
               $href = "campaing_details.php?id=$id";
 
-              if($creado == null){
+              if($creado == 0){
 
                 $status_attack = 'Launch Campaing!';
                 $color_active = 'red';
   
-              }else if($creado == 0){
+              }else if($creado == 1){
   
                 $status_attack = 'In progress...';
                 $color_active = 'blue';
   
-              }else if($creado == 1){
+              }else if($creado == 2){
                 $status_attack = 'Attack completed';
                 $color_active = 'black';
               }
@@ -86,7 +86,7 @@ require_once 'dbconexion.php';
             }
 
             echo "<tr>" .
-              "<td>" . $row["id"] . "</td>" .
+              "<td>" . $row["id"]. "</td>" .
               "<td>" . $row["date_created"] . "</td>" .
               "<td>" . $row["name"] . "</td>" .
               "<td>" . $row["description"] . "</td>" .

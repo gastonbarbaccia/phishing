@@ -9,6 +9,7 @@ $data = $grup->fetchAll();
 $smt = $conexion->prepare("SELECT * FROM phishing.campaign  join phishing.email_settings on  campaign.id = email_settings.campaign_id where campaign.id = ?");
 $smt->execute([$id]);
 $row = $smt->fetch();
+
     $server = $row['smtp_server'];
     $name =$row['smtp_username'];
     $pass = $row['smtp_password'];
@@ -70,7 +71,7 @@ $row = $smt->fetch();
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Active</label>
                     <div class="col-sm-5">
-                        <input type="checkbox" id="is_active" style="margin-top:15px" name="is_active" <?php if($row['is_active'] !== null){echo "checked";}?>>
+                        <input type="checkbox" id="is_active" style="margin-top:15px" name="is_active" <?php if($row['is_active'] == 1){echo "checked";}else{echo "";}?>>
                     </div>
                 </div>
 

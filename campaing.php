@@ -57,7 +57,7 @@ $data = $smt->fetchAll();
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Active</label>
                     <div class="col-sm-5">
-                        <input type="checkbox" id="description" style="margin-top:15px" name="is_active">
+                        <input type="checkbox" id="description" style="margin-top:15px" name="is_active" value="1">
                     </div>
                 </div>
 

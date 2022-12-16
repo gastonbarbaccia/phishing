@@ -3,13 +3,14 @@ require_once 'dbconexion.php' ;
 
 $name = $_POST['campaign_name'];
 $description = $_POST['campaign_description'];
-//$is_active = $_POST['is_active'];
+$is_active = $_POST['is_active'];
 
-if(!empty( $_POST['is_active'])){
-    $is_active = $is_active;
+if(isset($_POST['is_active'])){
+    $is_active = 1;
 }else{
-    $is_active = '';
+    $is_active = 0;
 }
+
 
 $group = $_POST['group'];
 $template = $_POST['template'];

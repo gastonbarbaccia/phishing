@@ -3,7 +3,14 @@ include_once 'dbconexion.php';
 $id = $_POST['id'];
 $name = $_POST['campaign_name'];
 $description = $_POST['campaign_description'];
-$active = $_POST['is_active'];
+
+if(isset($_POST['is_active'])){
+    $active = 1;
+}else{
+    $active = 0;
+}
+
+
 $group = $_POST['group'];
 $template = $_POST['template'];
 

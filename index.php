@@ -42,40 +42,62 @@ require_once 'dbconexion.php';
         </tr>
       </thead>
       <tbody>
-      <?php
-      $stmt = $conexion->query('select * from phishing.campaign');
-      while($row = $stmt->fetch()) {
+        <?php
+        $stmt = $conexion->query('select * from phishing.campaign');
+        while ($row = $stmt->fetch()) {
 
-        $id = $row['id'];
+          $id = $row['id'];
 
-        if($row["deleted"] != 'yes'){
-          if($row["is_active"] == null){
-            $active = 'no';
-            $color_active = 'grey';
-            $status = 'black';
-            $href='#';
-          }
-          else{
-            $active = 'yes';
-            $color_active = 'red';
-            $status = 'green';
-            $href="campaing_details.php?id=$id";
-          }
+          $cons_status = "SELECT creado FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= '$id' ";
+          $cons_status = $conexion->prepare($cons_status);
+          $cons_status->execute([$id]);
+          $creado = $cons_status->fetchColumn();
 
         
-             echo "<tr>".
-                  "<td>".$row["id"]."</td>".
-                  "<td>".$row["date_created"]."</td>".
-                  "<td>".$row["name"]."</td>".
-                  "<td>".$row["description"]."</td>".
-                  "<td style='color:$status'><b>".$active. "</b></td>".
-                  "<td>". 
-                          "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'>Edit </a> " . ' '. 
-                          "<a href='delete_campaign.php?id=$id'>Delete</a>".
-                  "</td>".
-                "<td>"."<a href='$href'style='color:$color_active'><strong>Launch Campaing!</strong></a></td>"
-                 . "</tr>";
-                }
+          if ($row["deleted"] != 'yes') {
+            if ($row["is_active"] == 0) {
+              $active = 'no';
+              $color_active = 'grey';
+              $status = 'black';
+              $href = '#';
+              $status_attack = 'Inactive';
+
+            } else {
+
+              $active = 'yes';
+              $status = 'green';
+              $href = "campaing_details.php?id=$id";
+
+              if($creado == null){
+
+                $status_attack = 'Launch Campaing!';
+                $color_active = 'red';
+  
+              }else if($creado == 0){
+  
+                $status_attack = 'In progress...';
+                $color_active = 'blue';
+  
+              }else if($creado == 1){
+                $status_attack = 'Attack completed';
+                $color_active = 'black';
+              }
+
+            }
+
+            echo "<tr>" .
+              "<td>" . $row["id"] . "</td>" .
+              "<td>" . $row["date_created"] . "</td>" .
+              "<td>" . $row["name"] . "</td>" .
+              "<td>" . $row["description"] . "</td>" .
+              "<td style='color:$status'><b>" . $active . "</b></td>" .
+              "<td>" .
+              "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'>Edit </a> " . ' ' .
+              "<a href='delete_campaign.php?id=$id'>Delete</a>" .
+              "</td>" .
+              "<td>" . "<a href='$href'style='color:$color_active'><strong>$status_attack</strong></a></td>"
+              . "</tr>";
+          }
         } ?>
       </tbody>
     </table>

@@ -7,10 +7,14 @@ $con1 = $conexion->prepare($cons1);
 $con1->execute([$id]);
 $group_id = $con1->fetchColumn();
 
+//print_r("Id del grupo ".$group_id);
+
 $cons22 = "SELECT creado FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY date_time DESC LIMIT 1";
 $con22 = $conexion->prepare($cons22);
 $con22->execute([$id]);
 $creado = $con22->fetchColumn();
+
+//print_r("Creado ".$group_id);
 
 $cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $con21 = $conexion->prepare($cons21);
@@ -190,19 +194,19 @@ $consult1 = $con1->fetchColumn();
                 $roww = $stmt->fetchAll();
 
                 foreach ($roww as $row) {
-                    if ($row["email_sent"] == null) {
+                    if ($row["email_sent"] == 0) {
                         $sent = 'no';
                     } else {
                         $sent = 'yes';
                     }
-                    if ($row["link_clicked"] == null) {
+                    if ($row["link_clicked"] == 0) {
                         $click = 'no';
                         $clickno_counts++;
                     } else {
                         $click = 'yes';
                         $click_counts++;
                     }
-                    if ($row["password_seen"] == null) {
+                    if ($row["password_seen"] == 0) {
                         $pass = 'no';
                         $passno_counts++;
                     } else {

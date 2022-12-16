@@ -52,7 +52,7 @@ require_once 'dbconexion.php';
           $cons_status = $conexion->prepare($cons_status);
           $cons_status->execute([$id]);
           $creado = $cons_status->fetchColumn();
-
+          print_r($creado);
         
           if ($row["deleted"] != 'yes') {
             if ($row["is_active"] == 0) {
@@ -62,7 +62,7 @@ require_once 'dbconexion.php';
               $href = '#';
               $status_attack = 'Inactive';
 
-            } else {
+            } else if($row["is_active"] == 1){
 
               $active = 'yes';
               $status = 'green';
@@ -86,7 +86,7 @@ require_once 'dbconexion.php';
             }
 
             echo "<tr>" .
-              "<td>" . $row["id"] . "</td>" .
+              "<td>" . $row["id"]. "</td>" .
               "<td>" . $row["date_created"] . "</td>" .
               "<td>" . $row["name"] . "</td>" .
               "<td>" . $row["description"] . "</td>" .

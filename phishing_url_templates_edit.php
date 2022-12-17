@@ -70,7 +70,7 @@ $consult1 = $con1->fetch();
         </div>
 
         <div style="padding-left:3%;margin-bottom:5%">
-            <a href="index.php" class="btn btn-primary">Cancel</a>
+            <a href="phishing_url_templates.php" class="btn btn-primary">Cancel</a>
             <button class="btn btn-primary" style="width:5%">Save</button>
         </div>
     </form>

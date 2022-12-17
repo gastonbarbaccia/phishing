@@ -16,7 +16,7 @@ $id = $_GET['id'];//id del grupo
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"> 
 
 
 </head>
@@ -54,8 +54,8 @@ $id = $_GET['id'];//id del grupo
                        echo "<tr>".
                             "<td>".$row["id"]."</td>".
                             "<td>".$row["email_address"]."</td>".
-                            "<td>" . "<a href='edit_user.php?id=$usid&id_group=$id' style='padding-right:3%'>Edit </a>" . 
-                            "<a href='delete_user_group.php?id=$usid&id_group=$id'> Delete</a></td>" .
+                            "<td>" . "<a href='edit_user.php?id=$usid&id_group=$id' style='padding-right:3%'><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:20px;padding-left:10%;color:black'></i></a>" . 
+                            "<a href='delete_user_group.php?id=$usid&id_group=$id'><i class='fa fa-trash' aria-hidden='true' style='font-size:20px;padding-left:10%;color:#B02203'></i></a></td>" .
                             "</tr>";
                   } ?>
             </tbody>

@@ -60,35 +60,6 @@ require_once 'dbconexion.php';
        
         
           if ($row["deleted"] != 'yes') {
-            if ($row["is_active"] == 0) {
-              $active = 'no';
-              $color_active = 'grey';
-              $status = 'black';
-              $href = '#';
-              $status_attack = 'Inactive';
-
-            } else if($row["is_active"] == 1){
-
-              $active = 'yes';
-              $status = 'green';
-              $href = "campaing_details.php?id=$id";
-/*
-              if($creado == 0){
-
-                $status_attack = 'Launch Campaing!';
-                $color_active = 'red';
-  
-              }else if($creado == 1){
-  
-                $status_attack = 'In progress...';
-                $color_active = 'blue';
-  
-              }else if($creado == 2){
-                $status_attack = 'Attack completed';
-                $color_active = 'black';
-              }
-*/
-            }
 
             echo "<tr>" .
               "<td>" . $row["id"]. "</td>" .
@@ -100,9 +71,11 @@ require_once 'dbconexion.php';
               "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:20px;padding-left:10%;color:black'></i></a> " . ' ' .
               "<a href='delete_campaign.php?id=$id'><i class='fa fa-trash' aria-hidden='true' style='font-size:20px;padding-left:10%;color:#B02203'></i></a>" .
               "</td>" .
-              "<td>" . "<a href='$href'style='color:black'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>"
+              "<td>" . "<a href='campaing_details.php?id=$id'style='color:black'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>"
               . "</tr>";
-          }
+
+            } 
+ 
         } ?>
       </tbody>
     </table>

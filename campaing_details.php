@@ -1,6 +1,8 @@
 <?php
 require_once 'dbconexion.php';
 
+$campaign_id = $_GET['id'];
+
 $id = $_GET['id'];
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
@@ -234,7 +236,7 @@ $consult1 = $con1->fetchColumn();
                     $id = $row["id"];
 
                     echo "<tr>" .
-                        "<td><a href='campaing_password_details.php?user_id=$id'>" . $row["uid"] . "</a></td>" .
+                        "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$campaign_id'>" . $row["uid"] . "</a></td>" .
                         "<td>" . $row["email_address"] . "</td>" .
                         "<td>" . $sent . "</td>" .
                         "<td>" . $click . "</td>" .

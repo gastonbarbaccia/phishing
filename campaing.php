@@ -1,7 +1,7 @@
 <?php
 require_once 'dbconexion.php';
 
-$smt = $conexion->prepare("SELECT name FROM phishing.mygroup");
+$smt = $conexion->prepare("SELECT name,group_deleted FROM phishing.mygroup");
 $smt->execute();
 $data = $smt->fetchAll();
 
@@ -54,20 +54,26 @@ $data = $smt->fetchAll();
                         <input type="text" class="form-control" id="description" name="campaign_description">
                     </div>
                 </div>
-                <div class="mb-3 row">
+             <!--   <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Active</label>
                     <div class="col-sm-5">
                         <input type="checkbox" id="description" style="margin-top:15px" name="is_active" value="1">
                     </div>
                 </div>
-
+-->
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Target</label>
                     <div class="col-sm-5">
                         <select name="group" type="text" class="form-control" id="openssl_verify_mode">
-                            <?php foreach ($data as $row) : ?>
+                            <?php foreach ($data as $row) : 
+                             if($row['group_deleted'] == ''){
+                                ?>
                                 <option><?= $row["name"] ?></option>
-                            <?php endforeach ?>
+                            <?php 
+                            
+                             }
+                             endforeach 
+                             ?>
                         </select>
                     </div>
                 </div>
@@ -88,12 +94,17 @@ $data = $smt->fetchAll();
                     <div class="col-sm-5">
                         <select name="template" type="text" class="form-control" id="template">
                             <?php
-                            $smt1 = $conexion->prepare("SELECT name FROM phishing.email_template");
+                            $smt1 = $conexion->prepare("SELECT name, email_deleted FROM phishing.email_template");
                             $smt1->execute();
                             $data1 = $smt1->fetchAll();
-                            foreach ($data1 as $row) : ?>
+                            foreach ($data1 as $row) : 
+                            if($row['email_deleted'] == ''){
+                            ?>
                                 <option><?= $row["name"] ?></option>
-                            <?php endforeach ?>
+                            <?php
+                            }
+                            endforeach 
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -190,6 +201,24 @@ $data = $smt->fetchAll();
         </div>
     </form>
 
+    
+    <style>
+        footer {
+
+            position: absolute;
+            width: 100%;
+
+        }
+    </style>
+
+    <footer class="bg-light text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2022 Copyright:
+            <a class="text-dark" href="#">Cencosud</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
 
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

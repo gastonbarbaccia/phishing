@@ -1,6 +1,8 @@
 <?php
 require_once 'dbconexion.php';
 
+$campaign_id = $_GET['id'];
+
 $id = $_GET['id'];
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
@@ -83,7 +85,7 @@ $consult1 = $con1->fetchColumn();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"> 
 
 </head>
 
@@ -102,7 +104,7 @@ $consult1 = $con1->fetchColumn();
 
     <style>
         .row {
-            --bs-gutter-x: 0rem !important; 
+            --bs-gutter-x: 0rem !important;
             --bs-gutter-y: 0;
             display: flex;
             flex-wrap: wrap;
@@ -112,21 +114,35 @@ $consult1 = $con1->fetchColumn();
         }
     </style>
 
-    <div style="padding-left:1%;padding-bottom:1%">
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-1 col-form-label"><b>Campaña: </b></label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-1 col-form-label" style="color:red"><b>Launched: </b></label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
-            </div>
-        </div>
-
-    </div>
+    <table style="width:100%">
+        <tbody>
+            <tr>
+                <td >
+                    <div style="padding-left:3%;padding-bottom:1%;">
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign: </b></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label" style="color:red"><b>Launched: </b></label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left:10%;padding-bottom:13%;">
+                        <div class="mb-3 row" style="padding-left:20%;">
+                            <button class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> Launch Attack!</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <table>
         <tbody>
@@ -189,11 +205,14 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
-                $stmt = $conexion->prepare('select user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+                $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
                 $stmt->execute([$attack_id]);
                 $roww = $stmt->fetchAll();
 
                 foreach ($roww as $row) {
+
+                    $user_uid = $row["uid"];
+
                     if ($row["email_sent"] == 0) {
                         $sent = 'no';
                     } else {
@@ -213,8 +232,11 @@ $consult1 = $con1->fetchColumn();
                         $pass = 'yes';
                         $pass_counts++;
                     }
+
+                    $id = $row["id"];
+
                     echo "<tr>" .
-                        "<td>" . $row["uid"] . "</td>" .
+                        "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$campaign_id'>" . $row["uid"] . "</a></td>" .
                         "<td>" . $row["email_address"] . "</td>" .
                         "<td>" . $sent . "</td>" .
                         "<td>" . $click . "</td>" .

@@ -5,7 +5,7 @@ $name = $_POST['name'];
 $description = $_POST['description'];
 $targets = $_POST['targets'];
 
-print_r($_POST);
+//print_r($_POST);
 
 $sql1 = "INSERT INTO phishing.mygroup (name, description) VALUES (?,?)";
 $conexion->prepare($sql1)->execute([$name, $description]);

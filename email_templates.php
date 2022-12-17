@@ -14,7 +14,7 @@ require_once 'dbconexion.php' ;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"> 
 </head>
 
 
@@ -105,11 +105,11 @@ require_once 'dbconexion.php' ;
 
                         "<td>".$row["description"]."</td>".
 
-                        '<td>'. "<a href='email_template_details.php?id=$id'>View</a></td>".
+                        '<td>'. "<a href='email_template_details.php?id=$id'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>".
 
-                        "<td>" . "<a href='email_template_edit.php?id=$id' style='padding-right:3%'>Edit </a>" . "  ".
+                        "<td>" . "<a href='email_template_edit.php?id=$id' style='padding-right:3%'><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:20px;padding-left:10%;color:black'></i></a>" . "  ".
 
-                        '<a href="delete_email_template.php?id='.$id.'"> Delete</a>' . '</td>' .
+                        '<a href="delete_email_template.php?id='.$id.'"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px;padding-left:10%;color:#B02203"></i></a>' . '</td>' .
 
                         "</tr>";
 

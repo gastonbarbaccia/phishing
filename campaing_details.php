@@ -160,14 +160,10 @@ $consult1 = $con1->fetchColumn();
                     </div>
                 </td>
                 <td>
-                    <div style="padding-left:10%;padding-bottom:1%;">
+                    <div style="padding-left:10%;padding-bottom:13%;">
                         <div class="mb-3 row" style="padding-left:20%;">
                             <button class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> Launch Attack!</button>
                         </div>
-                    </div>
-                    <div style="padding-left:1%;padding-bottom:1%;">
-                        <br>
-                        <br>
                     </div>
                 </td>
             </tr>

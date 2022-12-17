@@ -209,17 +209,6 @@ $consult1 = $con1->fetchColumn();
 
                 foreach ($roww as $row) {
 
-                    //enviar email
-                    //hacer un update del email_sent
-
-                    $mail->Subject = 'Here is the subject';
-                    $mail->addAddress($row["email_address"], '');
-
-                    $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
-                                    <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>";
-
-                    $mail->Body = $mailContent;
-
                     $user_uid = $row["uid"];
 
                     if ($row["email_sent"] == 0) {

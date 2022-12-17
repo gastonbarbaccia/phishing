@@ -4,7 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
-
+/*
 $mail = new PHPMailer();
 
 // Settings
@@ -38,7 +38,7 @@ if(!$mail->send()){
 }else{
     echo 'Message has been sent';
 }
-
+*/
                     /*
                     if (!$mail->send()) {
                         $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 0 WHERE user_uid = ?');
@@ -49,5 +49,6 @@ if(!$mail->send()){
                         $stmt->execute([$user_uid]);
                     }
 */
+
 
 ?>

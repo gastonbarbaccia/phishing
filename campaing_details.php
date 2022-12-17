@@ -1,34 +1,6 @@
 <?php
 require_once 'dbconexion.php';
 
-// Configuracion de SMTP ----------------------------------------------------------------------------------
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'vendor/autoload.php';
-
-$mail = new PHPMailer();
-
-// Settings
-$mail->IsSMTP();
-$mail->CharSet = 'UTF-8';
-
-$mail->Host       = "smtp.sendgrid.net";    // SMTP server example
-//$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
-$mail->SMTPAuth   = true;                  // enable SMTP authentication
-$mail->Port       = 587;                    // set the SMTP port for the GMAIL server
-$mail->Username   = "apikey";            // SMTP account username example
-$mail->Password   = "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";            // SMTP account password example
-
-$mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', 'Gaston Barbaccia');
-
-// Content
-$mail->isHTML(true);                       // Set email format to HTML
-
-
-//----------------------------------------------------------------------------------------------------------
-
 $id = $_GET['id'];
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
@@ -249,16 +221,7 @@ $consult1 = $con1->fetchColumn();
                     $mail->Body = $mailContent;
 
                     $user_uid = $row["uid"];
-                    /*
-                    if (!$mail->send()) {
-                        $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 0 WHERE user_uid = ?');
-                        $stmt->execute([$user_uid]);
-                        
-                    } else {
-                        $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 1 WHERE user_uid = ?');
-                        $stmt->execute([$user_uid]);
-                    }
-*/
+
                     if ($row["email_sent"] == 0) {
                         $sent = 'no';
                     } else {

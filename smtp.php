@@ -39,4 +39,15 @@ if(!$mail->send()){
     echo 'Message has been sent';
 }
 
+                    /*
+                    if (!$mail->send()) {
+                        $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 0 WHERE user_uid = ?');
+                        $stmt->execute([$user_uid]);
+                        
+                    } else {
+                        $stmt = $conexion->prepare('UPDATE phishing.attack_user SET email_sent = 1 WHERE user_uid = ?');
+                        $stmt->execute([$user_uid]);
+                    }
+*/
+
 ?>

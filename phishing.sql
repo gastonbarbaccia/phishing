@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-12-2022 a las 02:32:10
+-- Tiempo de generación: 19-12-2022 a las 00:58:04
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -35,17 +35,6 @@ CREATE TABLE `attack` (
   `creado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Volcado de datos para la tabla `attack`
---
-
-INSERT INTO `attack` (`id`, `date_time`, `mygroup_id`, `campa_id`, `creado`) VALUES
-(1, '2022-12-16 01:05:01', 1, 5, 1),
-(2, '2022-12-16 01:09:13', 1, 6, 1),
-(3, '2022-12-16 01:10:22', 1, 3, 1),
-(4, '2022-12-16 01:16:05', 1, 7, 0),
-(5, '2022-12-16 01:17:23', 1, 6, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -58,24 +47,9 @@ CREATE TABLE `attack_user` (
   `link_clicked` tinyint(1) NOT NULL DEFAULT 0,
   `password_seen` tinyint(1) NOT NULL DEFAULT 0,
   `attack_id` int(11) NOT NULL,
-  `user_uid` varchar(11) COLLATE utf8_unicode_ci NOT NULL
+  `user_uid` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `captured_on` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Volcado de datos para la tabla `attack_user`
---
-
-INSERT INTO `attack_user` (`id`, `email_sent`, `link_clicked`, `password_seen`, `attack_id`, `user_uid`) VALUES
-(1, 0, 0, 0, 1, '639bc13068b'),
-(2, 0, 0, 0, 1, '639bc130697'),
-(3, 0, 0, 0, 2, '639bc13068b'),
-(4, 0, 0, 0, 2, '639bc130697'),
-(5, 0, 0, 0, 3, '639bc13068b'),
-(6, 0, 0, 0, 3, '639bc130697'),
-(7, 0, 0, 0, 4, '639bc13068b'),
-(8, 0, 0, 0, 4, '639bc130697'),
-(9, 0, 0, 0, 5, '639bc13068b'),
-(10, 0, 0, 0, 5, '639bc130697');
 
 -- --------------------------------------------------------
 
@@ -88,7 +62,7 @@ CREATE TABLE `campaign` (
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `is_active` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `deleted` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `group_id` int(11) NOT NULL,
   `email_template_id` int(11) NOT NULL
@@ -99,15 +73,7 @@ CREATE TABLE `campaign` (
 --
 
 INSERT INTO `campaign` (`id`, `name`, `description`, `date_created`, `is_active`, `deleted`, `group_id`, `email_template_id`) VALUES
-(1, 'Cencosud ', 'Cencommerce', '2022-12-16 00:53:27', 0, 'yes', 1, 1),
-(2, 'Cencosud ', 'Cencommerce', '2022-12-16 00:57:54', 0, 'yes', 1, 1),
-(3, 'Cencosud ', 'Cencommerce', '2022-12-16 00:58:54', 1, 'yes', 1, 1),
-(4, 'Cencosud ', 'Cencommerce', '2022-12-16 01:04:46', 0, 'yes', 1, 1),
-(5, 'Cencosud ', 'Cencommerce', '2022-12-16 01:04:55', 1, 'yes', 1, 1),
-(6, 'Cencosud ', 'Cencommerce', '2022-12-16 01:08:54', 1, 'yes', 1, 1),
-(7, 'Cencosud ', 'Cencommerce', '2022-12-16 01:15:49', 1, 'yes', 1, 1),
-(8, 'Cencosud ', 'Cencommerce', '2022-12-16 01:28:40', 0, 'no', 1, 1),
-(9, 'Cencosud ', 'Cencommerce', '2022-12-16 01:28:48', 1, 'no', 1, 1);
+(1, 'Cencommerce', 'Campaña de phishing interno', '2022-12-18 19:08:39', 0, 'no', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -118,11 +84,11 @@ INSERT INTO `campaign` (`id`, `name`, `description`, `date_created`, `is_active`
 CREATE TABLE `email_settings` (
   `id` int(11) NOT NULL,
   `smtp_server` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `smtp_username` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `smtp_password` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `smtp_username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `smtp_password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `smtp_port` int(4) NOT NULL,
   `subject` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `email_from` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `email_from` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `display` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `phishing_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `campaign_id` int(11) NOT NULL
@@ -133,15 +99,7 @@ CREATE TABLE `email_settings` (
 --
 
 INSERT INTO `email_settings` (`id`, `smtp_server`, `smtp_username`, `smtp_password`, `smtp_port`, `subject`, `email_from`, `display`, `phishing_url`, `campaign_id`) VALUES
-(1, 'o365.smtp.com', 'gastonbarbaccia', 'asdf', 587, 'Reestablecimiento de clave', 'Gaston Barbaccia<gaston.barbac', 'Seguridad Informatica', 'https://www.google.com 1', 1),
-(2, 'o365.smtp.com', 'gastonbarbaccia', 'asdf', 0, 'Reestablecimiento de clave', 'Gaston Barbaccia<gaston.barbac', 'Seguridad Informatica', 'https://www.google.com 1', 2),
-(3, 'o365.smtp.com', 'gastonbarbaccia', 'asdf', 587, 'Reestablecimiento de clave', 'Gaston Barbaccia<gaston.barbac', 'Seguridad Informatica', 'https://www.google.com 1', 3),
-(4, 'o365.smtp.com', 'gastonbarbaccia', 'sadf', 0, 'Reestablecimiento de clave', 'Gaston Barbaccia<gaston.barbac', 'Seguridad Informatica', 'https://www.google.com 1', 4),
-(5, '', '', '', 0, '', '', '', 'https://www.google.com 1', 5),
-(6, '', '', '', 0, '', '', '', 'https://www.google.com 1', 6),
-(7, 'o365.smtp.com', 'gastonbarbaccia', 'asdf', 0, 'Reestablecimiento de clave', 'Gaston Barbaccia<gaston.barbac', 'Seguridad Informatica', 'https://www.google.com 1', 7),
-(8, 'o365.smtp.com', 'gastonbarbaccia', '', 0, '', '', '', 'https://www.google.com 1', 8),
-(9, '', '', '', 0, '', '', '', 'https://www.google.com 1', 9);
+(1, 'in-v3.mailjet.com', '3aa698d4cd8be5e66d472936cca34626', 'd5ae76ec81d3c6fd52af3ff04c608960', 587, 'Reestablecimiento de clave', 'gaston.barbaccia@cencosud.com', 'Seguridad Informatica', 'www.subscriptionnetflix.com', 1);
 
 -- --------------------------------------------------------
 
@@ -162,8 +120,7 @@ CREATE TABLE `email_template` (
 --
 
 INSERT INTO `email_template` (`id`, `name`, `description`, `content`, `email_deleted`) VALUES
-(1, 'Teresita phishing 1', 'Sos grosa!!1', 'asdf1', ''),
-(2, 'Teresita phishing', 'Sos grosa!!', '123123123', 'yes');
+(1, 'Netflix', 'Cambio de clave', 'asdf', '');
 
 -- --------------------------------------------------------
 
@@ -182,9 +139,7 @@ CREATE TABLE `group_user` (
 
 INSERT INTO `group_user` (`group_id`, `user_id`) VALUES
 (1, 1),
-(1, 2),
-(2, 3),
-(2, 4);
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -204,8 +159,7 @@ CREATE TABLE `mygroup` (
 --
 
 INSERT INTO `mygroup` (`id`, `name`, `description`, `group_deleted`) VALUES
-(1, 'Cencommerce externos', 'prueba', ''),
-(2, 'Cencommerce externos 12', 'Prueba de linkedin12', 'yes');
+(1, 'Netflix', 'Pagina de phishing', '');
 
 -- --------------------------------------------------------
 
@@ -226,8 +180,7 @@ CREATE TABLE `phishing_url` (
 --
 
 INSERT INTO `phishing_url` (`id`, `name`, `description`, `url`, `phishing_deleted`) VALUES
-(1, 'Cencommerce externos 1', 'prueba1', 'https://www.google.com 1', ''),
-(2, 'Cencommerce externos', 'prueba2', 'https://www', 'yes');
+(1, 'Netflix', 'Pagina de phishing', 'www.subscriptionnetflix.com', '');
 
 -- --------------------------------------------------------
 
@@ -248,10 +201,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `uid`, `email_address`, `password`, `deleted`) VALUES
-(1, '639bc13068b', 'gastonbarbaccia@hotmail.com', '', ''),
-(2, '639bc130697', 'gastonbarbaccia@hotmail.com', '', ''),
-(3, '639bc1402ab', 'gastonbarbaccia@hotmail.com', '', ''),
-(4, '639bc1402ce', 'gastonbarbaccia@hotmail.com', '', '');
+(1, '639f6509a24', 'tlanghiiii@gmail.com', '', ''),
+(2, '639f6509a33', 'gastonbarbaccia@hotmail.com', '', '');
 
 --
 -- Índices para tablas volcadas
@@ -315,49 +266,49 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `attack`
 --
 ALTER TABLE `attack`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `attack_user`
 --
 ALTER TABLE `attack_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `campaign`
 --
 ALTER TABLE `campaign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `email_settings`
 --
 ALTER TABLE `email_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `email_template`
 --
 ALTER TABLE `email_template`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `mygroup`
 --
 ALTER TABLE `mygroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `phishing_url`
 --
 ALTER TABLE `phishing_url`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

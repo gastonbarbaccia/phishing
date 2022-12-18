@@ -68,7 +68,7 @@ $data = $smt->fetchAll();
                             <?php foreach ($data as $row) : 
                              if($row['group_deleted'] == ''){
                                 ?>
-                                <option><?= $row["name"]." - ".$row["id"] ?></option>
+                                <option><?= $row["name"] ?></option>
                             <?php 
                             
                              }

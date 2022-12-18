@@ -8,11 +8,13 @@ $campaign_id = $_GET['campaign_id'];
 $smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_uid = user.uid where user.id = ?");
 $smt->execute([$id]);
 $row = $smt->fetch();
-$uid = $row['user_uid'];
-$date = $row['captured_on'];
-$mail = $row['email_address'];
-$pass = $row['password'];
-$aid = $row['attack_id'];
+if($row !== false){ //si no se creo el ataque, esta vacio y da error
+    $uid = $row['user_uid'];
+    $date = $row['captured_on'];
+    $mail = $row['email_address'];
+    $pass = $row['password'];
+    $aid = $row['attack_id'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

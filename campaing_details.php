@@ -1,7 +1,7 @@
 <?php
 require_once 'dbconexion.php';
 
-$cid = $_GET['id'];//campaign id
+$cid = $_GET['id']; //campaign id
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
@@ -14,7 +14,7 @@ $user_id = $con2->fetchAll();
 
 $que2 = $conexion->prepare("SELECT * from phishing.attack where attack.campa_id = ?");
 $que = $que2->execute([$cid]);
-$attack_exist = $que2->fetchColumn(); 
+$attack_exist = $que2->fetchColumn();
 
 $cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $con21 = $conexion->prepare($cons21);
@@ -59,8 +59,8 @@ $consult1 = $con1->fetchColumn();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css"> 
-
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link href="assets/css/toastr.css" rel="stylesheet" type="text/css" />
 </head>
 
 
@@ -91,7 +91,7 @@ $consult1 = $con1->fetchColumn();
     <table style="width:100%">
         <tbody>
             <tr>
-                <td >
+                <td>
                     <div style="padding-left:3%;padding-bottom:1%;">
                         <div class="mb-3 row">
                             <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign: </b></label>
@@ -101,7 +101,7 @@ $consult1 = $con1->fetchColumn();
                         </div>
                         <div class="mb-3 row">
                             <label for="staticEmail" class="col-sm-2 col-form-label" style="color:red"><b>Launched: </b></label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
                             </div>
                         </div>
@@ -110,7 +110,12 @@ $consult1 = $con1->fetchColumn();
                 <td>
                     <div style="padding-left:10%;padding-bottom:13%;">
                         <div class="mb-3 row" style="padding-left:20%;">
-                            <button class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> Launch Attack!</button>
+                            <!-- Test de ajax -->
+                            <form id="formulario" name="formulario">
+                                <input id="campaign_id" name="campaign_id" value="<?php echo $cid ?>" hidden>
+                                <input id="email_template" name="email_template" value="<?php echo $consult00 ?>" hidden>
+                                <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> Launch Attack!</button>
+                            </form>
                         </div>
                     </div>
                 </td>
@@ -181,18 +186,44 @@ $consult1 = $con1->fetchColumn();
                 <?php
 
                 foreach ($user_id as $uid) {
+
                     $id = $uid['id'];
+
                     $vid = $uid['uid'];
+
                     $mail = $uid['email_address'];
+
+                    if (!$attack_exist) {
+
+                        $sent = '';
+
+                        $click = '';
+
+                        $seen = '';
+                    } else {
+
+                        $sent = 'no';
+
+                        $click = 'no';
+
+                        $seen = 'no';
+                    }
+
                     echo "<tr>" .
+
                         "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$cid'>" . $vid . "</a></td>" .
+
                         "<td>" . $mail . "</td>" .
-                        "<td>" . 'no' . "</td>" .
-                        "<td>" . 'no' . "</td>" .
-                        "<td>" . 'no' . "</td>" .
+
+                        "<td>" . $sent . "</td>" .
+
+                        "<td>" . $click . "</td>" .
+
+                        "<td>" . $seen . "</td>" .
+
                         "</tr>";
-                } 
-            ?>
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -227,7 +258,7 @@ $consult1 = $con1->fetchColumn();
     </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
+    <script src="assets/js/toastr.js"></script>
     <script type="text/javascript">
         google.charts.load("current", {
             packages: ["corechart"]
@@ -281,6 +312,69 @@ $consult1 = $con1->fetchColumn();
             document.getElementById('clicknocount').value = <?php echo $clickno_counts ?>;
         }
     </script>
+
+    <script>
+        $("#formulario").submit(function(event) {
+            event.preventDefault(); //almacena los datos sin refrescar el sitio web
+
+            var datos = $("#formulario").serialize(); //toma los datos "name" y los lleva a un arreglo
+
+            $("#boton").prop('disabled', true);
+
+            $.ajax({
+                type: "post",
+                url: "send_email.php",
+                data: datos,
+                success: function(texto) {
+                    if (texto == "ok") {
+                        console.log("Mensajes enviados!");
+
+                    } else {
+                        console.log("Mensajes no enviados!! GIl");
+                    }
+                }
+            })
+        })
+    </script>
+
+
+    <script>
+        const btn = document.getElementById('boton');
+
+        // ✅ Change button text on click
+        btn.addEventListener('click', function handleClick() {
+            btn.textContent = 'Attack in progress';
+            var col = document.getElementById("boton");
+            col.style.backgroundColor = "blue";
+            col.style.border = "blue";
+
+
+            toastr["success"]("Sending emails...", "Attack in progess");
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        });
+    </script>
+
+
+
+
+
 </body>
 
 </html>

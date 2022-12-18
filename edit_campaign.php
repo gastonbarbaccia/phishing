@@ -68,7 +68,7 @@ $cid = $row['campaign_id'];
                         <input type="text" class="form-control" id="description" name="campaign_description" value="<?php echo $row['description'] ?>">
                     </div>
                 </div>
-                <div class="mb-3 row">
+             <!--   <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Active</label>
                     <div class="col-sm-5">
                         <input type="checkbox" id="is_active" style="margin-top:15px" name="is_active" <?php if ($row['is_active'] == 1) {
@@ -77,7 +77,7 @@ $cid = $row['campaign_id'];
                                                                                                             echo "";
                                                                                                         } ?>>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Target</label>

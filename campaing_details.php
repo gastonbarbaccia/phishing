@@ -1,76 +1,50 @@
 <?php
 require_once 'dbconexion.php';
 
-$campaign_id = $_GET['id'];
-
-$id = $_GET['id'];
+$cid = $_GET['id'];//campaign id
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
-$con1->execute([$id]);
+$con1->execute([$cid]);
 $group_id = $con1->fetchColumn();
 
-//print_r("Id del grupo ".$group_id);
+$sql3 = "SELECT * FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$con2 = $conexion->prepare($sql3);
+$con2->execute([$group_id]);
+$user_id = $con2->fetchAll();
 
-$cons22 = "SELECT creado FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY date_time DESC LIMIT 1";
-$con22 = $conexion->prepare($cons22);
-$con22->execute([$id]);
-$creado = $con22->fetchColumn();
-
-//print_r("Creado ".$group_id);
+$que2 = $conexion->prepare("SELECT * from phishing.attack where attack.campa_id = ?");
+$que = $que2->execute([$cid]);
+$attack_exist = $que2->fetchColumn(); 
 
 $cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $con21 = $conexion->prepare($cons21);
-$con21->execute([$id]);
-$attack_id = $con21->fetchColumn();
-
-if ($creado == 0) {
-    $creado = 1;
-    $sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,creado) VALUES (?,?,?)";
-    $conexion->prepare($sql1)->execute([$group_id, $id, $creado]);
-
-    $attack_id = $conexion->lastInsertId();
-
-    $sql3 = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
-    $con2 = $conexion->prepare($sql3);
-    $con2->execute([$group_id]);
-    $user_id = $con2->fetchAll();
-
-    foreach ($user_id as $uid) {
-        $sql2 = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
-        $conexion->prepare($sql2)->execute([$attack_id, $uid[0]]);
-    }
-}
-
+$con21->execute([$cid]);
+$attack_id = $con21->fetchAll();
 
 $click_counts = 0;
 $pass_counts = 0;
 $clickno_counts = 0;
 $passno_counts = 0;
 
-
-$id = $_GET['id'];
 $cons = "SELECT name FROM phishing.campaign where id = ? ";
 $con = $conexion->prepare($cons);
-$con->execute([$id]);
+$con->execute([$cid]);
 $consult = $con->fetchColumn();
 
 $cons = "SELECT mygroup.name FROM phishing.mygroup JOIN phishing.campaign ON mygroup.id = campaign.group_id WHERE campaign.id=? ";
 $con = $conexion->prepare($cons);
-$con->execute([$id]);
+$con->execute([$cid]);
 $consult2 = $con->fetchColumn();
 
 $cons00 = "SELECT email_template.name FROM phishing.email_template join phishing.campaign on email_template.id = campaign.email_template_id where campaign.id = ? ";
 $con00 = $conexion->prepare($cons00);
-$con00->execute([$id]);
+$con00->execute([$cid]);
 $consult00 = $con00->fetchColumn();
 
-$id = $_GET['id'];
 $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_id = campaign.id WHERE campaign.id=? ORDER BY date_time DESC LIMIT 1";
 $con1 = $conexion->prepare($cons1);
-$con1->execute([$id]);
+$con1->execute([$cid]);
 $consult1 = $con1->fetchColumn();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -205,44 +179,20 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
-                $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
-                $stmt->execute([$attack_id]);
-                $roww = $stmt->fetchAll();
 
-                foreach ($roww as $row) {
-
-                    $user_uid = $row["uid"];
-
-                    if ($row["email_sent"] == 0) {
-                        $sent = 'no';
-                    } else {
-                        $sent = 'yes';
-                    }
-                    if ($row["link_clicked"] == 0) {
-                        $click = 'no';
-                        $clickno_counts++;
-                    } else {
-                        $click = 'yes';
-                        $click_counts++;
-                    }
-                    if ($row["password_seen"] == 0) {
-                        $pass = 'no';
-                        $passno_counts++;
-                    } else {
-                        $pass = 'yes';
-                        $pass_counts++;
-                    }
-
-                    $id = $row["id"];
-
+                foreach ($user_id as $uid) {
+                    $id = $uid['id'];
+                    $vid = $uid['uid'];
+                    $mail = $uid['email_address'];
                     echo "<tr>" .
-                        "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$campaign_id'>" . $row["uid"] . "</a></td>" .
-                        "<td>" . $row["email_address"] . "</td>" .
-                        "<td>" . $sent . "</td>" .
-                        "<td>" . $click . "</td>" .
-                        "<td>" . $pass . "</td>" .
+                        "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$cid'>" . $vid . "</a></td>" .
+                        "<td>" . $mail . "</td>" .
+                        "<td>" . 'no' . "</td>" .
+                        "<td>" . 'no' . "</td>" .
+                        "<td>" . 'no' . "</td>" .
                         "</tr>";
-                } ?>
+                } 
+            ?>
             </tbody>
         </table>
     </div>

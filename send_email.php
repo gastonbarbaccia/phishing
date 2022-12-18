@@ -27,8 +27,7 @@ $con3 = $conexion->prepare($sql);
 $con3->execute([$cid]);
 $settings_emails = $con3->fetchAll();
 
-echo "Email Template: " . $email_template;
-echo "<br>";
+
 
 foreach ($settings_emails as $set_email) {
 
@@ -68,11 +67,6 @@ foreach ($user_id as $uid) {
 
     $email = $uid['email_address'];
 
-    echo $vid;
-
-    echo $email;
-
-    echo "<br>";
     //-------------------------------------------------------------------
     // Settings SMTP
     //-------------------------------------------------------------------
@@ -102,13 +96,14 @@ foreach ($user_id as $uid) {
 
     $mail->addBCC($email,'Seguridad');
 
+    
     if(!$mail->send()){
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
+        echo 'error';
     }else{
-        echo 'Message has been sent';
+        echo '';
     }
   
 }
 
-echo 'ok';

@@ -17,7 +17,8 @@ $mail->Port       = 587;                    // set the SMTP port for the GMAIL s
 $mail->Username   = "3aa698d4cd8be5e66d472936cca34626";            // SMTP account username example
 $mail->Password   = "d5ae76ec81d3c6fd52af3ff04c608960";            // SMTP account password example
 
-$mail->setFrom('seguridad@seguridad-cencosud-cl.ml', 'Gaston Barbaccia');
+$mail->setFrom('tobiasguerraseginf@gmail.com', 'Gaston Barbaccia');
+
 $mail->addAddress('gastonbarbaccia@hotmail.com', 'Gaston Barbaccia');
 
 

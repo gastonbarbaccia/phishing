@@ -23,10 +23,14 @@ $con21 = $conexion->prepare($cons21);
 $con21->execute([$id]);
 $attack_id = $con21->fetchColumn();
 
+
 if ($creado == 0) {
     $creado = 1;
+
+    $group_id_aux = $attack_id;
+
     $sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,creado) VALUES (?,?,?)";
-    $conexion->prepare($sql1)->execute([$group_id, $id, $creado]);
+    $conexion->prepare($sql1)->execute([$group_id_aux, $id, $creado]);
 
     $attack_id = $conexion->lastInsertId();
 
@@ -127,7 +131,7 @@ $consult1 = $con1->fetchColumn();
                         </div>
                         <div class="mb-3 row">
                             <label for="staticEmail" class="col-sm-2 col-form-label" style="color:red"><b>Launched: </b></label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
                             </div>
                         </div>

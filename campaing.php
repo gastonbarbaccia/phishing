@@ -1,7 +1,7 @@
 <?php
 require_once 'dbconexion.php';
 
-$smt = $conexion->prepare("SELECT name,group_deleted FROM phishing.mygroup");
+$smt = $conexion->prepare("SELECT name,group_deleted,id FROM phishing.mygroup");
 $smt->execute();
 $data = $smt->fetchAll();
 
@@ -68,7 +68,7 @@ $data = $smt->fetchAll();
                             <?php foreach ($data as $row) : 
                              if($row['group_deleted'] == ''){
                                 ?>
-                                <option><?= $row["name"] ?></option>
+                                <option><?= $row["name"]." - ".$row["id"] ?></option>
                             <?php 
                             
                              }

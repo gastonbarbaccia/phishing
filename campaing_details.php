@@ -12,6 +12,7 @@ $con2 = $conexion->prepare($sql3);
 $con2->execute([$group_id]);
 $user_id = $con2->fetchAll();
 
+
 $que2 = $conexion->prepare("SELECT * from phishing.attack where attack.campa_id = ?");
 $que = $que2->execute([$cid]);
 $attack_exist = $que2->fetchColumn();
@@ -45,6 +46,7 @@ $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
 $consult1 = $con1->fetchColumn();
+
 
 ?>
 
@@ -184,7 +186,7 @@ $consult1 = $con1->fetchColumn();
                 </tr>
             </thead>
             <tbody>
-            <?php
+                <?php
                 if($attack_exist){
                 $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
                 $stmt->execute([$attack_id]);
@@ -342,15 +344,11 @@ $consult1 = $con1->fetchColumn();
                 url: "send_email.php",
                 data: datos,
                 success: function(texto) {
-
-                    var result = texto.trim();
-
-                    if (result === "ok") {
-                        console.log("Mensajes enviados con exito!");
+                    if (texto == "ok") {
+                        console.log("Mensajes enviados!");
 
                     } else {
-                        console.log("Hubieron mensaje que no se pudieron enviar!");
-
+                        console.log("Mensajes no enviados!! GIl");
                     }
                 }
             })

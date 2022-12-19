@@ -1,13 +1,12 @@
 <?php
-
-require 'templates/pages_phishing.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
 
 require_once 'dbconexion.php';
 require 'vendor/autoload.php';
 
+
 $mail = new PHPMailer();
+
 
 $email_template = $_POST['email_template'];
 $cid = $_POST['campaign_id']; //campaign id
@@ -16,6 +15,28 @@ $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
 $group_id = $con1->fetchColumn();
+
+$cons22 = "SELECT status FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY date_time DESC LIMIT 1";
+$con22 = $conexion->prepare($cons22);
+$con22->execute([$cid]);
+$status = $con22->fetchColumn();
+
+$status = 1;
+$sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,status) VALUES (?,?,?)";
+$conexion->prepare($sql1)->execute([$group_id, $cid, $status]);
+
+$attack_id = $conexion->lastInsertId();
+
+$ugu = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$geu = $conexion->prepare($ugu);
+$geu->execute([$group_id]);
+$user_id = $geu->fetchAll();
+
+foreach ($user_id as $uid) {
+    $au = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
+    $conexion->prepare($au)->execute([$attack_id, $uid[0]]);
+}
+
 
 $sql3 = "SELECT * FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
 $con2 = $conexion->prepare($sql3);
@@ -28,23 +49,6 @@ $con3 = $conexion->prepare($sql);
 $con3->execute([$cid]);
 $settings_emails = $con3->fetchAll();
 
-//Email template ID
-$cons4 = "SELECT email_template_id FROM phishing.campaign where id = ? ";
-$con4 = $conexion->prepare($cons4);
-$con4->execute([$cid]);
-$email_template_id = $con4->fetchColumn();
-
-$cons5 = "SELECT content FROM phishing.email_template where id = ? ";
-$con5 = $conexion->prepare($cons5);
-$con5->execute([$email_template_id]);
-$email_template_content = $con5->fetchColumn();
-
-//Count para obtener el total de emails a enviar
-
-$sql6 = "SELECT COUNT(email_address) FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
-$con6 = $conexion->prepare($sql6);
-$con6->execute([$group_id]);
-$count_emails = $con6->fetch();
 
 foreach ($settings_emails as $set_email) {
 

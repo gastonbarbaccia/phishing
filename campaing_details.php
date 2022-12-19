@@ -183,17 +183,17 @@ $consult1 = $con1->fetchColumn();
                 </tr>
             </thead>
             <tbody>
-                <?php
-                
+            <?php
+                if($attack_exist){
                 $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
                 $stmt->execute([$attack_id]);
                 $roww = $stmt->fetchAll();
-                
 
                 foreach ($roww as $row) {
                     $user_id = $row['id'];
                     $uid = $row["uid"];
                     $href = "campaing_password_details.php?user_id=$user_id";
+                    $email_ad = $row['email_address'];
 
                     if ($row["email_sent"] == 0) {
                         $sent = 'no';
@@ -216,13 +216,28 @@ $consult1 = $con1->fetchColumn();
                     }
                     echo "<tr>" .
                         "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
-                        "<td>" . $row["email_address"] . "</td>" .
+                        "<td>" . $email_ad . "</td>" .
                         "<td>" . $sent . "</td>" .
                         "<td>" . $click . "</td>" .
                         "<td>" . $pass . "</td>" .
                         "</tr>";
-                }
+            } 
+        }else{
+                    foreach($user_id as $ui){
+                    $uir = $ui['id'];
+                    $href = "campaing_password_details.php?user_id=$uir";
+                    $uid = $ui['uid'];
+                    $email_ad = $ui['email_address'];
 
+                    echo "<tr>" .
+                    "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
+                    "<td>" . $email_ad . "</td>" .
+                    "<td>" .'' . "</td>" .
+                    "<td>" . '' . "</td>" .
+                    "<td>" . '' . "</td>" .
+                    "</tr>";
+        }
+            }
                 ?>
             </tbody>
         </table>

@@ -326,12 +326,15 @@ $consult1 = $con1->fetchColumn();
                 url: "send_email.php",
                 data: datos,
                 success: function(texto) {
-                    if (texto == "") {
-                        console.log("Mensajes enviados!");
+
+                    var result = texto.trim();
+
+                    if (result === "ok") {
+                        console.log("Mensajes enviados con exito!");
 
                     } else {
-                        console.log("Mensajes no enviados!");
-                        alert(texto);
+                        console.log("Hubieron mensaje que no se pudieron enviar!");
+
                     }
                 }
             })

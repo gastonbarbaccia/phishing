@@ -1,12 +1,13 @@
 <?php
 
+require 'templates/pages_phishing.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 require_once 'dbconexion.php';
 require 'vendor/autoload.php';
 
 $mail = new PHPMailer();
-
 
 $email_template = $_POST['email_template'];
 $cid = $_POST['campaign_id']; //campaign id
@@ -27,7 +28,23 @@ $con3 = $conexion->prepare($sql);
 $con3->execute([$cid]);
 $settings_emails = $con3->fetchAll();
 
+//Email template ID
+$cons4 = "SELECT email_template_id FROM phishing.campaign where id = ? ";
+$con4 = $conexion->prepare($cons4);
+$con4->execute([$cid]);
+$email_template_id = $con4->fetchColumn();
 
+$cons5 = "SELECT content FROM phishing.email_template where id = ? ";
+$con5 = $conexion->prepare($cons5);
+$con5->execute([$email_template_id]);
+$email_template_content = $con5->fetchColumn();
+
+//Count para obtener el total de emails a enviar
+
+$sql6 = "SELECT COUNT(email_address) FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$con6 = $conexion->prepare($sql6);
+$con6->execute([$group_id]);
+$count_emails = $con6->fetch();
 
 foreach ($settings_emails as $set_email) {
 
@@ -39,6 +56,7 @@ foreach ($settings_emails as $set_email) {
     $subject = $set_email['subject'];
     $email_from = $set_email['email_from'];
     $display = $set_email['display'];
+    $phishing_url = $set_email['phishing_url'];
 
     /*
     echo "smtp server: ".$smtp_server;
@@ -57,6 +75,8 @@ foreach ($settings_emails as $set_email) {
     echo "<br>";*/
 }
 
+$mensajes_enviados=0;
+$mensajes_noenviados=0;
 
 
 foreach ($user_id as $uid) {
@@ -66,6 +86,8 @@ foreach ($user_id as $uid) {
     $vid = $uid['uid'];
 
     $email = $uid['email_address'];
+
+    $victim_url = 'https://'.$phishing_url.'?uid='.$vid;
 
     //-------------------------------------------------------------------
     // Settings SMTP
@@ -87,23 +109,35 @@ foreach ($user_id as $uid) {
 
     $mail->Subject = $subject;
 
-    $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
-    <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
-    <br>
-    <a href='https://www.google.com?uid=$vid'>Click en el siguiente link</a>";
+    $mailContent = netflix($victim_url);
 
     $mail->Body = $mailContent;
 
-    $mail->addBCC($email,'Seguridad');
+    $mail->addBCC($email, 'Seguridad');
 
-    
-    if(!$mail->send()){
-        echo 'Message could not be sent.';
+
+    if (!$mail->send()) {
+       /* echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
-        echo 'error';
-    }else{
-        echo '';
+        echo 'error';*/
+        $mensajes_noenviados++;
+
+    } else {
+        $mensajes_enviados++;
     }
-  
 }
 
+
+define('mens_ok','ok');
+define('mens_fail','error');
+
+if($count_emails[0]  ==  $mensajes_enviados ){
+
+   // echo "Count emails:".$count_emails[0]."- Mensajes enviados:".$mensajes_enviados;
+    echo "ok";
+
+}else{
+
+   // echo "Count emails:".$count_emails[0]."- Mensajes no enviados:".$mensajes_enviados;
+   echo "error";
+}

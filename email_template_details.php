@@ -52,6 +52,14 @@ $row = $stmt->fetch();
                     </div>
                 </div>
             </div>
+            <div style="padding-left:3%">
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-5">
+                        <p style="color:red"><b>Important:</b> Replace all links with ?uid=$vid at the end.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div style="padding-left:3%;margin-bottom:5%">

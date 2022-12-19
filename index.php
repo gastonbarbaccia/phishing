@@ -48,11 +48,6 @@ require_once 'dbconexion.php';
 
           $id = $row['id'];
 
-          $cons_status = "SELECT creado FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= '$id' ";
-          $cons_status = $conexion->prepare($cons_status);
-          $cons_status->execute([$id]);
-          $creado = $cons_status->fetchColumn();
-
           $cons_ = "SELECT phishing_url FROM phishing.email_settings  WHERE email_settings.campaign_id= '$id' ";
           $cons_ = $conexion->prepare($cons_);
           $cons_->execute([$id]);

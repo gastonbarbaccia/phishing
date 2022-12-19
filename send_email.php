@@ -132,9 +132,6 @@ foreach ($user_id as $uid) {
 }
 
 
-define('mens_ok','ok');
-define('mens_fail','error');
-
 if($count_emails[0]  ==  $mensajes_enviados ){
 
    // echo "Count emails:".$count_emails[0]."- Mensajes enviados:".$mensajes_enviados;

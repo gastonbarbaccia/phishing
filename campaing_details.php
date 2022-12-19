@@ -19,7 +19,7 @@ $attack_exist = $que2->fetchColumn();
 $cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $con21 = $conexion->prepare($cons21);
 $con21->execute([$cid]);
-$attack_id = $con21->fetchAll();
+$attack_id = $con21->fetchColumn();
 
 $click_counts = 0;
 $pass_counts = 0;

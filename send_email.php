@@ -5,6 +5,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once 'dbconexion.php';
 require 'vendor/autoload.php';
 
+
 $mail = new PHPMailer();
 
 
@@ -15,6 +16,28 @@ $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
 $group_id = $con1->fetchColumn();
+
+$cons22 = "SELECT status FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY date_time DESC LIMIT 1";
+$con22 = $conexion->prepare($cons22);
+$con22->execute([$cid]);
+$status = $con22->fetchColumn();
+
+$status = 1;
+$sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,status) VALUES (?,?,?)";
+$conexion->prepare($sql1)->execute([$group_id, $cid, $status]);
+
+$attack_id = $conexion->lastInsertId();
+
+$ugu = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$geu = $conexion->prepare($ugu);
+$geu->execute([$group_id]);
+$user_id = $geu->fetchAll();
+
+foreach ($user_id as $uid) {
+    $au = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
+    $conexion->prepare($au)->execute([$attack_id, $uid[0]]);
+}
+
 
 $sql3 = "SELECT * FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
 $con2 = $conexion->prepare($sql3);
@@ -112,3 +135,4 @@ foreach ($user_id as $uid) {
 }
 
 echo 'ok';
+

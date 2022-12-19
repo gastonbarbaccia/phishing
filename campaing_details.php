@@ -19,7 +19,7 @@ $attack_exist = $que2->fetchColumn();
 $cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $con21 = $conexion->prepare($cons21);
 $con21->execute([$cid]);
-$attack_id = $con21->fetchAll();
+$attack_id = $con21->fetchColumn();
 
 $click_counts = 0;
 $pass_counts = 0;
@@ -184,43 +184,40 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
+                $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+                $stmt->execute([$attack_id]);
+                $roww = $stmt->fetchAll();
 
-                foreach ($user_id as $uid) {
+                foreach ($roww as $row) {
+                    $user_id = $row['id'];
+                    $uid = $row["uid"];
+                    $href = "campaing_password_details.php?user_id=$user_id";
 
-                    $id = $uid['id'];
-
-                    $vid = $uid['uid'];
-
-                    $mail = $uid['email_address'];
-
-                    if (!$attack_exist) {
-
-                        $sent = '';
-
-                        $click = '';
-
-                        $seen = '';
-                    } else {
-
+                    if ($row["email_sent"] == 0) {
                         $sent = 'no';
-
-                        $click = 'no';
-
-                        $seen = 'no';
+                    } else {
+                        $sent = 'yes';
                     }
-
+                    if ($row["link_clicked"] == 0) {
+                        $click = 'no';
+                        $clickno_counts++;
+                    } else {
+                        $click = 'yes';
+                        $click_counts++;
+                    }
+                    if ($row["password_seen"] == 0) {
+                        $pass = 'no';
+                        $passno_counts++;
+                    } else {
+                        $pass = 'yes';
+                        $pass_counts++;
+                    }
                     echo "<tr>" .
-
-                        "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$cid'>" . $vid . "</a></td>" .
-
-                        "<td>" . $mail . "</td>" .
-
+                        "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
+                        "<td>" . $row["email_address"] . "</td>" .
                         "<td>" . $sent . "</td>" .
-
                         "<td>" . $click . "</td>" .
-
-                        "<td>" . $seen . "</td>" .
-
+                        "<td>" . $pass . "</td>" .
                         "</tr>";
                 }
                 ?>

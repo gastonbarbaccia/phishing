@@ -184,45 +184,20 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
-
+                
                 foreach ($user_id as $uid) {
-
                     $id = $uid['id'];
-
                     $vid = $uid['uid'];
-
                     $mail = $uid['email_address'];
-
-                    if (!$attack_exist) {
-
-                        $sent = '';
-
-                        $click = '';
-
-                        $seen = '';
-                    } else {
-
-                        $sent = 'no';
-
-                        $click = 'no';
-
-                        $seen = 'no';
-                    }
-
                     echo "<tr>" .
-
                         "<td><a href='campaing_password_details.php?user_id=$id&campaign_id=$cid'>" . $vid . "</a></td>" .
-
                         "<td>" . $mail . "</td>" .
-
-                        "<td>" . $sent . "</td>" .
-
-                        "<td>" . $click . "</td>" .
-
-                        "<td>" . $seen . "</td>" .
-
+                        "<td>" . 'no' . "</td>" .
+                        "<td>" . 'no' . "</td>" .
+                        "<td>" . 'no' . "</td>" .
                         "</tr>";
                 }
+
                 ?>
             </tbody>
         </table>

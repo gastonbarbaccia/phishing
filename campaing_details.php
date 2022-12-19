@@ -188,6 +188,7 @@ $consult1 = $con1->fetchColumn();
                 $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
                 $stmt->execute([$attack_id]);
                 $roww = $stmt->fetchAll();
+                
 
                 foreach ($roww as $row) {
                     $user_id = $row['id'];

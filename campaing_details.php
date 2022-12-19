@@ -45,6 +45,7 @@ $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
 $consult1 = $con1->fetchColumn();
+
 ?>
 
 <!DOCTYPE html>

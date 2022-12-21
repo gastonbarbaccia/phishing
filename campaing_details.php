@@ -355,6 +355,7 @@ $consult1 = $con1->fetchColumn();
                     }
                 }
             })
+            
         })
     </script>
 

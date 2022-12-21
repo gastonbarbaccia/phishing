@@ -129,7 +129,7 @@ foreach ($user_id as $uid) {
     } else {
         $mensajes_enviados++;
         $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id = ?";
-        $conexion->prepare($sent)->execute([$esent,null,$attack_id])
+        $conexion->prepare($sent)->execute([$esent,null,$attack_id]);
     }
 }
 

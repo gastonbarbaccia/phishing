@@ -82,7 +82,6 @@ foreach ($settings_emails as $set_email) {
 }
 
 
-
 foreach ($user_id as $uid) {
 
     //--------------------------------------
@@ -90,6 +89,8 @@ foreach ($user_id as $uid) {
     $vid = $uid['uid'];
 
     $email = $uid['email_address'];
+
+    $esent = 1;
 
     echo $vid;
 
@@ -119,7 +120,7 @@ foreach ($user_id as $uid) {
     $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
     <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
     <br>
-    <a href='https://www.google.com?uid=$vid'>Click en el siguiente link</a>";
+    <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid'>Click en el siguiente link</a>";
 
     $mail->Body = $mailContent;
 
@@ -130,9 +131,11 @@ foreach ($user_id as $uid) {
         echo 'Mailer Error: ' . $mail->ErrorInfo;
     }else{
         echo 'Message has been sent';
+        $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id=?";
+        $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
     }
-  
-}
+
+  }
 
 echo 'ok';
 

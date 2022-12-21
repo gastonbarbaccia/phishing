@@ -12,7 +12,6 @@ $con2 = $conexion->prepare($sql3);
 $con2->execute([$group_id]);
 $user_id = $con2->fetchAll();
 
-
 $que2 = $conexion->prepare("SELECT * from phishing.attack where attack.campa_id = ?");
 $que = $que2->execute([$cid]);
 $attack_exist = $que2->fetchColumn();
@@ -88,8 +87,7 @@ $consult1 = $con1->fetchColumn();
             margin-left: calc(-.5 * var(--bs-gutter-x));
         }
     </style>
-
-    <table style="width:100%">
+<table style="width:100%">
         <tbody>
             <tr>
                 <td>
@@ -168,8 +166,6 @@ $consult1 = $con1->fetchColumn();
                 <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult00; ?>" readonly disabled>
             </div>
         </div>
-
-
 
     </div>
     <div style="margin: 3%">
@@ -342,6 +338,9 @@ $consult1 = $con1->fetchColumn();
                 url: "send_email.php",
                 data: datos,
                 success: function(texto) {
+
+                    var result = texto.trim();
+
                     if (texto == "ok") {
                         console.log("Mensajes enviados!");
 

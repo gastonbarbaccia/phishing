@@ -140,6 +140,9 @@ foreach ($user_id as $uid) {
 
 if($count_users_email == $sent_email_ok ){
     echo "ok";
+    $c = 2;
+    $complete = "UPDATE phishing.attack SET status=? WHERE id=?";
+    $conexion->prepare($complete)->execute([$c, $attack_id]);
 }else{
     echo "error";
 }

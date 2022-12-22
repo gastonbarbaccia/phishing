@@ -21,6 +21,19 @@ $con21 = $conexion->prepare($cons21);
 $con21->execute([$cid]);
 $attack_id = $con21->fetchColumn();
 
+$estado = "SELECT attack.status FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
+$status = $conexion->prepare($estado);
+$status->execute([$cid]);
+$consulta = $status->fetchColumn();
+
+if($consulta == 1){
+    $astatus = 'In progress..';
+}elseif($consulta == 2){
+    $astatus = 'Completed ';
+}else{
+    $astatus = 'Launch Attack! ';
+}
+
 $click_counts = 0;
 $pass_counts = 0;
 $clickno_counts = 0;
@@ -93,7 +106,7 @@ $consult1 = $con1->fetchColumn();
                 <td>
                     <div style="padding-left:3%;padding-bottom:1%;">
                         <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign: </b></label>
+                            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign:</b></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
                             </div>
@@ -113,7 +126,7 @@ $consult1 = $con1->fetchColumn();
                             <form id="formulario" name="formulario">
                                 <input id="campaign_id" name="campaign_id" value="<?php echo $cid ?>" hidden>
                                 <input id="email_template" name="email_template" value="<?php echo $consult00 ?>" hidden>
-                                <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> Launch Attack!</button>
+                                <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i>  <?php echo $astatus; ?></button>
                             </form>
                         </div>
                     </div>
@@ -187,9 +200,9 @@ $consult1 = $con1->fetchColumn();
                 $roww = $stmt->fetchAll();
 
                 foreach ($roww as $row) {
-                    $user_id = $row['id'];
+                    $users_id = $row['id'];
                     $uid = $row["uid"];
-                    $href = "campaing_password_details.php?user_id=$user_id&cid=$cid";
+                    $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
                     $email_ad = $row['email_address'];
 
                     if ($row["email_sent"] == 0) {
@@ -223,6 +236,7 @@ $consult1 = $con1->fetchColumn();
                     foreach($user_id as $ui){
                     $uir = $ui['id'];
                     $uid = $ui['uid'];
+                    $href = "campaing_password_details.php?user_id=$uir&cid=$cid";
                     $email_ad = $ui['email_address'];
 
                     echo "<tr>" .

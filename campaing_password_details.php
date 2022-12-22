@@ -15,6 +15,16 @@ if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $mail = $row['email_address'];
     $pass = $row['password'];
     $aid = $row['attack_id'];
+}else{
+    $cons = $conexion->prepare("SELECT * from phishing.user where user.id = ?");
+    $cons->execute([$id]);
+    $roww = $cons->fetch();
+
+    $uid = $roww['uid'];
+    $date = '';
+    $username = '';
+    $mail = $roww['email_address'];
+    $pass = '';    
 }
 ?>
 <!DOCTYPE html>

@@ -26,11 +26,11 @@ $status = $conexion->prepare($estado);
 $status->execute([$cid]);
 $consulta = $status->fetchColumn();
 
-if($consulta == 1){
-    $astatus = 'In progress..';
-}elseif($consulta == 2){
+if ($consulta == 1) {
+    $astatus = 'In progress...';
+} elseif ($consulta == 2) {
     $astatus = 'Completed ';
-}else{
+} else {
     $astatus = 'Launch Attack! ';
 }
 
@@ -100,7 +100,7 @@ $consult1 = $con1->fetchColumn();
             margin-left: calc(-.5 * var(--bs-gutter-x));
         }
     </style>
-<table style="width:100%">
+    <table style="width:100%">
         <tbody>
             <tr>
                 <td>
@@ -126,7 +126,22 @@ $consult1 = $con1->fetchColumn();
                             <form id="formulario" name="formulario">
                                 <input id="campaign_id" name="campaign_id" value="<?php echo $cid ?>" hidden>
                                 <input id="email_template" name="email_template" value="<?php echo $consult00 ?>" hidden>
-                                <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i>  <?php echo $astatus; ?></button>
+                                <?php
+
+                                if ($astatus == 'In progress...') {
+                                ?>
+                                    <button id="boton" type="submit" class="btn btn-primary" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                <?php
+                                } else if ($astatus == 'Completed ') {
+                                ?>
+                                    <button id="boton" type="submit" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                <?php
+                                } else {
+                                ?>
+                                    <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                <?php
+                                }
+                                ?>
                             </form>
                         </div>
                     </div>
@@ -194,60 +209,60 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
-                if($attack_exist){
-                $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
-                $stmt->execute([$attack_id]);
-                $roww = $stmt->fetchAll();
+                if ($attack_exist) {
+                    $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+                    $stmt->execute([$attack_id]);
+                    $roww = $stmt->fetchAll();
 
-                foreach ($roww as $row) {
-                    $users_id = $row['id'];
-                    $uid = $row["uid"];
-                    $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
-                    $email_ad = $row['email_address'];
+                    foreach ($roww as $row) {
+                        $users_id = $row['id'];
+                        $uid = $row["uid"];
+                        $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
+                        $email_ad = $row['email_address'];
 
-                    if ($row["email_sent"] == 0) {
-                        $sent = 'no';
-                    } else {
-                        $sent = 'yes';
+                        if ($row["email_sent"] == 0) {
+                            $sent = 'no';
+                        } else {
+                            $sent = 'yes';
+                        }
+                        if ($row["link_clicked"] == 0) {
+                            $click = 'no';
+                            $clickno_counts++;
+                        } else {
+                            $click = 'yes';
+                            $click_counts++;
+                        }
+                        if ($row["password_seen"] == 0) {
+                            $pass = 'no';
+                            $passno_counts++;
+                        } else {
+                            $pass = 'yes';
+                            $pass_counts++;
+                        }
+                        echo "<tr>" .
+                            "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" .
+                            "<td>" . $email_ad . "</td>" .
+                            "<td>" . $sent . "</td>" .
+                            "<td>" . $click . "</td>" .
+                            "<td>" . $pass . "</td>" .
+                            "</tr>";
                     }
-                    if ($row["link_clicked"] == 0) {
-                        $click = 'no';
-                        $clickno_counts++;
-                    } else {
-                        $click = 'yes';
-                        $click_counts++;
-                    }
-                    if ($row["password_seen"] == 0) {
-                        $pass = 'no';
-                        $passno_counts++;
-                    } else {
-                        $pass = 'yes';
-                        $pass_counts++;
-                    }
-                    echo "<tr>" .
-                        "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
-                        "<td>" . $email_ad . "</td>" .
-                        "<td>" . $sent . "</td>" .
-                        "<td>" . $click . "</td>" .
-                        "<td>" . $pass . "</td>" .
-                        "</tr>";
-            } 
-        }else{
-                    foreach($user_id as $ui){
-                    $uir = $ui['id'];
-                    $uid = $ui['uid'];
-                    $href = "campaing_password_details.php?user_id=$uir&cid=$cid";
-                    $email_ad = $ui['email_address'];
+                } else {
+                    foreach ($user_id as $ui) {
+                        $uir = $ui['id'];
+                        $uid = $ui['uid'];
+                        $href = "campaing_password_details.php?user_id=$uir&cid=$cid";
+                        $email_ad = $ui['email_address'];
 
-                    echo "<tr>" .
-                    "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
-                    "<td>" . $email_ad . "</td>" .
-                    "<td>" .'' . "</td>" .
-                    "<td>" . '' . "</td>" .
-                    "<td>" . '' . "</td>" .
-                    "</tr>";
-        }
-            }
+                        echo "<tr>" .
+                            "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" .
+                            "<td>" . $email_ad . "</td>" .
+                            "<td>" . '' . "</td>" .
+                            "<td>" . '' . "</td>" .
+                            "<td>" . '' . "</td>" .
+                            "</tr>";
+                    }
+                }
                 ?>
             </tbody>
         </table>
@@ -338,13 +353,12 @@ $consult1 = $con1->fetchColumn();
         }
     </script>
 
+
     <script>
         $("#formulario").submit(function(event) {
             event.preventDefault(); //almacena los datos sin refrescar el sitio web
 
             var datos = $("#formulario").serialize(); //toma los datos "name" y los lleva a un arreglo
-
-            $("#boton").prop('disabled', true);
 
             $.ajax({
                 type: "post",
@@ -359,24 +373,18 @@ $consult1 = $con1->fetchColumn();
 
                     } else {
                         console.log("Mensajes no enviados!!");
-                        console.log(result);
+
                     }
                 }
             })
         })
     </script>
 
-
     <script>
         const btn = document.getElementById('boton');
 
         // ✅ Change button text on click
         btn.addEventListener('click', function handleClick() {
-            btn.textContent = 'Attack in progress';
-            var col = document.getElementById("boton");
-            col.style.backgroundColor = "blue";
-            col.style.border = "blue";
-
 
             toastr["success"]("Sending emails...", "Attack in progess");
 
@@ -397,12 +405,9 @@ $consult1 = $con1->fetchColumn();
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
+            // $("#boton").prop('disabled', true);
         });
     </script>
-
-
-
-
 
 </body>
 

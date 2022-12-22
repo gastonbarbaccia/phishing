@@ -189,7 +189,7 @@ $consult1 = $con1->fetchColumn();
                 foreach ($roww as $row) {
                     $user_id = $row['id'];
                     $uid = $row["uid"];
-                    $href = "campaing_password_details.php?user_id=$user_id";
+                    $href = "campaing_password_details.php?user_id=$user_id&cid=$cid";
                     $email_ad = $row['email_address'];
 
                     if ($row["email_sent"] == 0) {
@@ -222,7 +222,6 @@ $consult1 = $con1->fetchColumn();
         }else{
                     foreach($user_id as $ui){
                     $uir = $ui['id'];
-                    $href = "campaing_password_details.php?user_id=$uir";
                     $uid = $ui['uid'];
                     $email_ad = $ui['email_address'];
 

@@ -50,8 +50,12 @@ $con3 = $conexion->prepare($sql);
 $con3->execute([$cid]);
 $settings_emails = $con3->fetchAll();
 
-echo "Email Template: " . $email_template;
-echo "<br>";
+$sql4 = "SELECT COUNT(attack_user.id) FROM phishing.attack_user WHERE attack_id = ?";
+$con4 = $conexion->prepare($sql4);
+$con4->execute([$attack_id]);
+$count_users_email = $con4->fetchColumn();
+
+
 
 foreach ($settings_emails as $set_email) {
 
@@ -81,6 +85,7 @@ foreach ($settings_emails as $set_email) {
     echo "<br>";*/
 }
 
+$sent_email_ok= 0;
 
 foreach ($user_id as $uid) {
 
@@ -92,11 +97,6 @@ foreach ($user_id as $uid) {
 
     $esent = 1;
 
-    echo $vid;
-
-    echo $email;
-
-    echo "<br>";
     //-------------------------------------------------------------------
     // Settings SMTP
     //-------------------------------------------------------------------
@@ -130,12 +130,16 @@ foreach ($user_id as $uid) {
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
     }else{
-        echo 'Message has been sent';
         $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id=?";
         $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
+        $sent_email_ok++;
     }
 
   }
 
-echo 'ok';
 
+if($count_users_email == $sent_email_ok ){
+    echo "ok";
+}else{
+    echo "error";
+}

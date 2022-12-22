@@ -346,6 +346,7 @@ $consult1 = $con1->fetchColumn();
 
                     } else {
                         console.log("Mensajes no enviados!!");
+                        console.log(result);
                     }
                 }
             })

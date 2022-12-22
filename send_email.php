@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 require_once 'dbconexion.php';
@@ -49,6 +50,8 @@ $con3 = $conexion->prepare($sql);
 $con3->execute([$cid]);
 $settings_emails = $con3->fetchAll();
 
+echo "Email Template: " . $email_template;
+echo "<br>";
 
 foreach ($settings_emails as $set_email) {
 
@@ -60,7 +63,6 @@ foreach ($settings_emails as $set_email) {
     $subject = $set_email['subject'];
     $email_from = $set_email['email_from'];
     $display = $set_email['display'];
-    $phishing_url = $set_email['phishing_url'];
 
     /*
     echo "smtp server: ".$smtp_server;
@@ -79,9 +81,6 @@ foreach ($settings_emails as $set_email) {
     echo "<br>";*/
 }
 
-$mensajes_enviados=0;
-$mensajes_noenviados=0;
-
 
 foreach ($user_id as $uid) {
 
@@ -91,10 +90,13 @@ foreach ($user_id as $uid) {
 
     $email = $uid['email_address'];
 
-    $victim_url = 'https://'.$phishing_url.'?uid='.$vid;
+    $esent = 1;
 
-    $esent= 1;
+    echo $vid;
 
+    echo $email;
+
+    echo "<br>";
     //-------------------------------------------------------------------
     // Settings SMTP
     //-------------------------------------------------------------------
@@ -115,34 +117,25 @@ foreach ($user_id as $uid) {
 
     $mail->Subject = $subject;
 
-    $mailContent = netflix($victim_url);
+    $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
+    <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
+    <br>
+    <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid'>Click en el siguiente link</a>";
 
     $mail->Body = $mailContent;
 
-    $mail->addBCC($email, 'Seguridad');
+    $mail->addBCC($email,'Seguridad');
 
-
-    if (!$mail->send()) {
-       /* echo 'Message could not be sent.';
+    if(!$mail->send()){
+        echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
-        echo 'error';*/
-        $mensajes_noenviados++;
-
-    } else {
-        $mensajes_enviados++;
-        $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id = ?";
-        $conexion->prepare($sent)->execute([$esent,null,$attack_id]);
+    }else{
+        echo 'Message has been sent';
+        $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id=?";
+        $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
     }
-}
 
+  }
 
-if($count_emails[0]  ==  $mensajes_enviados ){
+echo 'ok';
 
-   // echo "Count emails:".$count_emails[0]."- Mensajes enviados:".$mensajes_enviados;
-    echo "ok";
-
-}else{
-
-   // echo "Count emails:".$count_emails[0]."- Mensajes no enviados:".$mensajes_enviados;
-   echo "error";
-}

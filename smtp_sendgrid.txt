@@ -1,0 +1,18 @@
+Integrate using our Web API or SMTP Relay
+How to send email using the SMTP Relay
+1- Create an API key
+This allows your application to authenticate to our API and send mail. You can enable or disable additional permissions on the API keys page.
+
+ "myapikey" was successfully created and added to the next step.
+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
+
+2- Configure your application - Configure your application with the settings below.
+
+Server	smtp.sendgrid.net
+Ports	
+
+25, 587	(for unencrypted/TLS connections)
+465	(for SSL connections)
+
+Username	apikey
+Password	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

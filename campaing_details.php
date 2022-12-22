@@ -1,74 +1,63 @@
 <?php
 require_once 'dbconexion.php';
 
-$id = $_GET['id'];
+$cid = $_GET['id']; //campaign id
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
 $con1 = $conexion->prepare($cons1);
-$con1->execute([$id]);
+$con1->execute([$cid]);
 $group_id = $con1->fetchColumn();
 
-//print_r("Id del grupo ".$group_id);
+$sql3 = "SELECT * FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$con2 = $conexion->prepare($sql3);
+$con2->execute([$group_id]);
+$user_id = $con2->fetchAll();
 
-$cons22 = "SELECT creado FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY date_time DESC LIMIT 1";
-$con22 = $conexion->prepare($cons22);
-$con22->execute([$id]);
-$creado = $con22->fetchColumn();
-
-//print_r("Creado ".$group_id);
+$que2 = $conexion->prepare("SELECT * from phishing.attack where attack.campa_id = ?");
+$que = $que2->execute([$cid]);
+$attack_exist = $que2->fetchColumn();
 
 $cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $con21 = $conexion->prepare($cons21);
-$con21->execute([$id]);
+$con21->execute([$cid]);
 $attack_id = $con21->fetchColumn();
 
-if ($creado == 0) {
-    $creado = 1;
-    $sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,creado) VALUES (?,?,?)";
-    $conexion->prepare($sql1)->execute([$group_id, $id, $creado]);
+$estado = "SELECT attack.status FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
+$status = $conexion->prepare($estado);
+$status->execute([$cid]);
+$consulta = $status->fetchColumn();
 
-    $attack_id = $conexion->lastInsertId();
-
-    $sql3 = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
-    $con2 = $conexion->prepare($sql3);
-    $con2->execute([$group_id]);
-    $user_id = $con2->fetchAll();
-
-    foreach ($user_id as $uid) {
-        $sql2 = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
-        $conexion->prepare($sql2)->execute([$attack_id, $uid[0]]);
-    }
+if($consulta == 1){
+    $astatus = 'In progress..';
+}elseif($consulta == 2){
+    $astatus = 'Completed ';
+}else{
+    $astatus = 'Launch Attack! ';
 }
-
 
 $click_counts = 0;
 $pass_counts = 0;
 $clickno_counts = 0;
 $passno_counts = 0;
 
-
-$id = $_GET['id'];
 $cons = "SELECT name FROM phishing.campaign where id = ? ";
 $con = $conexion->prepare($cons);
-$con->execute([$id]);
+$con->execute([$cid]);
 $consult = $con->fetchColumn();
 
 $cons = "SELECT mygroup.name FROM phishing.mygroup JOIN phishing.campaign ON mygroup.id = campaign.group_id WHERE campaign.id=? ";
 $con = $conexion->prepare($cons);
-$con->execute([$id]);
+$con->execute([$cid]);
 $consult2 = $con->fetchColumn();
 
 $cons00 = "SELECT email_template.name FROM phishing.email_template join phishing.campaign on email_template.id = campaign.email_template_id where campaign.id = ? ";
 $con00 = $conexion->prepare($cons00);
-$con00->execute([$id]);
+$con00->execute([$cid]);
 $consult00 = $con00->fetchColumn();
 
-$id = $_GET['id'];
 $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_id = campaign.id WHERE campaign.id=? ORDER BY date_time DESC LIMIT 1";
 $con1 = $conexion->prepare($cons1);
-$con1->execute([$id]);
+$con1->execute([$cid]);
 $consult1 = $con1->fetchColumn();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -83,8 +72,8 @@ $consult1 = $con1->fetchColumn();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link href="assets/css/toastr.css" rel="stylesheet" type="text/css" />
 </head>
 
 
@@ -102,7 +91,7 @@ $consult1 = $con1->fetchColumn();
 
     <style>
         .row {
-            --bs-gutter-x: 0rem !important; 
+            --bs-gutter-x: 0rem !important;
             --bs-gutter-y: 0;
             display: flex;
             flex-wrap: wrap;
@@ -111,22 +100,40 @@ $consult1 = $con1->fetchColumn();
             margin-left: calc(-.5 * var(--bs-gutter-x));
         }
     </style>
-
-    <div style="padding-left:1%;padding-bottom:1%">
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-1 col-form-label"><b>Campaña: </b></label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-1 col-form-label" style="color:red"><b>Launched: </b></label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
-            </div>
-        </div>
-
-    </div>
+<table style="width:100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div style="padding-left:3%;padding-bottom:1%;">
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign:</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label" style="color:red"><b>Launched: </b></label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left:10%;padding-bottom:13%;">
+                        <div class="mb-3 row" style="padding-left:20%;">
+                            <!-- Test de ajax -->
+                            <form id="formulario" name="formulario">
+                                <input id="campaign_id" name="campaign_id" value="<?php echo $cid ?>" hidden>
+                                <input id="email_template" name="email_template" value="<?php echo $consult00 ?>" hidden>
+                                <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i>  <?php echo $astatus; ?></button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <table>
         <tbody>
@@ -173,8 +180,6 @@ $consult1 = $con1->fetchColumn();
             </div>
         </div>
 
-
-
     </div>
     <div style="margin: 3%">
         <table class="table table-hover" id="datatable">
@@ -189,14 +194,16 @@ $consult1 = $con1->fetchColumn();
             </thead>
             <tbody>
                 <?php
+                if($attack_exist){
                 $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
                 $stmt->execute([$attack_id]);
                 $roww = $stmt->fetchAll();
 
                 foreach ($roww as $row) {
-                    $user_id = $row['id'];
+                    $users_id = $row['id'];
                     $uid = $row["uid"];
-                    $href = "campaing_password_details.php?user_id=$user_id";
+                    $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
+                    $email_ad = $row['email_address'];
 
                     if ($row["email_sent"] == 0) {
                         $sent = 'no';
@@ -219,12 +226,29 @@ $consult1 = $con1->fetchColumn();
                     }
                     echo "<tr>" .
                         "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
-                        "<td>" . $row["email_address"] . "</td>" .
+                        "<td>" . $email_ad . "</td>" .
                         "<td>" . $sent . "</td>" .
                         "<td>" . $click . "</td>" .
                         "<td>" . $pass . "</td>" .
                         "</tr>";
-                } ?>
+            } 
+        }else{
+                    foreach($user_id as $ui){
+                    $uir = $ui['id'];
+                    $uid = $ui['uid'];
+                    $href = "campaing_password_details.php?user_id=$uir&cid=$cid";
+                    $email_ad = $ui['email_address'];
+
+                    echo "<tr>" .
+                    "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" . 
+                    "<td>" . $email_ad . "</td>" .
+                    "<td>" .'' . "</td>" .
+                    "<td>" . '' . "</td>" .
+                    "<td>" . '' . "</td>" .
+                    "</tr>";
+        }
+            }
+                ?>
             </tbody>
         </table>
     </div>
@@ -259,7 +283,7 @@ $consult1 = $con1->fetchColumn();
     </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
+    <script src="assets/js/toastr.js"></script>
     <script type="text/javascript">
         google.charts.load("current", {
             packages: ["corechart"]
@@ -313,6 +337,73 @@ $consult1 = $con1->fetchColumn();
             document.getElementById('clicknocount').value = <?php echo $clickno_counts ?>;
         }
     </script>
+
+    <script>
+        $("#formulario").submit(function(event) {
+            event.preventDefault(); //almacena los datos sin refrescar el sitio web
+
+            var datos = $("#formulario").serialize(); //toma los datos "name" y los lleva a un arreglo
+
+            $("#boton").prop('disabled', true);
+
+            $.ajax({
+                type: "post",
+                url: "send_email.php",
+                data: datos,
+                success: function(texto) {
+
+                    var result = texto.trim();
+
+                    if (result == "ok") {
+                        console.log("Mensajes enviados!");
+
+                    } else {
+                        console.log("Mensajes no enviados!!");
+                        console.log(result);
+                    }
+                }
+            })
+        })
+    </script>
+
+
+    <script>
+        const btn = document.getElementById('boton');
+
+        // ✅ Change button text on click
+        btn.addEventListener('click', function handleClick() {
+            btn.textContent = 'Attack in progress';
+            var col = document.getElementById("boton");
+            col.style.backgroundColor = "blue";
+            col.style.border = "blue";
+
+
+            toastr["success"]("Sending emails...", "Attack in progess");
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        });
+    </script>
+
+
+
+
+
 </body>
 
 </html>

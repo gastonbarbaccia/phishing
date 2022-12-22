@@ -1,16 +1,31 @@
 <?php
 require_once 'dbconexion.php';
 
-$id = $_GET['user_id'];//tabla user
+$id = $_GET['user_id']; //tabla user
+
+$campaign_id = $_GET['cid'];
 
 $smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_uid = user.uid where user.id = ?");
 $smt->execute([$id]);
 $row = $smt->fetch();
+if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $uid = $row['user_uid'];
     $date = $row['captured_on'];
+    $username = $row['username'];
     $mail = $row['email_address'];
     $pass = $row['password'];
     $aid = $row['attack_id'];
+}else{
+    $cons = $conexion->prepare("SELECT * from phishing.user where user.id = ?");
+    $cons->execute([$id]);
+    $roww = $cons->fetch();
+
+    $uid = $roww['uid'];
+    $date = '';
+    $username = '';
+    $mail = $roww['email_address'];
+    $pass = '';    
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,48 +54,55 @@ $row = $smt->fetch();
 
     ?>
 
-    <form action="recibe_edit_pass.php" method="POST">
-        <br>
-        <div>
-            <div style="padding-left:3%">
-                <h3>Password captured</h3>
+
+    <br>
+    <div>
+        <div style="padding-left:3%">
+            <h3>Password captured</h3>
+        </div>
+        <hr>
+        <div style="padding-left:3%">
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">UID</label>
+                <div class="col-sm-5">
+                    <input type="text" name="uid" class="form-control" id="uid" value="<?php echo $uid ?>" readonly disabled>
+                </div>
             </div>
-            <hr>
-            <div style="padding-left:3%">
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">UID</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="uid" value="<?php echo $uid?>" readonly>
-                    </div>
-                </div>
 
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Date</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="date" value="<?php echo $date?>" readonly>
-                    </div>
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="date" id="date" value="<?php echo $date ?>" readonly disabled>
                 </div>
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="email" value="<?php echo $mail ?>" readonly>
-                    </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="mail" id="email" value="<?php echo $mail ?>" readonly disabled>
                 </div>
+            </div>
 
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Password captured</label>
-                    <div class="col-sm-5">
-                        <input type="password" class="form-control" id="password_captured" name="password_captured" value="<?php echo $pass?>" readonly>
-                        <input type="checkbox" onclick="myFunction()">Show Password
-                    </div>
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Nombre del usuario</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="username" id="username" value="<?php echo $username ?>" readonly disabled>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Password captured</label>
+                <div class="col-sm-5">
+                    <input type="password" class="form-control" id="password_captured" name="password_captured" value="<?php echo $pass ?>" readonly disabled>
+                    <input type="checkbox" onclick="myFunction()">Show Password
                 </div>
             </div>
         </div>
+    </div>
 
-        <div style="padding-left:3%;margin-bottom:5%">
-            <a href="campaing_details.php?id=<?php echo $aid?>" class="btn btn-primary">Go Back</a>
-        </div>
-    </form>
+    <div style="padding-left:3%;margin-bottom:5%">
+        <a href="campaing_details.php?id=<?php echo $id ?>&cid=<?php echo $campaign_id ?>" class="btn btn-primary">Go Back</a>
+    </div>
+
 
     <?php
 

@@ -108,7 +108,7 @@ foreach ($user_id as $uid) {
     $mail->Username   = $smtp_username;            // SMTP account username example
     $mail->Password   = $smtp_password;            // SMTP account password example
 
-    $mail->setFrom('tobiasguerraseginf@gmail.com', $display);
+    $mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', $display);
 
     // Content
     $mail->isHTML(true);
@@ -132,6 +132,7 @@ foreach ($user_id as $uid) {
         $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
         $sent_email_ok++;
         $mail->clearAddresses();
+        //$mail->ClearAllRecipients();
     }
 
   }

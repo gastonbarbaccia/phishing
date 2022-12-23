@@ -14,10 +14,10 @@ $mail->Host       = "in-v3.mailjet.com";    // SMTP server example
 //$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
 $mail->SMTPAuth   = true;                  // enable SMTP authentication
 $mail->Port       = 587;                    // set the SMTP port for the GMAIL server
-$mail->Username   = "3aa698d4cd8be5e66d472936cca34626";            // SMTP account username example
-$mail->Password   = "d5ae76ec81d3c6fd52af3ff04c608960";            // SMTP account password example
+$mail->Username   = "0d43e874a4b0caa04c2becd6b05e2fbb";            // SMTP account username example
+$mail->Password   = "52ac91dce0a147b5a843836e55751925";            // SMTP account password example
 
-$mail->setFrom('tobiasguerraseginf@gmail.com', 'Gaston Barbaccia');
+$mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', 'Gaston Barbaccia');
 
 $mail->addBCC('gastonbarbaccia@hotmail.com', 'Gaston Barbaccia');
 

@@ -130,15 +130,22 @@ $consult1 = $con1->fetchColumn();
 
                                 if ($astatus == 'In progress...') {
                                 ?>
-                                    <button id="boton" type="submit" class="btn btn-primary" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                    <!--<button id="boton" type="submit" class="btn btn-primary" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php // echo $astatus; 
+                                                                                                                                                                                                        ?></button>-->
+
+                                    <button class="btn btn-primary" type="button" disabled style="width: 50%;" id="boton2" name="boton2">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        In progress...
+                                    </button>
+
                                 <?php
                                 } else if ($astatus == 'Completed ') {
                                 ?>
-                                    <button id="boton" type="submit" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                    <button id="boton3" type="submit" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
                                 <?php
                                 } else {
                                 ?>
-                                    <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                    <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;' onclick="changeStyle()"></i> <?php echo $astatus; ?></button>
                                 <?php
                                 }
                                 ?>
@@ -353,7 +360,6 @@ $consult1 = $con1->fetchColumn();
         }
     </script>
 
-
     <script>
         $("#formulario").submit(function(event) {
             event.preventDefault(); //almacena los datos sin refrescar el sitio web
@@ -364,49 +370,47 @@ $consult1 = $con1->fetchColumn();
                 type: "post",
                 url: "send_email.php",
                 data: datos,
+                beforeSend: function() {
+
+                    toastr["success"]("Sending emails...", "Attack in progess");
+
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+                    setTimeout(() => {
+                        console.log("Esperando 7 segundos");
+                        location.reload();
+                    }, 7000);
+                    
+
+                },
                 success: function(texto) {
 
                     var result = texto.trim();
 
                     if (result == "ok") {
                         console.log("Mensajes enviados!");
-
                     } else {
                         console.log("Mensajes no enviados!!");
-
                     }
                 }
             })
         })
-    </script>
-
-    <script>
-        const btn = document.getElementById('boton');
-
-        // ✅ Change button text on click
-        btn.addEventListener('click', function handleClick() {
-
-            toastr["success"]("Sending emails...", "Attack in progess");
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            // $("#boton").prop('disabled', true);
-        });
     </script>
 
 </body>

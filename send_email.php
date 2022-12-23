@@ -85,7 +85,7 @@ foreach ($settings_emails as $set_email) {
     echo "<br>";*/
 }
 
-$sent_email_ok= 0;
+$sent_email_ok = 0;
 
 foreach ($user_id as $uid) {
 
@@ -96,6 +96,7 @@ foreach ($user_id as $uid) {
     $email = $uid['email_address'];
 
     $esent = 1;
+
 
     //-------------------------------------------------------------------
     // Settings SMTP
@@ -124,25 +125,25 @@ foreach ($user_id as $uid) {
 
     $mail->Body = $mailContent;
 
-    $mail->addBCC($email,'Seguridad');
+    $mail->addBCC($email, 'Seguridad');
 
-    if(!$mail->send()){
+
+
+    if (!$mail->send()) {
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
-    }else{
+    } else {
         $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id=?";
         $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
         $sent_email_ok++;
     }
+}
 
-  }
-
-
-if($count_users_email == $sent_email_ok ){
+if ($count_users_email == $sent_email_ok) {
     echo "ok";
     $c = 2;
     $complete = "UPDATE phishing.attack SET status=? WHERE id=?";
     $conexion->prepare($complete)->execute([$c, $attack_id]);
-}else{
+} else {
     echo "error";
 }

@@ -19,7 +19,9 @@ $mail->Password   = "d5ae76ec81d3c6fd52af3ff04c608960";            // SMTP accou
 
 $mail->setFrom('tobiasguerraseginf@gmail.com', 'Gaston Barbaccia');
 
-$mail->addAddress('gastonbarbaccia@hotmail.com', 'Gaston Barbaccia');
+$var = 'gastonbarbaccia@hotmail.com';
+
+$mail->addAddress($var, 'Gaston Barbaccia');
 
 
 // Content

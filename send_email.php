@@ -9,7 +9,7 @@ require 'vendor/autoload.php';
 $mail = new PHPMailer();
 
 
-$email_template = $_POST['email_template'];
+//$email_template = $_POST['email_template'];
 $cid = $_POST['campaign_id']; //campaign id
 
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
@@ -54,8 +54,6 @@ $sql4 = "SELECT COUNT(attack_user.id) FROM phishing.attack_user WHERE attack_id 
 $con4 = $conexion->prepare($sql4);
 $con4->execute([$attack_id]);
 $count_users_email = $con4->fetchColumn();
-
-
 
 foreach ($settings_emails as $set_email) {
 
@@ -110,7 +108,7 @@ foreach ($user_id as $uid) {
     $mail->Username   = $smtp_username;            // SMTP account username example
     $mail->Password   = $smtp_password;            // SMTP account password example
 
-    $mail->setFrom('tobiasguerraseginf@gmail.com', $display);
+    $mail->setFrom('canaosvaldo3@gmail.com', $display);
 
     // Content
     $mail->isHTML(true);
@@ -124,7 +122,7 @@ foreach ($user_id as $uid) {
 
     $mail->Body = $mailContent;
 
-    $mail->addBCC($email,'Seguridad');
+    $mail->addAddress($email,'Seguridad');
 
     if(!$mail->send()){
         echo 'Message could not be sent.';
@@ -133,10 +131,10 @@ foreach ($user_id as $uid) {
         $sent = "UPDATE phishing.attack_user SET email_sent=? , captured_on = ? WHERE attack_id=?";
         $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
         $sent_email_ok++;
+        $mail->clearAddresses();
     }
 
   }
-
 
 if($count_users_email == $sent_email_ok ){
     echo "ok";

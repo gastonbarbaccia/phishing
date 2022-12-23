@@ -26,6 +26,7 @@ if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $mail = $roww['email_address'];
     $pass = '';    
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

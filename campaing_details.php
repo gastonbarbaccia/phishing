@@ -360,7 +360,7 @@ $consult1 = $con1->fetchColumn();
         }
     </script>
 
-    <script>
+<script>
         $("#formulario").submit(function(event) {
             event.preventDefault(); //almacena los datos sin refrescar el sitio web
 
@@ -416,7 +416,6 @@ $consult1 = $con1->fetchColumn();
 
         })
     </script>
-
 </body>
 
 </html>

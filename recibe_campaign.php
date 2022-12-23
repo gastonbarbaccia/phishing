@@ -23,7 +23,7 @@ $from = $_POST['from'];
 $display = $_POST['display'];
 $phishingURL= $_POST['phishing_URL'];
 
-print_r($_POST);
+//print_r($_POST);
 $cons = "SELECT id FROM phishing.mygroup where name = ? ";
 $con = $conexion->prepare($cons);
 $con->execute([$group]);
@@ -40,8 +40,8 @@ $conexion->prepare($sql)->execute([$name, $description, $is_active, $consult, $c
 $camp_id = $conexion->lastInsertId();
 
 $sql2 = "INSERT INTO phishing.email_settings (smtp_server, smtp_username, smtp_password, smtp_port, subject, email_from, display, phishing_url, campaign_id) VALUES (?,?,?,?,?,?,?,?,?)";
-$conexion->prepare($sql2)->execute([ $server, $username, $passw, $port, $subject, $from, $display, $phishingURL, intval($camp_id)]);
-
+$s = $conexion->prepare($sql2)->execute([ $server, $username, $passw, $port, $subject, $from, $display, $phishingURL, intval($camp_id)]);
+//print_r($s);
 header('Location:index.php');
 
 ?>

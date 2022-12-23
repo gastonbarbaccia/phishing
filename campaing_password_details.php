@@ -84,7 +84,7 @@ if($row !== false){ //si no se creo el ataque, esta vacio y da error
             </div>
 
             <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Nombre del usuario</label>
+                <label for="staticEmail" class="col-sm-2 col-form-label">Username captured</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" name="username" id="username" value="<?php echo $username ?>" readonly disabled>
                 </div>

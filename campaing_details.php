@@ -396,7 +396,7 @@ $consult1 = $con1->fetchColumn();
                         console.log("Esperando 7 segundos");
                         location.reload();
                     }, 7000);
-                    
+
 
                 },
                 success: function(texto) {
@@ -405,11 +405,15 @@ $consult1 = $con1->fetchColumn();
 
                     if (result == "ok") {
                         console.log("Mensajes enviados!");
+
                     } else {
                         console.log("Mensajes no enviados!!");
+
                     }
                 }
             })
+
+
         })
     </script>
 

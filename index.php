@@ -39,7 +39,7 @@ require_once 'dbconexion.php';
           <th scope="col">Description</th>
           <th scope="col">Phishing URL</th>
           <th scope="col">Options</th>
-          <th scope="col">Preview</th>
+          <th scope="col">View</th>
           <th scope="col">Status</th>
         </tr>
       </thead>

@@ -60,6 +60,17 @@ $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
 $consult1 = $con1->fetchColumn();
+
+$cons_ = "SELECT phishing_url FROM phishing.email_settings  WHERE email_settings.campaign_id= ?";
+$cons_ = $conexion->prepare($cons_);
+$cons_->execute([$cid]);
+$_resultado = $cons_->fetchColumn();
+
+
+$stmt = $conexion->prepare('select COUNT(user.id) from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+$stmt->execute([$attack_id]);
+$user_count = $stmt->fetchColumn();
+
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +80,7 @@ $consult1 = $con1->fetchColumn();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaing Details</title>
+    <title>Report <?php echo $consult ?></title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -80,14 +91,26 @@ $consult1 = $con1->fetchColumn();
 
 
 
-
 <body>
 
-    <?php
-
-    include 'layouts/nav.php';
-
-    ?>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php"><img src="assets/img/logo.png" width="100px" height="50px"> Phishing Platform</a>
+            <button id="navbartoggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup" name="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="http://localhost/phishingBE/index.php">Dashboard</a>
+                    <a class="nav-link" href="http://localhost/phishingBE/campaing.php">Campaings</a>
+                    <a class="nav-link" href="http://localhost/phishingBE/users_groups.php">Users & Groups</a>
+                    <a class="nav-link" href="http://localhost/phishingBE/email_templates.php">Email template</a>
+                    <a class="nav-link" href="http://localhost/phishingBE/phishing_url_templates.php">Phishing URL</a>
+                    <button class="btn btn-secondary" style="margin-left: 200px;" onclick="window.print()"><i class='fa fa-print' aria-hidden='true' style='font-size:20px;padding-right:10px'></i> Print report</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
 
 
@@ -108,90 +131,68 @@ $consult1 = $con1->fetchColumn();
         <tbody>
             <tr>
                 <td>
-                    <div style="padding-left:3%;padding-bottom:1%;">
-                        <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Campaign:</b></label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="name" name="campaign_name" value="<?php echo $consult; ?>" readonly disabled>
+                    <div style="padding-left:10%;padding-bottom:8%;">
+                        <div class="mb-3">
+                            <label for="staticEmail" class="col-sm-5 col-form-label"><b>Campaign name:</b></label>
+                            <div>
+                                <label style="border: 0;"><?php echo $consult; ?></label>
                             </div>
                         </div>
-                        <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-2 col-form-label" style="color:red"><b>Launched: </b></label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult1; ?>" readonly disabled>
+                        <div class="mb-3">
+                            <label for="staticEmail" class="col-sm-5 col-form-label"><b>Campaign launched: </b></label>
+                            <div>
+                                <label style="border: 0;"><?php echo $consult1; ?></label>
                             </div>
                         </div>
                     </div>
+                    </div>
                 </td>
                 <td>
-
-                    <div style="padding-left:10%;">
-                        <div class="mb-3 row" style="padding-left:20%;">
-                            <!-- Test de ajax -->
-                            <form id="formulario" name="formulario">
-                                <input id="campaign_id" name="campaign_id" value="<?php echo $cid ?>" hidden>
-                                <input id="email_template" name="email_template" value="<?php echo $consult00 ?>" hidden>
-                                <?php
-
-                                if ($astatus == 'In progress...') {
-                                ?>
-                                    <!--<button id="boton" type="submit" class="btn btn-primary" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php // echo $astatus; 
-                                                                                                                                                                                                        ?></button>-->
-
-                                    <button class="btn btn-primary" type="button" disabled style="width: 50%;" id="boton2" name="boton2">
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                        In progress...
-                                    </button>
-
-                                <?php
-
-                                } else if ($astatus == 'Completed ') {
-                                ?>
-                                    <button id="boton3" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
-
-                                <?php
-                                } else if ($astatus == 'Error sending emails') {
-                                ?>
-                                    <button id="boton4" class="btn btn-warning" style="width: 50%;margin-bottom: 15%;" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true" style='font-size:20px;'></i> <?php echo $astatus; ?></button>
-                                <?php
-
-                                } else {
-                                ?>
-                                    <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
-
-                                <?php
-                                }
-                                ?>
-                            </form>
-
-                        </div>
-                        <?php
-                        if ($astatus == 'Completed ') {
-                        ?>
-                            <div class="mb-3 row" style="padding-left:20%;">
-                                <div class="col-sm-6">
-                                    <a href="report.php?id=<?php echo $cid ?>" class="btn btn-danger" style="width: 100%;"><i class='fa fa-bar-chart' aria-hidden='true' style='font-size:20px;padding-right:10px'></i> Generate report</a>
-                                </div>
+                    <div style="padding-left:3%;padding-bottom:10%;">
+                        <div class="mb-3">
+                            <label for="staticEmail" class="col-sm-5 col-form-label"><b>Target group: </b></label>
+                            <div>
+                                <label style="border: 0;"><?php echo $consult2; ?></label>
                             </div>
-                        <?php
+                        </div>
 
-                        }
-                        ?>
+                        <div class="mb-3">
+                            <label for="staticEmail" class="col-sm-5 col-form-label"><b>Email template: </b></label>
+                            <div>
+                                <label style="border: 0;"><?php echo $consult00; ?></label>
+                            </div>
+                        </div>
 
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left:3%;padding-bottom:8%;">
+                        <div class="mb-3">
+                            <label for="staticEmail" class="col-sm-5 col-form-label"><b>URL Phishing: </b></label>
+                            <div>
+                                <label style="border: 0;"><a href="<?php echo 'http://' . $_resultado ?>" target="blank"><?php echo $_resultado; ?></a></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staticEmail" class="col-sm-5 col-form-label"><b>Total targets : </b></label>
+                            <div>
+                                <label style="border: 0;"><?php echo $user_count; ?></label>
+                            </div>
+                        </div>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-
+    <hr>
     <table>
         <tbody>
             <tr>
                 <td>
-                    <div id="piechart_3d_2" style="width: 650px; height: 300px;"></div>
+                    <div id="piechart_3d_2" style="width: 450px; height: 300px;"></div>
                 </td>
                 <td>
-                    <div id="piechart_3d_1" style="width: 650px; height: 300px;"></div>
+                    <div id="piechart_3d_1" style="width: 450px; height: 300px;"></div>
                 </td>
             </tr>
         </tbody>
@@ -213,32 +214,14 @@ $consult1 = $con1->fetchColumn();
 
 
     <hr>
-    <div style="padding-left:1%">
 
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Target group: </b></label>
-            <div class="col-sm-5" style="margin-left:-7%">
-                <input type="text" class="form-control" id="target_group" name="target_group" value="<?php echo $consult2; ?>" readonly disabled>
-            </div>
-        </div>
 
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label"><b>Email template: </b></label>
-            <div class="col-sm-5" style="margin-left:-7%">
-                <input type="text" class="form-control" id="email_template" name="email_template" value="<?php echo $consult00; ?>" readonly disabled>
-            </div>
-        </div>
-
-    </div>
     <div style="margin: 3%">
-        <table class="table table-hover" id="datatable">
+        <h3 id="link_clicked_count"></h3>
+        <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Victim UID</th>
                     <th scope="col">Email Address</th>
-                    <th scope="col">Email sent?</th>
-                    <th scope="col">Link clicked?</th>
-                    <th scope="col">Password seen?</th>
                 </tr>
             </thead>
             <tbody>
@@ -249,16 +232,9 @@ $consult1 = $con1->fetchColumn();
                     $roww = $stmt->fetchAll();
 
                     foreach ($roww as $row) {
-                        $users_id = $row['id'];
-                        $uid = $row["uid"];
-                        $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
+
                         $email_ad = $row['email_address'];
 
-                        if ($row["email_sent"] == 0) {
-                            $sent = 'no';
-                        } else {
-                            $sent = 'yes';
-                        }
                         if ($row["link_clicked"] == 0) {
                             $click = 'no';
                             $clickno_counts++;
@@ -273,30 +249,44 @@ $consult1 = $con1->fetchColumn();
                             $pass = 'yes';
                             $pass_counts++;
                         }
-                        echo "<tr>" .
-                            "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" .
-                            "<td>" . $email_ad . "</td>" .
-                            "<td>" . $sent . "</td>" .
-                            "<td>" . $click . "</td>" .
-                            "<td>" . $pass . "</td>" .
-                            "</tr>";
-                    }
-                } else {
-                    foreach ($user_id as $ui) {
-                        $uir = $ui['id'];
-                        $uid = $ui['uid'];
-                        $href = "campaing_password_details.php?user_id=$uir&cid=$cid";
-                        $email_ad = $ui['email_address'];
 
-                        echo "<tr>" .
-                            "<td>" . "<a href='$href'>$uid<strong></strong></a></td>" .
-                            "<td>" . $email_ad . "</td>" .
-                            "<td>" . '' . "</td>" .
-                            "<td>" . '' . "</td>" .
-                            "<td>" . '' . "</td>" .
-                            "</tr>";
+                        if ($row["link_clicked"] == 1) {
+                            echo "<tr><td>" . $email_ad . "</td>";
+                        }
                     }
                 }
+
+                ?>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div style="margin: 3%">
+        <h3 id="password_exposed_count"></h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Email Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($attack_exist) {
+                    $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+                    $stmt->execute([$attack_id]);
+                    $roww = $stmt->fetchAll();
+
+                    foreach ($roww as $row) {
+
+                        $email_ad = $row['email_address'];
+
+                        if ($row["password_seen"] == 1) {
+                            echo "<tr><td>" . $email_ad . "</td>";
+                        }
+                    }
+                }
+
                 ?>
             </tbody>
         </table>
@@ -357,6 +347,8 @@ $consult1 = $con1->fetchColumn();
             chart.draw(data, options);
             document.getElementById('passcount').value = <?php echo $pass_counts ?>;
             document.getElementById('passnocount').value = <?php echo $passno_counts ?>;
+
+            document.getElementById("password_exposed_count").innerHTML = "Password exposed: <?php echo $pass_counts ?>";
         }
     </script>
 
@@ -384,6 +376,8 @@ $consult1 = $con1->fetchColumn();
             chart.draw(data, options);
             document.getElementById('clickcount').value = <?php echo $click_counts ?>;
             document.getElementById('clicknocount').value = <?php echo $clickno_counts ?>;
+
+            document.getElementById("link_clicked_count").innerHTML = "Link clicked: <?php echo $click_counts ?>";
         }
     </script>
 
@@ -443,11 +437,13 @@ $consult1 = $con1->fetchColumn();
 
         })
     </script>
-    <script>
-        function print_pdf() {
-            window.print();
-        }
-    </script>
+<script>
+    function print_pdf() {
+        window.print();
+    }
+
+</script>
+
 </body>
 
 </html>

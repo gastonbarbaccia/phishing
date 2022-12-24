@@ -142,6 +142,9 @@ $consult1 = $con1->fetchColumn();
                                     </button>
 
                                 <?php
+
+                                    sleep(1);
+
                                 } else if ($astatus == 'Completed ') {
                                 ?>
                                     <button id="boton3" type="submit" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>

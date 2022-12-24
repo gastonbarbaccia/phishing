@@ -87,17 +87,17 @@ require_once 'dbconexion.php';
                             "<td>".$row["id"]."</td>".
                             "<td>".$row["name"]."</td>".
                             "<td>".$row["description"]."</td>".
-                            '<td>'. "<a href='users_groups_targets.php?id=$id'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>".
+                            '<td>'. 
+                            "<a href='add_victim.php?id=$id'><i class='fa fa-plus' aria-hidden='true' style='color: #009988;'></i></a>"
+                            ."<a href='users_groups_targets.php?id=$id'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>".
                             "<td>" . "<a href='users_groups_edit.php?id=$id' style='padding-right:3%'><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:20px;padding-left:10%;color:black'></i></a>" . "  ".
                             '<a href="users_groups_delete.php?id='.$id.'"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px;padding-left:10%;color:#B02203"></i></a>' . '</td>' .
                             "</tr>";
                    } 
-                  
-                }?>                              
+              }?>                              
             </tbody>
         </table>
     </div>
-
     <style>
         footer {
 

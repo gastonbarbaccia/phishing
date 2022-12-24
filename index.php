@@ -1,5 +1,6 @@
 <?php
 require_once 'dbconexion.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +40,7 @@ require_once 'dbconexion.php';
           <th scope="col">Phishing URL</th>
           <th scope="col">Options</th>
           <th scope="col">Preview</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -52,7 +54,22 @@ require_once 'dbconexion.php';
           $cons_ = $conexion->prepare($cons_);
           $cons_->execute([$id]);
           $_resultado = $cons_->fetchColumn();   
-       
+
+          $cons22 = "SELECT status FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ?";
+          $con22 = $conexion->prepare($cons22);
+          $con22->execute([$id]);
+          $status = $con22->fetchColumn();
+          
+          if ($status == 1) {
+            $astatus = 'In progress';
+            $color = 'blue';
+          } elseif ($status == 2) {
+            $astatus = 'Completed ';
+            $color = 'green';
+          } else {
+            $astatus = 'Launch Attack! ';
+            $color = 'red';
+          }       
         
           if ($row["deleted"] != 'yes') {
 
@@ -66,9 +83,9 @@ require_once 'dbconexion.php';
               "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:20px;padding-left:10%;color:black'></i></a> " . ' ' .
               "<a href='delete_campaign.php?id=$id'><i class='fa fa-trash' aria-hidden='true' style='font-size:20px;padding-left:10%;color:#B02203'></i></a>" .
               "</td>" .
-              "<td>" . "<a href='campaing_details.php?id=$id'style='color:black'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>"
+              "<td>" . "<a href='campaing_details.php?id=$id'style='color:black'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>".
+              "<td>" .'<i id="dot" class="fa fa-circle" aria-hidden="true" style="color: ' . $color . ';"></i>'.' '. $astatus . "</td>" 
               . "</tr>";
-
             } 
  
         } ?>
@@ -91,7 +108,6 @@ require_once 'dbconexion.php';
       $('#datatable').DataTable();
     });
   </script>
-
 </body>
 
 </html>

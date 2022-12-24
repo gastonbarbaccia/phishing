@@ -87,6 +87,8 @@ $consult1 = $con1->fetchColumn();
 
     ?>
 
+    
+
     <br>
 
     <style>
@@ -120,6 +122,7 @@ $consult1 = $con1->fetchColumn();
                     </div>
                 </td>
                 <td>
+                    
                     <div style="padding-left:10%;padding-bottom:13%;">
                         <div class="mb-3 row" style="padding-left:20%;">
                             <!-- Test de ajax -->
@@ -142,14 +145,17 @@ $consult1 = $con1->fetchColumn();
                                 } else if ($astatus == 'Completed ') {
                                 ?>
                                     <button id="boton3" type="submit" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                    
                                 <?php
                                 } else {
                                 ?>
                                     <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;' onclick="changeStyle()"></i> <?php echo $astatus; ?></button>
+                                 
                                 <?php
                                 }
                                 ?>
                             </form>
+                            
                         </div>
                     </div>
                 </td>
@@ -399,7 +405,7 @@ $consult1 = $con1->fetchColumn();
 
 
                 },
-                success: function(texto) {
+            /*    success: function(texto) {
 
                     var result = texto.trim();
 
@@ -410,12 +416,17 @@ $consult1 = $con1->fetchColumn();
                         console.log("Mensajes no enviados!!");
 
                     }
-                }
+                }*/
             })
 
 
         })
     </script>
+    <script>
+    function print_pdf() {
+        window.print();
+    }
+</script>
 </body>
 
 </html>

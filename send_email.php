@@ -132,7 +132,7 @@ foreach ($user_id as $uid) {
         $conexion->prepare($sent)->execute([$esent, null, $attack_id]);
         $sent_email_ok++;
         $mail->clearAddresses();
-        //$mail->ClearAllRecipients();
+       
     }
 
   }

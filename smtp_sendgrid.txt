@@ -16,3 +16,10 @@ Ports
 
 Username	apikey
 Password	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
+
+
+                    <div class="mb-3 row">
+                        <div style="padding-left: 28.5%;">
+                            <button onclick="window.print()" class="btn btn-danger" style="width: 50%;">Print</button>
+                        </div>
+                    </div>

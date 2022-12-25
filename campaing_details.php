@@ -60,6 +60,12 @@ $cons1 = "SELECT date_time FROM phishing.attack JOIN phishing.campaign ON campa_
 $con1 = $conexion->prepare($cons1);
 $con1->execute([$cid]);
 $consult1 = $con1->fetchColumn();
+
+$cons000 = "SELECT email_template.id FROM phishing.email_template join phishing.campaign on email_template.id = campaign.email_template_id where campaign.id = ? ";
+$con000 = $conexion->prepare($cons000);
+$con000->execute([$cid]);
+$id_email_template = $con000->fetchColumn();
+
 ?>
 
 <!DOCTYPE html>
@@ -130,7 +136,7 @@ $consult1 = $con1->fetchColumn();
                             <!-- Test de ajax -->
                             <form id="formulario" name="formulario">
                                 <input id="campaign_id" name="campaign_id" value="<?php echo $cid ?>" hidden>
-                                <input id="email_template" name="email_template" value="<?php echo $consult00 ?>" hidden>
+                                <input id="email_template" name="email_template" value="<?php echo $id_email_template ?>" hidden>
                                 <?php
 
                                 if ($astatus == 'In progress...') {
@@ -138,7 +144,7 @@ $consult1 = $con1->fetchColumn();
                                     <!--<button id="boton" type="submit" class="btn btn-primary" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php // echo $astatus; 
                                                                                                                                                                                                         ?></button>-->
 
-                                    <button class="btn btn-primary" type="button" disabled style="width: 50%;" id="boton2" name="boton2">
+                                    <button class="btn btn-primary" type="button" disabled style="width: 50%;margin-bottom: 17%;" id="boton2" name="boton2">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         In progress...
                                     </button>
@@ -157,7 +163,7 @@ $consult1 = $con1->fetchColumn();
 
                                 } else {
                                 ?>
-                                    <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
+                                    <button id="boton" type="submit" class="btn btn-danger" style="width: 50%;margin-bottom: 15%;"><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
 
                                 <?php
                                 }

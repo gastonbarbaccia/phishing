@@ -9,7 +9,16 @@ require 'vendor/autoload.php';
 $mail = new PHPMailer();
 
 
-//$email_template = $_POST['email_template'];
+//--------- Contenido del cuerpo del email ---------------------------
+$email_template = $_POST['email_template'];
+
+$cons5 = "SELECT content FROM phishing.email_template where id = ? ";
+$con5 = $conexion->prepare($cons5);
+$con5->execute([$email_template]);
+$content_email = $con5->fetchColumn();
+
+//---------------------------------------------------------------------
+
 $cid = $_POST['campaign_id']; //campaign id
 
 $cons1 = "SELECT group_id FROM phishing.campaign where id = ? ";
@@ -55,6 +64,7 @@ $con4 = $conexion->prepare($sql4);
 $con4->execute([$attack_id]);
 $count_users_email = $con4->fetchColumn();
 
+
 foreach ($settings_emails as $set_email) {
 
     $smtp_server = $set_email['smtp_server'];
@@ -66,21 +76,6 @@ foreach ($settings_emails as $set_email) {
     $email_from = $set_email['email_from'];
     $display = $set_email['display'];
 
-    /*
-    echo "smtp server: ".$smtp_server;
-    echo "<br>";
-    echo "smtp username: ".$smtp_username;
-    echo "<br>";
-    echo "smtp password: ".$smtp_password;
-    echo "<br>";
-    echo "smtp port: ".$smtp_port;
-    echo "<br>";
-    echo "subject: ".$subject;
-    echo "<br>";
-    echo "email_from: ".$email_from;
-    echo "<br>";
-    echo "display: ".$display;
-    echo "<br>";*/
 }
 
 $sent_email_ok = 0;
@@ -121,7 +116,7 @@ foreach ($user_id as $uid) {
     $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
     <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
     <br>
-    <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid'>Click en el siguiente link</a>";
+    <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
 
     $mail->Body = $mailContent;
 

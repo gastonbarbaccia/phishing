@@ -106,7 +106,7 @@ $user_count = $stmt->fetchColumn();
                     <a class="nav-link" href="http://localhost/phishingBE/users_groups.php">Users & Groups</a>
                     <a class="nav-link" href="http://localhost/phishingBE/email_templates.php">Email template</a>
                     <a class="nav-link" href="http://localhost/phishingBE/phishing_url_templates.php">Phishing URL</a>
-                    <button class="btn btn-secondary" style="margin-left: 200px;" onclick="window.print()"><i class='fa fa-print' aria-hidden='true' style='font-size:20px;padding-right:10px'></i> Print report</button>
+                    <button class="btn btn-secondary" style="margin-left: 200px;" id="button_print"><i class='fa fa-print' aria-hidden='true' style='font-size:20px;padding-right:10px'></i> Print report</button>
                 </div>
             </div>
         </div>
@@ -220,7 +220,7 @@ $user_count = $stmt->fetchColumn();
         <h3 id="link_clicked_count"></h3>
         <table class="table table-hover">
             <thead>
-                <tr>
+                <tr id="table_email_2">
                     <th scope="col">Email Address</th>
                 </tr>
             </thead>
@@ -266,7 +266,7 @@ $user_count = $stmt->fetchColumn();
         <h3 id="password_exposed_count"></h3>
         <table class="table table-hover">
             <thead>
-                <tr>
+                <tr id="table_email_1">
                     <th scope="col">Email Address</th>
                 </tr>
             </thead>
@@ -297,6 +297,7 @@ $user_count = $stmt->fetchColumn();
 
             position: absolute;
             width: 100%;
+
 
         }
     </style>
@@ -349,6 +350,12 @@ $user_count = $stmt->fetchColumn();
             document.getElementById('passnocount').value = <?php echo $passno_counts ?>;
 
             document.getElementById("password_exposed_count").innerHTML = "Password exposed: <?php echo $pass_counts ?>";
+
+            var pass_exp = <?php echo $pass_counts; ?>
+
+            if (pass_exp == 0) {
+                $('#table_email_1').hide();
+            }
         }
     </script>
 
@@ -378,6 +385,12 @@ $user_count = $stmt->fetchColumn();
             document.getElementById('clicknocount').value = <?php echo $clickno_counts ?>;
 
             document.getElementById("link_clicked_count").innerHTML = "Link clicked: <?php echo $click_counts ?>";
+
+            var click_count = <?php echo $click_counts; ?>
+
+            if (click_count == 0) {
+                $('#table_email_2').hide();
+            }
         }
     </script>
 
@@ -437,12 +450,12 @@ $user_count = $stmt->fetchColumn();
 
         })
     </script>
-<script>
-    function print_pdf() {
-        window.print();
-    }
-
-</script>
+    <script>
+        $('#button_print').click(function() {
+            $('#navbartoggler').hide();
+            window.print();
+        });
+    </script>
 
 </body>
 

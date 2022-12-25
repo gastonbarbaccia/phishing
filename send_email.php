@@ -5,6 +5,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once 'dbconexion.php';
 require 'vendor/autoload.php';
 
+include 'templates/pages_phishing.php';
+
 
 $mail = new PHPMailer();
 
@@ -64,6 +66,7 @@ $con4 = $conexion->prepare($sql4);
 $con4->execute([$attack_id]);
 $count_users_email = $con4->fetchColumn();
 
+$phishing_url  = '';
 
 foreach ($settings_emails as $set_email) {
 
@@ -75,6 +78,7 @@ foreach ($settings_emails as $set_email) {
     $subject = $set_email['subject'];
     $email_from = $set_email['email_from'];
     $display = $set_email['display'];
+    $phishing_url = $set_email['phishing_url'];
 
 }
 
@@ -113,10 +117,18 @@ foreach ($user_id as $uid) {
 
     $mail->Subject = $subject;
 
-    $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
-    <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
-    <br>
-    <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
+    if($email_template == 1){
+        $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
+        <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
+        <br>
+        <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
+    }else{
+        $url_attack = 'http://'.$phishing_url.'/?uid='.$vid;
+        $mailContent = netflix($url_attack); 
+    
+    }
+
+   
 
     $mail->Body = $mailContent;
 

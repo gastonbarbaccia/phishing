@@ -110,7 +110,8 @@ foreach ($user_id as $uid) {
     $mail->Username   = $smtp_username;            // SMTP account username example
     $mail->Password   = $smtp_password;            // SMTP account password example
 
-    $mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', $display);
+    #$mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', $display);
+    $mail->setFrom('tobiasguerraseginf@gmail.com', $display);
 
     // Content
     $mail->isHTML(true);

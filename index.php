@@ -87,7 +87,7 @@ require_once 'dbconexion.php';
                 "<a href='delete_campaign.php?id=$id'><i class='fa fa-trash' aria-hidden='true' style='font-size:20px;padding-left:10%;color:#B02203'></i></a>" .
                 "</td>" .
                 "<td>" . "<a href='campaing_details.php?id=$id'style='color:black'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>".
-                "<td>" .'<i id="dot" class="fa fa-circle" aria-hidden="true" style="color: ' . $color . ';"></i>'.' '. $astatus . "</td>" 
+                "<td>" ."<a href='campaing_details.php?id=$id'style='color:black'><i id='dot' class='fa fa-circle' aria-hidden='true' style='color: $color;'></i>".' '." $astatus</td>" 
                 . "</tr>";
               } 
 

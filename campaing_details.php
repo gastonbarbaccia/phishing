@@ -170,7 +170,7 @@ $consult1 = $con1->fetchColumn();
                         ?>
                             <div class="mb-3 row" style="padding-left:20%;">
                                 <div class="col-sm-6">
-                                    <a href="report.php?id=<?php echo $cid ?>" class="btn btn-danger" style="width: 100%;"><i class='fa fa-bar-chart' aria-hidden='true' style='font-size:20px;padding-right:10px'></i> Generate report</a>
+                                    <a href="report.php?id=<?php echo $cid ?>" class="btn btn-danger" style="width: 100%;" target="blank"><i class='fa fa-bar-chart' aria-hidden='true' style='font-size:20px;padding-right:10px'></i> Generate report</a>
                                 </div>
                             </div>
                         <?php

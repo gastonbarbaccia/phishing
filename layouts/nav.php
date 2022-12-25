@@ -1,7 +1,8 @@
 <?php
 
-$url = "http://ec2-18-117-162-122.us-east-2.compute.amazonaws.com/";
+include 'constants.php';
 
+$url = $public_url;
 ?>
 
 <nav class="navbar navbar-expand-lg bg-light">

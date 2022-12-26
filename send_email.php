@@ -33,6 +33,18 @@ $con22 = $conexion->prepare($cons22);
 $con22->execute([$cid]);
 $status = $con22->fetchColumn();
 
+$gr = "SELECT attack_id,email_address FROM phishing.user JOIN phishing.attack_user ON phishing.user.uid=phishing.attack_user.user_uid JOIN phishing.attack ON phishing.attack_user.attack_id=phishing.attack.id where attack.mygroup_id = ?";
+$con22 = $conexion->prepare($gr);
+$con22->execute([$group_id]);
+$grid = $con22->fetchAll();
+foreach($grid as $gi){
+        $uniqid = uniqid();
+        $emailad = $gi['email_address'];
+        $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
+        $conexion->prepare($sql)->execute([$uniqid, $emailad]);
+}
+
+
 $status = 1;
 $sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,status) VALUES (?,?,?)";
 $conexion->prepare($sql1)->execute([$group_id, $cid, $status]);

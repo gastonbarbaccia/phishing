@@ -5,10 +5,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once 'dbconexion.php';
 require 'vendor/autoload.php';
 
-include 'templates/pages_phishing.php';
-
 
 $mail = new PHPMailer();
+
+include 'templates/pages_phishing.php';
 
 
 //--------- Contenido del cuerpo del email ---------------------------
@@ -109,7 +109,7 @@ foreach ($user_id as $uid) {
     $mail->Username   = $smtp_username;            // SMTP account username example
     $mail->Password   = $smtp_password;            // SMTP account password example
 
-    #$mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', $display);
+
     $mail->setFrom('tobiasguerraseginf@gmail.com', $display);
 
     // Content
@@ -121,7 +121,7 @@ foreach ($user_id as $uid) {
         $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
         <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
         <br>
-        <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
+        <a href='$phishing_url.'/?uid='.$vid' >Click en el siguiente link</a>";
     }else{
         $url_attack = $phishing_url.'/?uid='.$vid;
         $mailContent = netflix($url_attack); 

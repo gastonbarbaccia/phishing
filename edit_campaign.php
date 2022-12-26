@@ -17,7 +17,7 @@ $port = $row['smtp_port'];
 $subj = $row['subject'];
 $from = $row['email_from'];
 $display = $row['display'];
-$url = $row['phishing_url'];
+$url_ = $row['phishing_url'];
 $cid = $row['campaign_id'];
 ?>
 
@@ -192,7 +192,7 @@ $cid = $row['campaign_id'];
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Phishing URL</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="phishing_URL" name="phishing_URL" value="<?php echo $url; ?>">
+                        <input type="text" class="form-control" id="phishing_URL" name="phishing_URL" value="<?php echo $url_; ?>">
                     </div>
                 </div>
             </div>

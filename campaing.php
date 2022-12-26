@@ -123,25 +123,25 @@ $data = $smt->fetchAll();
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Server</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="smtp_server" name="server">
+                        <input type="text" class="form-control" id="smtp_server" name="server" value="in-v3.mailjet.com">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Username</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="smtp_username" name="username">
+                        <input type="text" class="form-control" id="smtp_username" name="username" value="3aa698d4cd8be5e66d472936cca34626">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Password</label>
                     <div class="col-sm-5">
-                        <input type="password" class="form-control" id="smtp_password" name="passw">
+                        <input type="password" class="form-control" id="smtp_password" name="passw" value="d5ae76ec81d3c6fd52af3ff04c608960">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">SMTP Port</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="smtp_port" name="port">
+                        <input type="text" class="form-control" id="smtp_port" name="port" value="587">
                     </div>
                 </div>
             </div>

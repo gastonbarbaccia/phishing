@@ -6,6 +6,6 @@ $deleted = 'yes';
 $sql = "UPDATE phishing.campaign SET campaign.deleted = ? WHERE id = ?";
 $conexion->prepare($sql)->execute([$deleted, $id]);
 
-header('Location:index.php');
+header('Location:dashboard.php');
 
 ?>

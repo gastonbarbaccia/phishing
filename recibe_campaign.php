@@ -42,6 +42,6 @@ $camp_id = $conexion->lastInsertId();
 $sql2 = "INSERT INTO phishing.email_settings (smtp_server, smtp_username, smtp_password, smtp_port, subject, email_from, display, phishing_url, campaign_id) VALUES (?,?,?,?,?,?,?,?,?)";
 $s = $conexion->prepare($sql2)->execute([ $server, $username, $passw, $port, $subject, $from, $display, $phishingURL, intval($camp_id)]);
 //print_r($s);
-header('Location:index.php');
+header('Location:dashboard.php');
 
 ?>

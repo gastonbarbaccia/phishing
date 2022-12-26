@@ -39,4 +39,4 @@ $conexion->prepare($sql)->execute([$name, $description, $active, $consult1, $con
 $sql1 = "UPDATE phishing.email_settings SET smtp_server =?, smtp_username =?, smtp_password =?, smtp_port =?, subject =?, email_from = ?, display =?, phishing_url =? WHERE id=?";
 $conexion->prepare($sql1)->execute([$server, $uname, $pass, $port, $subj, $from, $display, $url, $id]);
 
-header('Location:index.php');
+header('Location:dashboard.php');

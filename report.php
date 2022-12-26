@@ -99,7 +99,7 @@ $user_count = $stmt->fetchColumn();
 
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php"><img src="assets/img/logo.png" width="100px" height="50px"> Phishing Platform</a>
+            <a class="navbar-brand" href="dashboard.php"><img src="assets/img/logo.png" width="100px" height="50px"> Phishing Platform</a>
             <button id="navbartoggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

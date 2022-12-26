@@ -199,7 +199,7 @@ $cid = $row['campaign_id'];
         </div>
         <input type="text" name="id" value="<?php echo $cid ?>" readonly hidden>
         <div style="padding-left:3%;margin-bottom:5%">
-            <a href="index.php" class="btn btn-primary" style="width: 10%;">Cancel</a>
+            <a href="dashboard.php" class="btn btn-primary" style="width: 10%;">Cancel</a>
             <button class="btn btn-primary" style="width: 10%;">Save</button>
         </div>
     </form>

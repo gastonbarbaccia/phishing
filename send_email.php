@@ -69,6 +69,20 @@ $count_users_email = $con4->fetchColumn();
 
 $phishing_url  = '';
 
+
+//-------------- Actualiza los uid de los usuarios en los ataques
+$gr = "SELECT attack_id,email_address FROM phishing.user JOIN phishing.attack_user ON phishing.user.uid=phishing.attack_user.user_uid JOIN phishing.attack ON phishing.attack_user.attack_id=phishing.attack.id where attack.mygroup_id = ?";
+$con22 = $conexion->prepare($gr);
+$con22->execute([$group_id]);
+$grid = $con22->fetchAll();
+foreach($grid as $gi){
+        $uniqid = uniqid();
+        $emailad = $gi['email_address'];
+        $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
+        $conexion->prepare($sql)->execute([$uniqid, $emailad]);
+}
+//----------------------------------------------------------------
+
 foreach ($settings_emails as $set_email) {
 
     $smtp_server = $set_email['smtp_server'];

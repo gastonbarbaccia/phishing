@@ -68,7 +68,7 @@ $cid = $row['campaign_id'];
                         <input type="text" class="form-control" id="description" name="campaign_description" value="<?php echo $row['description'] ?>">
                     </div>
                 </div>
-             <!--   <div class="mb-3 row">
+                <!--   <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Active</label>
                     <div class="col-sm-5">
                         <input type="checkbox" id="is_active" style="margin-top:15px" name="is_active" <?php if ($row['is_active'] == 1) {
@@ -83,9 +83,14 @@ $cid = $row['campaign_id'];
                     <label for="staticEmail" class="col-sm-2 col-form-label">Target</label>
                     <div class="col-sm-5">
                         <select name="group" type="text" class="form-control" id="openssl_verify_mode">
-                            <?php foreach ($data as $row) : ?>
-                                <option><?= $row["name"] ?></option>
-                            <?php endforeach
+                            <?php foreach ($data as $row) :
+                                if ($row['group_deleted'] == '') {
+                            ?>
+                                    <option value="<?= $row["name"] ?>"><?= $row["name"] ?></option>
+                            <?php
+
+                                }
+                            endforeach
                             ?>
                         </select>
                     </div>

@@ -45,4 +45,4 @@ else{
     $conexion->prepare($sql3)->execute([$id, $us_id]);
 }
 echo $ss;
-//header("Location:users_groups.php?id=$id");
+header("Location:users_groups.php?id=$id");

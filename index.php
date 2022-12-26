@@ -28,7 +28,7 @@
         <b><img src="assets/img/logo.png"></b>
         <h3>Phishing Platform</h3>
       </div>
-      <form action="#.php" method="post">
+      <form action="dashboard.php" method="post">
         <div class="input-group mb-3">
           <input name="username" type="text" class="form-control" placeholder="Username">
           <div class="input-group-append">

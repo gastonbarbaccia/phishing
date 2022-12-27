@@ -250,7 +250,7 @@ $id_email_template = $con000->fetchColumn();
             <tbody>
                 <?php
                 if ($attack_exist) {
-                    $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
+                    $stmt = $conexion->prepare('select * from phishing.user JOIN phishing.attack_user ON user.id = attack_user.user_id where attack_id=?');
                     $stmt->execute([$attack_id]);
                     $roww = $stmt->fetchAll();
 

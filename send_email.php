@@ -51,14 +51,14 @@ $conexion->prepare($sql1)->execute([$group_id, $cid, $status]);
 
 $attack_id = $conexion->lastInsertId();
 
-$ugu = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$ugu = "SELECT user_id,uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
 $geu = $conexion->prepare($ugu);
 $geu->execute([$group_id]);
 $user_id = $geu->fetchAll();
 
 foreach ($user_id as $uid) {
-    $au = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
-    $conexion->prepare($au)->execute([$attack_id, $uid[0]]);
+    $au = "INSERT INTO phishing.attack_user (attack_id, user_id, user_uid) VALUES (?,?,?)";
+    $conexion->prepare($au)->execute([$attack_id, $uid[0], $uid[1]]);
 }
 
 

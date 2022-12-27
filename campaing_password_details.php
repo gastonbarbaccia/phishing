@@ -11,9 +11,9 @@ $row = $smt->fetch();
 if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $uid = $row['user_uid'];
     $date = $row['captured_on'];
-    $username = $row['username'];
+    $username = $row['user_username'];
     $mail = $row['email_address'];
-    $pass = $row['password'];
+    $pass = $row['user_password'];
     $aid = $row['attack_id'];
 }else{
     $cons = $conexion->prepare("SELECT * from phishing.user where user.id = ?");

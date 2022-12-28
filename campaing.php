@@ -94,15 +94,15 @@ $data = $smt->fetchAll();
                     <div class="col-sm-5">
                         <select name="template" type="text" class="form-control" id="template">
                             <?php
-                            $smt1 = $conexion->prepare("SELECT name, email_deleted FROM phishing.email_template");
+                            $smt1 = $conexion->prepare("SELECT id,name, email_deleted FROM phishing.email_template");
                             $smt1->execute();
                             $data1 = $smt1->fetchAll();
                             foreach ($data1 as $row) : 
-                            if($row['email_deleted'] == ''){
-                            ?>
-                                <option><?= $row["name"] ?></option>
-                            <?php
-                            }
+                                if($row['email_deleted'] == ''){
+                                ?>
+                                    <option><?= $row["name"]?></option>
+                                <?php
+                                }
                             endforeach 
                             ?>
                         </select>

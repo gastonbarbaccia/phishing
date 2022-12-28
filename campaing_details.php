@@ -250,7 +250,7 @@ $id_email_template = $con000->fetchColumn();
                     $roww = $stmt->fetchAll();
 
                     foreach ($roww as $row) {
-                        $users_id = $row['id'];
+                        $users_id = $row['user_id'];
                         $uid = $row["user_uid"];
                         $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
                         $email_ad = $row['email_address'];

@@ -3,10 +3,10 @@ require_once 'dbconexion.php';
 
 $id = $_GET['user_id']; //tabla user
 
-$campaign_id = $_GET['cid'];
+$campaign_id = $_GET['at'];
 
-$smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_uid = user.uid where user.id = ?");
-$smt->execute([$id]);
+$smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_uid = user.uid where user.id = ? and attack_id=?");
+$smt->execute([$id, $campaign_id]);
 $row = $smt->fetch();
 if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $uid = $row['user_uid'];

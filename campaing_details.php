@@ -12,14 +12,9 @@ $con2 = $conexion->prepare($sql3);
 $con2->execute([$group_id]);
 $user_id = $con2->fetchAll();
 
-$que2 = $conexion->prepare("SELECT * from phishing.attack where attack.campa_id = ?");
+$que2 = $conexion->prepare("SELECT id from phishing.attack where attack.campa_id = ?");
 $que = $que2->execute([$cid]);
-$attack_exist = $que2->fetchColumn();
-
-$cons21 = "SELECT attack.id FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
-$con21 = $conexion->prepare($cons21);
-$con21->execute([$cid]);
-$attack_id = $con21->fetchColumn();
+$attack_exist = $que2->fetchColumn(); //id del ataque si se lanzo
 
 $estado = "SELECT attack.status FROM phishing.attack JOIN phishing.campaign ON attack.campa_id = campaign.id WHERE attack.campa_id= ? ORDER BY attack.id DESC LIMIT 1";
 $status = $conexion->prepare($estado);
@@ -250,13 +245,13 @@ $id_email_template = $con000->fetchColumn();
             <tbody>
                 <?php
                 if ($attack_exist) {
-                    $stmt = $conexion->prepare('select user.id, user.uid,email_address, email_sent, link_clicked, password_seen from phishing.user JOIN phishing.attack_user ON user.uid = attack_user.user_uid where attack_id=?');
-                    $stmt->execute([$attack_id]);
+                    $stmt = $conexion->prepare('select * from phishing.user JOIN phishing.attack_user ON user.id = attack_user.user_id where attack_id=?');
+                    $stmt->execute([$attack_exist]);
                     $roww = $stmt->fetchAll();
 
                     foreach ($roww as $row) {
                         $users_id = $row['id'];
-                        $uid = $row["uid"];
+                        $uid = $row["user_uid"];
                         $href = "campaing_password_details.php?user_id=$users_id&cid=$cid";
                         $email_ad = $row['email_address'];
 

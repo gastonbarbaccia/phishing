@@ -20,6 +20,7 @@ if($row !== false){ //si no se creo el ataque, esta vacio y da error
     $cons->execute([$id]);
     $roww = $cons->fetch();
 
+
     $uid = $roww['uid'];
     $date = '';
     $username = '';

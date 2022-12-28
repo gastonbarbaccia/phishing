@@ -2,14 +2,13 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-
 require_once 'dbconexion.php';
 require 'vendor/autoload.php';
 
+include 'templates/pages_phishing.php';
+
 
 $mail = new PHPMailer();
-
-include 'templates/pages_phishing.php';
 
 
 //--------- Contenido del cuerpo del email ---------------------------
@@ -34,20 +33,32 @@ $con22 = $conexion->prepare($cons22);
 $con22->execute([$cid]);
 $status = $con22->fetchColumn();
 
+$gr = "SELECT attack_id,email_address FROM phishing.user JOIN phishing.attack_user ON phishing.user.uid=phishing.attack_user.user_uid JOIN phishing.attack ON phishing.attack_user.attack_id=phishing.attack.id where attack.mygroup_id = ?";
+$con22 = $conexion->prepare($gr);
+$con22->execute([$group_id]);
+$grid = $con22->fetchAll();
+foreach($grid as $gi){
+        $uniqid = uniqid();
+        $emailad = $gi['email_address'];
+        $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
+        $conexion->prepare($sql)->execute([$uniqid, $emailad]);
+}
+
+
 $status = 1;
 $sql1 = "INSERT INTO phishing.attack (mygroup_id, campa_id,status) VALUES (?,?,?)";
 $conexion->prepare($sql1)->execute([$group_id, $cid, $status]);
 
 $attack_id = $conexion->lastInsertId();
 
-$ugu = "SELECT uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
+$ugu = "SELECT user_id,uid FROM phishing.user JOIN phishing.group_user ON user.id = group_user.user_id WHERE group_id= ?";
 $geu = $conexion->prepare($ugu);
 $geu->execute([$group_id]);
 $user_id = $geu->fetchAll();
 
 foreach ($user_id as $uid) {
-    $au = "INSERT INTO phishing.attack_user (attack_id, user_uid) VALUES (?,?)";
-    $conexion->prepare($au)->execute([$attack_id, $uid[0]]);
+    $au = "INSERT INTO phishing.attack_user (attack_id, user_id, user_uid) VALUES (?,?,?)";
+    $conexion->prepare($au)->execute([$attack_id, $uid[0], $uid[1]]);
 }
 
 
@@ -68,20 +79,6 @@ $con4->execute([$attack_id]);
 $count_users_email = $con4->fetchColumn();
 
 $phishing_url  = '';
-
-
-//-------------- Actualiza los uid de los usuarios en los ataques
-$gr = "SELECT attack_id,email_address FROM phishing.user JOIN phishing.attack_user ON phishing.user.uid=phishing.attack_user.user_uid JOIN phishing.attack ON phishing.attack_user.attack_id=phishing.attack.id where attack.mygroup_id = ?";
-$con22 = $conexion->prepare($gr);
-$con22->execute([$group_id]);
-$grid = $con22->fetchAll();
-foreach($grid as $gi){
-        $uniqid = uniqid();
-        $emailad = $gi['email_address'];
-        $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
-        $conexion->prepare($sql)->execute([$uniqid, $emailad]);
-}
-//----------------------------------------------------------------
 
 foreach ($settings_emails as $set_email) {
 
@@ -124,7 +121,7 @@ foreach ($user_id as $uid) {
     $mail->Username   = $smtp_username;            // SMTP account username example
     $mail->Password   = $smtp_password;            // SMTP account password example
 
-
+    #$mail->setFrom('gaston.barbaccia@externos-ar.cencosud.com', $display);
     $mail->setFrom('tobiasguerraseginf@gmail.com', $display);
 
     // Content
@@ -136,7 +133,7 @@ foreach ($user_id as $uid) {
         $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
         <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
         <br>
-        <a href='$phishing_url/?uid=$vid' >Click en el siguiente link</a>";
+        <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
     }else{
         $url_attack = $phishing_url.'/?uid='.$vid;
         $mailContent = netflix($url_attack); 

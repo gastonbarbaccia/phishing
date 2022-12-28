@@ -5,7 +5,7 @@ $id = $_GET['user_id']; //tabla user
 
 $campaign_id = $_GET['at'];
 
-$smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_uid = user.uid where user.id = ? and attack_id=?");
+$smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_id = user.id where user.id = ? and attack_id=?");
 $smt->execute([$id, $campaign_id]);
 $row = $smt->fetch();
 if($row !== false){ //si no se creo el ataque, esta vacio y da error

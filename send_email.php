@@ -129,19 +129,8 @@ foreach ($user_id as $uid) {
 
     $mail->Subject = $subject;
 
-    if($email_template == 1){
-        $mailContent = "<h1>Send HTML Email using SMTP in PHP</h1>
-        <p>This is a test email I’m sending using SMTP mail server with PHPMailer.</p>
-        <br>
-        <a href='http://localhost/phishingBE/v2/netflix.php?uid=$vid' >Click en el siguiente link</a>";
-    }else{
-        $url_attack = $phishing_url.'/?uid='.$vid;
-        $mailContent = netflix($url_attack); 
-    
-    }
-
-   
-
+    $mailContent= $content_email;
+          
     $mail->Body = $mailContent;
 
     $mail->addAddress($email, 'Seguridad');

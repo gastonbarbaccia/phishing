@@ -112,13 +112,17 @@ $cid = $row['campaign_id'];
                     <div class="col-sm-5">
                         <select name="template" type="text" class="form-control" id="template">
                             <?php
-                            //traer el template seleccionado en la campaña ya creada
-                            $smt1 = $conexion->prepare("SELECT name FROM phishing.email_template");
+                            $smt1 = $conexion->prepare("SELECT id,name, email_deleted FROM phishing.email_template");
                             $smt1->execute();
                             $data1 = $smt1->fetchAll();
-                            foreach ($data1 as $row) : ?>
-                                <option><?= $row["name"] ?></option>
-                            <?php endforeach ?>
+                            foreach ($data1 as $row) : 
+                                if($row['email_deleted'] == ''){
+                                ?>
+                                    <option value="<?= $row["id"]?>"><?= $row["name"]?></option>
+                                <?php
+                                }
+                            endforeach 
+                            ?>
                         </select>
                     </div>
                 </div>

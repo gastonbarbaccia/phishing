@@ -46,7 +46,8 @@ $con = $conexion->prepare($cons);
 $con->execute([$cid]);
 $consult2 = $con->fetchColumn();
 
-$cons00 = "SELECT email_template.name FROM phishing.email_template join phishing.campaign on email_template.id = campaign.email_template_id where campaign.id = ? ";
+
+$cons00 = "SELECT email_template.name FROM phishing.email_template join phishing.campaign on email_template.id = campaign.email_template_id where campaign.id = ?";
 $con00 = $conexion->prepare($cons00);
 $con00->execute([$cid]);
 $consult00 = $con00->fetchColumn();
@@ -149,7 +150,6 @@ $id_email_template = $con000->fetchColumn();
                                 } else if ($astatus == 'Completed ') {
                                 ?>
                                     <button id="boton3" class="btn btn-success" style="width: 50%;" disabled><i class='fa fa-bullseye' aria-hidden='true' style='font-size:20px;'></i> <?php echo $astatus; ?></button>
-
                                 <?php
                                 } else if ($astatus == 'Error sending emails') {
                                 ?>

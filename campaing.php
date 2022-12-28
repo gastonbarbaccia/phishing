@@ -100,7 +100,7 @@ $data = $smt->fetchAll();
                             foreach ($data1 as $row) : 
                                 if($row['email_deleted'] == ''){
                                 ?>
-                                    <option><?= $row["name"]?></option>
+                                    <option value="<?= $row["id"]?>"><?= $row["name"]?></option>
                                 <?php
                                 }
                             endforeach 

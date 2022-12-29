@@ -2,9 +2,15 @@
 require_once 'dbconexion.php';
 $id = $_GET['id'];
 
-$grup = $conexion->prepare("SELECT name FROM phishing.mygroup");
+$grup = $conexion->prepare("SELECT * FROM phishing.mygroup");
 $grup->execute();
 $data = $grup->fetchAll();
+
+$temp = $conexion->prepare("SELECT group_id,email_template_id FROM phishing.campaign join phishing.email_template on campaign.email_template_id=email_template.id where campaign.id= ?");
+$temp->execute([$id]);
+$etempl = $temp->fetch();
+$emtemp = $etempl['email_template_id'];
+$group = $etempl['group_id'];
 
 $smt = $conexion->prepare("SELECT * FROM phishing.campaign  join phishing.email_settings on  campaign.id = email_settings.campaign_id where campaign.id = ?");
 $smt->execute([$id]);
@@ -19,6 +25,7 @@ $from = $row['email_from'];
 $display = $row['display'];
 $url_ = $row['phishing_url'];
 $cid = $row['campaign_id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -83,10 +90,10 @@ $cid = $row['campaign_id'];
                     <label for="staticEmail" class="col-sm-2 col-form-label">Target</label>
                     <div class="col-sm-5">
                         <select name="group" type="text" class="form-control" id="openssl_verify_mode">
-                            <?php foreach ($data as $row) :
-                                if ($row['group_deleted'] == '') {
+                            <?php foreach ($data as $roww) :
+                                if ($roww['group_deleted'] == '') {
                             ?>
-                                    <option value="<?= $row["name"] ?>"><?= $row["name"] ?></option>
+                                    <option <?php if ($roww['id'] == $group) { ?> selected="selected" <?php } ?> value="<?= $roww["name"] ?>"><?= $roww["name"] ?></option>
                             <?php
 
                                 }
@@ -111,14 +118,15 @@ $cid = $row['campaign_id'];
                     <label for="staticEmail" class="col-sm-2 col-form-label">Template Email</label>
                     <div class="col-sm-5">
                         <select name="template" type="text" class="form-control" id="template">
+                        <option selected value="<?php $emtemp; ?>"></option>
                             <?php
-                            $smt1 = $conexion->prepare("SELECT id,name, email_deleted FROM phishing.email_template");
+                            $smt1 = $conexion->prepare("SELECT id,name, email_deleted FROM phishing.email_template ");
                             $smt1->execute();
                             $data1 = $smt1->fetchAll();
                             foreach ($data1 as $row) : 
                                 if($row['email_deleted'] == ''){
                                 ?>
-                                    <option value="<?= $row["id"]?>"><?= $row["name"]?></option>
+                                    <option <?php if ($row['id'] == $emtemp) { ?> selected="selected" <?php } ?> value="<?= $row["id"]?>"><?= $row["name"]?></option>
                                 <?php
                                 }
                             endforeach 

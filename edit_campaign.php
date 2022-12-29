@@ -118,7 +118,7 @@ $cid = $row['campaign_id'];
                     <label for="staticEmail" class="col-sm-2 col-form-label">Template Email</label>
                     <div class="col-sm-5">
                         <select name="template" type="text" class="form-control" id="template">
-                        <option selected value="<?php $emtemp; ?>"></option>
+                        
                             <?php
                             $smt1 = $conexion->prepare("SELECT id,name, email_deleted FROM phishing.email_template ");
                             $smt1->execute();

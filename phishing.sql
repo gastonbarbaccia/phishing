@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-12-2022 a las 21:22:19
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 7.4.33
+-- Tiempo de generación: 29-12-2022 a las 22:00:09
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -47,8 +47,11 @@ CREATE TABLE `attack_user` (
   `link_clicked` tinyint(1) NOT NULL DEFAULT 0,
   `password_seen` tinyint(1) NOT NULL DEFAULT 0,
   `attack_id` int(11) NOT NULL,
-  `user_uid` varchar(11) NOT NULL,
-  `captured_on` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `user_id` int(11) NOT NULL,
+  `user_uid` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `captured_on` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `user_username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `user_password` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -59,11 +62,11 @@ CREATE TABLE `attack_user` (
 
 CREATE TABLE `campaign` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(200) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_active` tinyint(1) NOT NULL,
-  `deleted` varchar(3) NOT NULL DEFAULT 'no',
+  `deleted` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `group_id` int(11) NOT NULL,
   `email_template_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -76,14 +79,14 @@ CREATE TABLE `campaign` (
 
 CREATE TABLE `email_settings` (
   `id` int(11) NOT NULL,
-  `smtp_server` varchar(20) NOT NULL,
-  `smtp_username` varchar(50) NOT NULL,
-  `smtp_password` varchar(150) NOT NULL,
+  `smtp_server` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `smtp_username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `smtp_password` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `smtp_port` int(4) NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  `email_from` varchar(30) NOT NULL,
-  `display` varchar(40) NOT NULL,
-  `phishing_url` varchar(100) NOT NULL,
+  `subject` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `email_from` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `display` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `phishing_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `campaign_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -95,10 +98,10 @@ CREATE TABLE `email_settings` (
 
 CREATE TABLE `email_template` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `content` text NOT NULL,
-  `email_deleted` varchar(5) NOT NULL
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `email_deleted` varchar(5) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -120,9 +123,9 @@ CREATE TABLE `group_user` (
 
 CREATE TABLE `mygroup` (
   `id` int(11) NOT NULL,
-  `name` varchar(60) NOT NULL,
-  `description` varchar(150) NOT NULL,
-  `group_deleted` varchar(10) NOT NULL
+  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `group_deleted` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -133,10 +136,10 @@ CREATE TABLE `mygroup` (
 
 CREATE TABLE `phishing_url` (
   `id` int(200) NOT NULL,
-  `name` varchar(300) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `url` varchar(200) NOT NULL,
-  `phishing_deleted` varchar(5) NOT NULL
+  `name` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `url` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `phishing_deleted` varchar(5) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -147,11 +150,11 @@ CREATE TABLE `phishing_url` (
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `uid` varchar(11) NOT NULL,
-  `email_address` text NOT NULL,
-  `username` varchar(100) DEFAULT NULL,
-  `password` varchar(100) NOT NULL,
-  `deleted` varchar(10) NOT NULL
+  `uid` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `email_address` text COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `deleted` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

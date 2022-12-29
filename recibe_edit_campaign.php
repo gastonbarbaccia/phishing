@@ -28,7 +28,7 @@ $con1 = $conexion->prepare($cons1);
 $con1->execute([$group]);
 $consult1 = $con1->fetchColumn();
 
-$cons2 = "SELECT id FROM phishing.email_template where name =?";
+$cons2 = "SELECT id FROM phishing.email_template where id =?";
 $con2 = $conexion->prepare($cons2);
 $con2->execute([$template]);
 $consult2 = $con2->fetchColumn();

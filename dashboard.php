@@ -100,7 +100,6 @@ require_once 'dbconexion.php';
                 "<td>" . $row["description"] . "</td>" .
                 "<td><a href='$_resultado' target='blank'>" . $_resultado  . "</a></td>" .
                 "<td>" .
-                "<a href='edit_campaign.php?id=$id' style='padding-right:5% !important'><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:20px;padding-left:10%;color:black'></i></a> " . ' ' .
                 "<a href='delete_campaign.php?id=$id'><i class='fa fa-trash' aria-hidden='true' style='font-size:20px;padding-left:10%;color:#B02203'></i></a>" .
                 "</td>" .
                 "<td>" . "<a href='campaing_details.php?id=$id'style='color:black'><i class='fa fa-eye' aria-hidden='true' style='font-size:20px;padding-left:10%'></i></a></td>".

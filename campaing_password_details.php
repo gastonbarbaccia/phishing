@@ -5,6 +5,8 @@ $id = $_GET['user_id']; //tabla user
 
 $campaign_id = $_GET['at'];
 
+$cid = $_GET['cid'];
+
 $smt = $conexion->prepare("SELECT * from phishing.attack_user join phishing.user on attack_user.user_id = user.id WHERE user_id = ? AND attack_id = ?;");
 $smt->execute([$id, $campaign_id]);
 $row = $smt->fetch();
@@ -101,7 +103,7 @@ if($row !== false){ //si no se creo el ataque, esta vacio y da error
     </div>
 
     <div style="padding-left:3%;margin-bottom:5%">
-        <a href="campaing_details.php?id=<?php echo $campaign_id?>" class="btn btn-primary">Go Back</a>
+        <a href="campaing_details.php?id=<?php echo $cid?>" class="btn btn-primary">Go Back</a>
     </div>
 
 

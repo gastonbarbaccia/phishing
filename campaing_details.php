@@ -252,7 +252,7 @@ $id_email_template = $con000->fetchColumn();
                     foreach ($roww as $row) {
                         $users_id = $row['user_id'];
                         $uid = $row["user_uid"];
-                        $href = "campaing_password_details.php?user_id=$users_id&at=$attack_exist";
+                        $href = "campaing_password_details.php?user_id=$users_id&at=$attack_exist&cid=$cid";
                         $email_ad = $row['email_address'];
 
                         if ($row["email_sent"] == 0) {

@@ -140,11 +140,6 @@ foreach ($user_id as $uid) {
 
     $mailContent = $content_add_victim_URL;
 
-    /* $mailContent= "<html><head><title>Hola</title></head><body>Mensaje
-    <br>
-    <a href='$phishing_url?uid=$vid'>Link de phishig</a>
-    </body></html>";
-     */
     $mail->Body = $mailContent;
 
     $mail->addAddress($email, 'Seguridad');

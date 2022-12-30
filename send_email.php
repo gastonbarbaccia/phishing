@@ -19,6 +19,7 @@ $con5 = $conexion->prepare($cons5);
 $con5->execute([$email_template]);
 $content_email = $con5->fetchColumn();
 
+
 //---------------------------------------------------------------------
 
 $cid = $_POST['campaign_id']; //campaign id
@@ -37,11 +38,11 @@ $gr = "SELECT attack_id,email_address FROM phishing.user JOIN phishing.attack_us
 $con22 = $conexion->prepare($gr);
 $con22->execute([$group_id]);
 $grid = $con22->fetchAll();
-foreach($grid as $gi){
-        $uniqid = uniqid();
-        $emailad = $gi['email_address'];
-        $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
-        $conexion->prepare($sql)->execute([$uniqid, $emailad]);
+foreach ($grid as $gi) {
+    $uniqid = uniqid();
+    $emailad = $gi['email_address'];
+    $sql = "UPDATE phishing.user SET uid =? WHERE email_address=?";
+    $conexion->prepare($sql)->execute([$uniqid, $emailad]);
 }
 
 
@@ -91,8 +92,9 @@ foreach ($settings_emails as $set_email) {
     $email_from = $set_email['email_from'];
     $display = $set_email['display'];
     $phishing_url = $set_email['phishing_url'];
-
 }
+
+
 
 $sent_email_ok = 0;
 
@@ -129,8 +131,20 @@ foreach ($user_id as $uid) {
 
     $mail->Subject = $subject;
 
-    $mailContent= $content_email;
-          
+    $victim_url = $phishing_url . '?uid=' . $vid;
+
+    $search = '$url_victim';
+    $replace = $victim_url;
+    $string = $content_email;
+    $content_add_victim_URL = str_ireplace($search, $replace, $string);
+
+    $mailContent = $content_add_victim_URL;
+
+    /* $mailContent= "<html><head><title>Hola</title></head><body>Mensaje
+    <br>
+    <a href='$phishing_url?uid=$vid'>Link de phishig</a>
+    </body></html>";
+     */
     $mail->Body = $mailContent;
 
     $mail->addAddress($email, 'Seguridad');
@@ -149,7 +163,7 @@ foreach ($user_id as $uid) {
 
 
 
-if($error_sendemail > 0){
+if ($error_sendemail > 0) {
     $c = 3;
     $complete2 = "UPDATE phishing.attack SET status=? WHERE id=?";
     $conexion->prepare($complete2)->execute([$c, $attack_id]);

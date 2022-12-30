@@ -50,7 +50,7 @@ require_once 'dbconexion.php';
 
           $id = $row['id'];
 
-          $cons_ = "SELECT phishing_url FROM phishing.email_settings  WHERE email_settings.campaign_id= '$id' ";
+          $cons_ = "SELECT phishing_url FROM phishing.email_settings  WHERE email_settings.campaign_id= ? ";
           $cons_ = $conexion->prepare($cons_);
           $cons_->execute([$id]);
           $_resultado = $cons_->fetchColumn();   

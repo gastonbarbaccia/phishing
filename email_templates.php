@@ -55,12 +55,21 @@ require_once 'dbconexion.php' ;
 
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Message</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-9">
                         <textarea type="text" class="form-control" id="email_template" name="content0" style="height:200px"></textarea>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="padding-left:3%">
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-5">
+                        <p style="color:red"><b>Important:</b> Replace all links with $url_victim at the end.</p>
+                        <p style="color:red"><b>Example: href='$url_victim'</b></p>
+                    </div>
+                </div>
+            </div>
 
         <div style="padding-left:3%;margin-bottom:5%">
             <button class="btn btn-primary" style="width:10%">Save</button>
